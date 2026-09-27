@@ -1,0 +1,17 @@
+{
+  "name": "operations-dashboard-render",
+  "version": "4.0.0",
+  "private": true,
+  "description": "Arabic operations dashboard for Render with Excel upload and live refresh",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "multer": "^1.4.5-lts.1",
+    "xlsx": "^0.18.5"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

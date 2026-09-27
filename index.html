@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>لوحة متابعة الأعمال</title>
+<style>
+:root{
+  --navy:#102a43;--navy2:#173f5f;--blue:#2673dd;--cyan:#2d9cdb;
+  --green:#17a673;--orange:#f39c34;--red:#e55353;--purple:#7b61ff;
+  --ink:#182230;--muted:#667085;--line:#e7ecf2;--bg:#f5f7fb;--card:#fff;
+}
+*{box-sizing:border-box} body{margin:0;font-family:Tahoma,"Segoe UI",Arial,sans-serif;background:var(--bg);color:var(--ink)}
+.app{min-height:100vh;display:grid;grid-template-columns:245px 1fr}
+.sidebar{background:linear-gradient(180deg,#102a43,#0c2237);color:#fff;padding:28px 18px;position:sticky;top:0;height:100vh}
+.brand{font-size:22px;font-weight:800;letter-spacing:.2px;margin-bottom:6px}
+.brand-sub{font-size:12px;color:#b7c8d8;margin-bottom:28px}
+.nav a{display:flex;align-items:center;gap:10px;color:#cbd8e6;text-decoration:none;padding:11px 12px;border-radius:10px;margin:5px 0;font-size:14px}
+.nav a:hover,.nav a.active{background:rgba(255,255,255,.10);color:#fff}
+.dot{width:8px;height:8px;border-radius:50%;background:#58a6ff}
+.side-foot{position:absolute;bottom:22px;right:18px;left:18px;color:#9fb2c4;font-size:11px;line-height:1.8}
+.main{padding:24px 28px 34px;min-width:0}
+.topbar{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin-bottom:18px}
+h1{margin:0;font-size:25px;color:var(--navy)} .subtitle{color:var(--muted);font-size:13px;margin-top:6px}
+.filters{display:flex;gap:9px;flex-wrap:wrap;justify-content:flex-end}
+select,input{background:#fff;border:1px solid #dfe6ee;border-radius:9px;padding:9px 10px;font:inherit;font-size:12px;color:#344054;outline:none}
+button{border:0;border-radius:9px;padding:9px 13px;background:#eef3f8;color:#344054;font-weight:700;cursor:pointer}
+button:hover{background:#e3ebf3}
+.kpis{display:grid;grid-template-columns:repeat(5,minmax(140px,1fr));gap:14px;margin-bottom:14px}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:15px;padding:16px;box-shadow:0 2px 8px rgba(16,42,67,.035);position:relative;overflow:hidden}
+.kpi:after{content:"";position:absolute;top:0;right:0;width:5px;height:100%;background:var(--accent)}
+.kpi .label{font-size:12px;color:var(--muted);margin-bottom:8px}.kpi .value{font-size:29px;font-weight:800;color:var(--navy)}
+.kpi .small{font-size:11px;color:#98a2b3;margin-top:5px}
+.grid{display:grid;grid-template-columns:1.2fr .8fr;gap:14px;margin-bottom:14px}
+.grid.equal{grid-template-columns:1fr 1fr}
+.card{background:#fff;border:1px solid var(--line);border-radius:15px;padding:17px;box-shadow:0 2px 8px rgba(16,42,67,.035);min-width:0}
+.card-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+.card h3{font-size:15px;margin:0;color:var(--navy)} .hint{font-size:11px;color:#98a2b3}
+.bar-list{display:flex;flex-direction:column;gap:11px}
+.bar-row{display:grid;grid-template-columns:135px 1fr 42px;gap:10px;align-items:center;font-size:12px}
+.bar-name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#475467}
+.bar-track{height:9px;background:#eef2f6;border-radius:99px;overflow:hidden}
+.bar-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--blue),var(--cyan))}
+.bar-val{text-align:left;font-weight:800;color:#344054}
+.donut-wrap{display:flex;align-items:center;justify-content:center;gap:25px;min-height:230px}
+.donut{width:175px;height:175px;border-radius:50%;position:relative;flex:0 0 auto}
+.donut:after{content:"";position:absolute;inset:31px;background:#fff;border-radius:50%}
+.donut-center{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;z-index:2}
+.donut-center b{font-size:28px;color:var(--navy)} .donut-center span{font-size:11px;color:#98a2b3}
+.legend{display:grid;gap:10px;font-size:12px}.legend-row{display:grid;grid-template-columns:10px 1fr auto;gap:8px;align-items:center}
+.swatch{width:9px;height:9px;border-radius:3px}
+.months{display:flex;align-items:end;gap:9px;height:200px;padding:10px 4px 0}
+.mcol{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:6px}
+.mbar{width:68%;min-width:18px;border-radius:7px 7px 2px 2px;background:linear-gradient(180deg,#69a7ff,#2673dd);min-height:3px}
+.mval{font-size:10px;font-weight:700;color:#475467}.mlabel{font-size:10px;color:#98a2b3}
+.section-title{font-size:17px;font-weight:800;color:var(--navy);margin:25px 0 12px}
+.four{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.table-card{margin-top:14px}
+.table-tools{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:12px}
+.search{width:280px}
+.table-wrap{overflow:auto;max-height:440px;border:1px solid var(--line);border-radius:11px}
+table{border-collapse:collapse;width:100%;font-size:12px;background:#fff}
+thead th{position:sticky;top:0;background:#f7f9fc;color:#475467;text-align:right;padding:10px;border-bottom:1px solid var(--line);z-index:1}
+tbody td{padding:10px;border-bottom:1px solid #f0f3f6;vertical-align:top}
+tbody tr:hover{background:#fbfdff}
+.badge{display:inline-block;border-radius:99px;padding:4px 8px;font-size:10px;font-weight:700;background:#eef4ff;color:#265aa5}
+.cost{font-weight:800;color:#176b50}.empty{color:#98a2b3}
+.footer{text-align:center;color:#98a2b3;font-size:11px;margin-top:18px}
+@media(max-width:1100px){.app{grid-template-columns:1fr}.sidebar{display:none}.kpis{grid-template-columns:repeat(2,1fr)}.grid,.grid.equal,.four{grid-template-columns:1fr}}
+@media(max-width:600px){.main{padding:16px}.topbar{display:block}.filters{justify-content:flex-start;margin-top:13px}.kpis{grid-template-columns:1fr 1fr}.bar-row{grid-template-columns:105px 1fr 35px}.donut-wrap{flex-direction:column}.search{width:100%}}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">لوحة متابعة الأعمال</div>
+    <div class="brand-sub">Operations & Delivery Dashboard</div>
+    <div class="nav">
+      <a class="active" href="#overview"><span class="dot"></span>النظرة العامة</a>
+      <a href="#changes"><span class="dot"></span>طلبات التغيير</a>
+      <a href="#issues"><span class="dot"></span>المشاكل</a>
+      <a href="#meetings"><span class="dot"></span>الاجتماعات</a>
+      <a href="#studies"><span class="dot"></span>الدراسات</a>
+      <a href="#details"><span class="dot"></span>التفاصيل</a>
+    </div>
+    <div class="side-foot">Dashboard Web<br>يمكن تحديث البيانات برفع ملف Excel جديد من المتصفح.</div>
+  </aside>
+  <main class="main">
+    <div class="topbar">
+      <div>
+        <h1>لوحة مؤشرات متابعة الأعمال</h1>
+        <div class="subtitle">تحليل طلبات التغيير والمشاكل والاجتماعات والدراسات الفنية حسب الأنظمة</div>
+      </div>
+      <div>
+        <div class="filters">
+          <select id="tagFilter"><option value="">كل الأنظمة</option></select>
+          <input id="fromDate" type="date" title="من تاريخ">
+          <input id="toDate" type="date" title="إلى تاريخ">
+          <button id="resetBtn">إعادة ضبط</button>
+          <button id="refreshBtn">تحديث الآن</button>
+          <input id="excelFile" type="file" accept=".xlsx" style="display:none">
+          <button id="uploadBtn" style="background:#2673dd;color:#fff">رفع Excel جديد</button>
+        </div>
+        <div id="dataStatus" style="margin-top:8px;font-size:11px;color:#667085;text-align:left">جارٍ تحميل البيانات من Excel...</div>
+      </div>
+    </div>
+
+    <section id="overview">
+      <div class="kpis">
+        <div class="kpi" style="--accent:#2673dd"><div class="label">إجمالي طلبات التغيير</div><div class="value" id="kChange">0</div><div class="small">Change Requests</div></div>
+        <div class="kpi" style="--accent:#17a673"><div class="label">إجمالي Cost</div><div class="value" id="kCost">0</div><div class="small">طلبات التغيير</div></div>
+        <div class="kpi" style="--accent:#e55353"><div class="label">إجمالي المشاكل</div><div class="value" id="kIssues">0</div><div class="small">Issues</div></div>
+        <div class="kpi" style="--accent:#f39c34"><div class="label">إجمالي الاجتماعات</div><div class="value" id="kMeetings">0</div><div class="small">Meetings</div></div>
+        <div class="kpi" style="--accent:#7b61ff"><div class="label">إجمالي الدراسات</div><div class="value" id="kStudies">0</div><div class="small">Technical Studies</div></div>
+      </div>
+
+      <div class="grid">
+        <div class="card">
+          <div class="card-head"><h3>توزيع جميع الأعمال حسب النوع</h3><span class="hint">حسب الفلاتر الحالية</span></div>
+          <div class="donut-wrap"><div class="donut" id="donut"><div class="donut-center"><b id="allCount">0</b><span>إجمالي الأعمال</span></div></div><div class="legend" id="legend"></div></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h3>النشاط عبر الزمن</h3><span class="hint">عدد الأعمال المنجزة شهريًا</span></div>
+          <div class="months" id="months"></div>
+        </div>
+      </div>
+      <div class="grid equal">
+        <div class="card"><div class="card-head"><h3>Cost طلبات التغيير حسب النظام</h3><span class="hint">Cost units</span></div><div id="costBars" class="bar-list"></div></div>
+        <div class="card"><div class="card-head"><h3>أكثر الأنظمة نشاطًا</h3><span class="hint">جميع أنواع الأعمال</span></div><div id="activityBars" class="bar-list"></div></div>
+      </div>
+    </section>
+
+    <div class="section-title">التوزيع التفصيلي حسب النظام</div>
+    <div class="four">
+      <section class="card" id="changes"><div class="card-head"><h3>طلبات التغيير</h3><span class="hint" id="changeSub"></span></div><div id="changeBars" class="bar-list"></div></section>
+      <section class="card" id="issues"><div class="card-head"><h3>المشاكل</h3><span class="hint" id="issueSub"></span></div><div id="issueBars" class="bar-list"></div></section>
+      <section class="card" id="meetings"><div class="card-head"><h3>الاجتماعات</h3><span class="hint" id="meetingSub"></span></div><div id="meetingBars" class="bar-list"></div></section>
+      <section class="card" id="studies"><div class="card-head"><h3>الدراسات الفنية</h3><span class="hint" id="studySub"></span></div><div id="studyBars" class="bar-list"></div></section>
+    </div>
+
+    <section class="card table-card" id="details">
+      <div class="table-tools">
+        <div><h3 style="margin:0;color:#102a43">تفاصيل الأعمال</h3><div class="hint" id="tableCount"></div></div>
+        <input class="search" id="searchBox" placeholder="بحث في العنوان أو النظام...">
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>ID</th><th>النوع</th><th>العنوان</th><th>النظام</th><th>التاريخ</th><th>Cost</th></tr></thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+    </section>
+    <div class="footer">لوحة تفاعلية مبنية على ملف البيانات المرفق</div>
+  </main>
+</div>
+
+<script>
+let DATA = [];
+let lastServerUpdate = null;
+const COLORS = {"طلبات التغيير":"#2673dd","مشكلة":"#e55353","اجتماع":"#f39c34","دراسة فنية":"#7b61ff","دعم فني":"#17a673"};
+const order=["طلبات التغيير","مشكلة","اجتماع","دراسة فنية","دعم فني"];
+const $=id=>document.getElementById(id);
+const fmt=n=>new Intl.NumberFormat("ar-SA",{maximumFractionDigits:2}).format(n||0);
+const dateObj=s=>s?new Date(s):null;
+const fmtDate=s=>{if(!s)return "—"; const d=dateObj(s); return isNaN(d)?"—":d.toLocaleDateString("ar-SA",{year:"numeric",month:"2-digit",day:"2-digit"})};
+
+function grouped(rows, key="tag", value=null){
+  const m={};
+  rows.forEach(r=>{const k=r[key]||"غير محدد"; m[k]=(m[k]||0)+(value?Number(r[value]||0):1)});
+  return Object.entries(m).sort((a,b)=>b[1]-a[1]);
+}
+function currentRows(){
+  const tag=$("tagFilter").value, f=$("fromDate").value, t=$("toDate").value;
+  return DATA.filter(r=>{
+    if(tag && r.tag!==tag) return false;
+    if(f && (!r.doneDate || r.doneDate.slice(0,10)<f)) return false;
+    if(t && (!r.doneDate || r.doneDate.slice(0,10)>t)) return false;
+    return true;
+  });
+}
+function renderBars(id, entries, maxItems=10, color1="#2673dd", color2="#2d9cdb"){
+  const el=$(id); el.innerHTML="";
+  const arr=entries.slice(0,maxItems), max=Math.max(1,...arr.map(x=>x[1]));
+  if(!arr.length){el.innerHTML='<div class="empty">لا توجد بيانات ضمن الفلاتر الحالية</div>';return;}
+  arr.forEach(([name,val])=>{
+    const row=document.createElement("div"); row.className="bar-row";
+    row.innerHTML=`<div class="bar-name" title="${name}">${name}</div><div class="bar-track"><div class="bar-fill" style="width:${(val/max*100).toFixed(1)}%;background:linear-gradient(90deg,${color1},${color2})"></div></div><div class="bar-val">${fmt(val)}</div>`;
+    el.appendChild(row);
+  });
+}
+function update(){
+  const rows=currentRows();
+  const changes=rows.filter(r=>r.type==="طلبات التغيير"), issues=rows.filter(r=>r.type==="مشكلة"),
+        meetings=rows.filter(r=>r.type==="اجتماع"), studies=rows.filter(r=>r.type==="دراسة فنية");
+  $("kChange").textContent=fmt(changes.length); $("kCost").textContent=fmt(changes.reduce((a,b)=>a+b.cost,0));
+  $("kIssues").textContent=fmt(issues.length); $("kMeetings").textContent=fmt(meetings.length); $("kStudies").textContent=fmt(studies.length);
+  $("changeSub").textContent=fmt(changes.length)+" طلب"; $("issueSub").textContent=fmt(issues.length)+" مشكلة";
+  $("meetingSub").textContent=fmt(meetings.length)+" اجتماع"; $("studySub").textContent=fmt(studies.length)+" دراسة";
+  renderBars("changeBars",grouped(changes),"","#2673dd","#66a6ff");
+  renderBars("issueBars",grouped(issues),"","#e55353","#ff8585");
+  renderBars("meetingBars",grouped(meetings),"","#f39c34","#ffc267");
+  renderBars("studyBars",grouped(studies),"","#7b61ff","#aa98ff");
+  renderBars("costBars",grouped(changes,"tag","cost"),10,"#17a673","#4fd2a5");
+  renderBars("activityBars",grouped(rows),10,"#102a43","#2673dd");
+  renderDonut(rows); renderMonths(rows); renderTable(rows);
+}
+function renderDonut(rows){
+  const counts=order.map(t=>[t,rows.filter(r=>r.type===t).length]).filter(x=>x[1]);
+  const total=counts.reduce((a,b)=>a+b[1],0); $("allCount").textContent=fmt(total);
+  let a=0, stops=[];
+  counts.forEach(([t,n])=>{const s=a/Math.max(total,1)*360; a+=n; const e=a/Math.max(total,1)*360; stops.push(`${COLORS[t]} ${s}deg ${e}deg`)});
+  $("donut").style.background=total?`conic-gradient(${stops.join(",")})`:"#eef2f6";
+  $("legend").innerHTML=counts.map(([t,n])=>`<div class="legend-row"><span class="swatch" style="background:${COLORS[t]}"></span><span>${t}</span><b>${fmt(n)}</b></div>`).join("");
+}
+function renderMonths(rows){
+  const m={}; rows.forEach(r=>{if(!r.doneDate)return; const k=r.doneDate.slice(0,7);m[k]=(m[k]||0)+1});
+  const arr=Object.entries(m).sort((a,b)=>a[0].localeCompare(b[0])).slice(-8), max=Math.max(1,...arr.map(x=>x[1]));
+  $("months").innerHTML=arr.length?arr.map(([k,v])=>`<div class="mcol"><div class="mval">${v}</div><div class="mbar" style="height:${Math.max(5,v/max*155)}px"></div><div class="mlabel">${k}</div></div>`).join(""):'<div class="empty">لا توجد بيانات زمنية</div>';
+}
+function renderTable(rows){
+  const q=$("searchBox").value.trim().toLowerCase();
+  const rr=rows.filter(r=>!q || (String(r.title)+" "+String(r.tag)+" "+String(r.type)).toLowerCase().includes(q));
+  $("tableCount").textContent=fmt(rr.length)+" سجل";
+  $("tbody").innerHTML=rr.slice().sort((a,b)=>(b.doneDate||"").localeCompare(a.doneDate||"")).map(r=>`<tr>
+    <td>${r.id}</td><td><span class="badge">${r.type}</span></td><td>${r.title}</td><td>${r.tag}</td><td>${fmtDate(r.doneDate)}</td><td class="${r.cost?'cost':'empty'}">${r.cost?fmt(r.cost):"—"}</td>
+  </tr>`).join("");
+}
+
+["tagFilter","fromDate","toDate"].forEach(id=>$(id).addEventListener("change",update));
+$("searchBox").addEventListener("input",update);
+$("resetBtn").addEventListener("click",()=>{$("tagFilter").value="";$("fromDate").value="";$("toDate").value="";$("searchBox").value="";update()});
+document.querySelectorAll(".nav a").forEach(a=>a.addEventListener("click",()=>{document.querySelectorAll(".nav a").forEach(x=>x.classList.remove("active"));a.classList.add("active")}));
+
+function populateTags(){
+  const selected=$("tagFilter").value;
+  $("tagFilter").innerHTML='<option value="">كل الأنظمة</option>';
+  [...new Set(DATA.map(r=>r.tag).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"ar")).forEach(t=>{
+    const o=document.createElement("option");o.value=t;o.textContent=t;$("tagFilter").appendChild(o);
+  });
+  if ([...$("tagFilter").options].some(o=>o.value===selected)) $("tagFilter").value=selected;
+}
+
+async function loadData(showMessage=true){
+  try{
+    if(showMessage) $("dataStatus").textContent="جارٍ قراءة ملف Excel...";
+    const res=await fetch('/api/data',{cache:'no-store'});
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    const payload=await res.json();
+    DATA=payload.data||[];
+    lastServerUpdate=payload.updatedAt;
+    populateTags();
+    update();
+    $("dataStatus").textContent=`آخر قراءة من Excel: ${new Date(lastServerUpdate).toLocaleTimeString("ar-SA")} — ${fmt(DATA.length)} سجل`;
+  }catch(err){
+    $("dataStatus").textContent="تعذر قراءة بيانات Excel من الخادم.";
+    console.error(err);
+  }
+}
+
+
+$("uploadBtn").addEventListener("click",()=>$("excelFile").click());
+
+$("excelFile").addEventListener("change",async()=>{
+  const file=$("excelFile").files[0];
+  if(!file) return;
+
+  const oldText=$("uploadBtn").textContent;
+  $("uploadBtn").disabled=true;
+  $("uploadBtn").textContent="جارٍ الرفع...";
+  $("dataStatus").textContent=`جارٍ رفع ${file.name}...`;
+
+  try{
+    const form=new FormData();
+    form.append("excel",file);
+
+    const res=await fetch("/api/upload-excel",{method:"POST",body:form});
+    const payload=await res.json();
+
+    if(!res.ok) throw new Error(payload.details||payload.error||"تعذر رفع الملف");
+
+    $("dataStatus").textContent=`تم رفع Excel بنجاح — ${fmt(payload.count)} سجل`;
+    await loadData(false);
+  }catch(err){
+    $("dataStatus").textContent="فشل رفع Excel: "+err.message;
+    alert("تعذر تحديث البيانات:\n"+err.message);
+  }finally{
+    $("excelFile").value="";
+    $("uploadBtn").disabled=false;
+    $("uploadBtn").textContent=oldText;
+  }
+});
+
+$("refreshBtn").addEventListener("click",()=>loadData(true));
+
+let liveReloadTimer=null;
+function scheduleLiveReload(){
+  clearTimeout(liveReloadTimer);
+  $("dataStatus").textContent="تم اكتشاف تعديل في Excel — جارٍ تحديث البيانات...";
+  liveReloadTimer=setTimeout(async()=>{
+    // Excel can briefly lock/replace the file while saving. Retry once if necessary.
+    await loadData(false);
+    setTimeout(()=>loadData(false),900);
+  },350);
+}
+
+function connectLiveUpdates(){
+  const events=new EventSource("/events");
+  events.addEventListener("connected",()=>{
+    console.log("Live Excel monitoring connected");
+  });
+  events.addEventListener("excel-changed",()=>{
+    scheduleLiveReload();
+  });
+  events.onerror=()=>{
+    // EventSource reconnects automatically.
+    console.warn("Live update connection interrupted; reconnecting automatically...");
+  };
+}
+
+loadData(true);
+connectLiveUpdates();
+
+// Fallback only: keeps the dashboard in sync even if the live connection is interrupted.
+setInterval(()=>loadData(false),120000);
+</script>
+</body>
+</html>
