@@ -86,6 +86,8 @@ button:hover,.upload-label:hover{background:rgba(255,255,255,.18)}
   background:linear-gradient(180deg,var(--bar) 0%, color-mix(in srgb, var(--bar) 80%, black) 100%);
   min-height:4px;box-shadow:inset 0 1px 0 rgba(255,255,255,.2)
 }
+.donut-subnote{font-size:11px;color:var(--muted);margin-top:4px;line-height:1.5}
+
 .vbar-label{font-size:12px;color:#556274;text-align:center;line-height:1.45;word-break:break-word}
 .vbar tiny{font-size:10px}
 .y-axis{
@@ -155,7 +157,7 @@ tbody tr:hover{background:#fbfdff}
 
   <section class="summary-grid">
     <div class="summary-card" style="--accent:var(--change)"><div class="summary-label">طلبات التغيير</div><div class="summary-value" id="sumChange">0</div><div class="summary-note">إجمالي السجلات</div></div>
-    <div class="summary-card" style="--accent:var(--cost)"><div class="summary-label">Cost الطلبات</div><div class="summary-value" id="sumCost">0</div><div class="summary-note">قيمة إجمالية</div></div>
+    <div class="summary-card" style="--accent:var(--cost)"><div class="summary-label">أيام التغيير المستنفذة</div><div class="summary-value" id="sumCost">0</div><div class="summary-note">من إجمالي 150 يوم</div></div>
     <div class="summary-card" style="--accent:var(--issue)"><div class="summary-label">المشاكل</div><div class="summary-value" id="sumIssue">0</div><div class="summary-note">Incident</div></div>
     <div class="summary-card" style="--accent:var(--meeting)"><div class="summary-label">الاجتماعات</div><div class="summary-value" id="sumMeeting">0</div><div class="summary-note">Meeting</div></div>
     <div class="summary-card" style="--accent:var(--study)"><div class="summary-label">الدراسات الفنية</div><div class="summary-value" id="sumStudy">0</div><div class="summary-note">Study</div></div>
@@ -228,7 +230,7 @@ const fmtDateTime = v => {
 
 const METRICS = [
   {key:"changes", type:"طلبات التغيير", title:"عدد طلبات التغيير", rightTitle:"عدد طلبات التغيير (مقسمة بالأنظمة)", color:"var(--change)", soft:"var(--change-soft)", mode:"count", keyCount:"sumChange"},
-  {key:"cost", type:"طلبات التغيير", title:"قيمة الطلبات المنفذة", rightTitle:"قيمة طلبات التغيير (مقسمة بالأنظمة)", color:"var(--cost)", soft:"var(--cost-soft)", mode:"cost", keyCount:"sumCost"},
+  {key:"cost", type:"طلبات التغيير", title:"عدد أيام التغيير المستنفذة", rightTitle:"عدد أيام التغيير المستنفذة (مقسمة بالأنظمة)", color:"var(--cost)", soft:"var(--cost-soft)", mode:"cost", keyCount:"sumCost", totalDays:150},
   {key:"issues", type:"مشكلة", title:"مشاكل تم حلها", rightTitle:"مشاكل تم حلها (مقسمة بالأنظمة)", color:"var(--issue)", soft:"var(--issue-soft)", mode:"count", keyCount:"sumIssue"},
   {key:"meetings", type:"اجتماع", title:"عدد الاجتماعات", rightTitle:"أنواع الاجتماعات / التوزيع على الأنظمة", color:"var(--meeting)", soft:"var(--meeting-soft)", mode:"count", keyCount:"sumMeeting"},
   {key:"studies", type:"دراسة فنية", title:"عدد الدراسات الفنية", rightTitle:"الدراسات الفنية (مقسمة بالأنظمة)", color:"var(--study)", soft:"var(--study-soft)", mode:"count", keyCount:"sumStudy"},
@@ -262,12 +264,13 @@ function buildMetricSections(){
             <div class="donut" id="donut-${m.key}" style="--color:${m.color}">
               <div class="donut-content">
                 <div class="donut-value" id="value-${m.key}">0</div>
-                <div class="donut-label">${m.mode === "cost" ? "Cost Total" : "إجمالي العدد"}</div>
+                <div class="donut-label" id="label-${m.key}">${m.mode === "cost" ? "يوم مستنفذ" : "إجمالي العدد"}</div>
+                <div class="donut-subnote" id="subnote-${m.key}">${m.mode === "cost" ? "0% من 150 يوم" : ""}</div>
               </div>
             </div>
           </div>
           <div class="left-footer">
-            <div class="legend-mini"><b>${m.mode === "cost" ? "Service Request Cost" : "Service Request"}</b>${m.mode === "cost" ? "القيمة الإجمالية لطلبات التغيير" : "القيمة محدثة حسب الفلاتر"}</div>
+            <div class="legend-mini"><b>${m.mode === "cost" ? "Consumed Change Days" : "Service Request"}</b>${m.mode === "cost" ? "إجمالي الأيام المستنفذة من رصيد التغيير" : "القيمة محدثة حسب الفلاتر"}</div>
             <a class="query-link" href="#details">View details</a>
           </div>
         </div>
@@ -338,14 +341,16 @@ function renderVerticalBars(metric, rows){
   renderAxis(axis, maxVal);
 
   const palette = ["#1b9ac6","#f5921f","#c6c6c8","#f0b93a","#1982d1","#5a9b8a","#ef476f","#7b61ff"];
+  const maxBarPx = 190;   // fixed drawing height for correct visual scaling
   top.forEach(([name,val], idx) => {
-    const pct = Math.max((Number(val)/maxVal)*100, 3);
+    const numericVal = Number(val || 0);
+    const barHeight = Math.max((numericVal / maxVal) * maxBarPx, 6);
     const label = name.length > 16 ? name.slice(0,16) + "…" : name;
     const col = document.createElement("div");
     col.className = "vbar";
     col.innerHTML = `
-      <div class="vbar-value">${fmt(val)}</div>
-      <div class="vbar-col" style="height:${pct}%; --bar:${palette[idx % palette.length]}"></div>
+      <div class="vbar-value">${fmt(numericVal)}</div>
+      <div class="vbar-col" style="height:${barHeight}px; --bar:${palette[idx % palette.length]}"></div>
       <div class="vbar-label" title="${name}">${label}</div>
     `;
     host.appendChild(col);
@@ -356,8 +361,31 @@ function renderMetricCard(metric, rows){
   const val = metric.mode === "cost"
     ? rows.reduce((a,b)=>a + Number(b.cost || 0), 0)
     : rows.length;
+
   $("value-"+metric.key).textContent = fmt(val);
   if(metric.keyCount) $(metric.keyCount).textContent = fmt(val);
+
+  const labelEl = $("label-"+metric.key);
+  const subnoteEl = $("subnote-"+metric.key);
+  const donutEl = $("donut-"+metric.key);
+
+  if(metric.mode === "cost"){
+    const totalDays = Number(metric.totalDays || 150);
+    const pct = totalDays > 0 ? Math.min((val / totalDays) * 100, 100) : 0;
+    if(labelEl) labelEl.textContent = "يوم مستنفذ";
+    if(subnoteEl) subnoteEl.textContent = `${fmt(pct)}% من ${fmt(totalDays)} يوم`;
+    if(donutEl){
+      const deg = (pct / 100) * 360;
+      donutEl.style.background = `conic-gradient(${metric.color} 0deg ${deg}deg, #e9edf5 ${deg}deg 360deg)`;
+    }
+  }else{
+    if(labelEl) labelEl.textContent = "إجمالي العدد";
+    if(subnoteEl) subnoteEl.textContent = "";
+    if(donutEl){
+      donutEl.style.background = `conic-gradient(${metric.color} 0deg 360deg)`;
+    }
+  }
+
   renderVerticalBars(metric, rows);
 }
 
