@@ -3,198 +3,526 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>BOG Dashboard</title>
+<title>لوحة متابعة طلبات التغيير</title>
 <style>
 :root{
-  --bg:#f3f6fb; --card:#ffffff; --line:#e5eaf3; --text:#162032; --muted:#6b778c;
-  --shadow:0 10px 30px rgba(16,24,40,.06);
-  --navy:#102a43; --navy2:#1c3d5a; --chip:#eef3fb;
-  --change:#1d8c62; --change-soft:#dff4ec;
-  --cost:#ef476f; --cost-soft:#fde1e8;
-  --issue:#f94144; --issue-soft:#fee3e3;
-  --meeting:#39a9db; --meeting-soft:#dff4fb;
-  --study:#7eb7a0; --study-soft:#dff0e8;
-  --support:#7b61ff; --support-soft:#ebe7ff;
+  --bg:#f4f7fb;
+  --surface:#ffffff;
+  --surface-soft:#f8fbff;
+  --line:#e4ebf4;
+  --text:#12233b;
+  --muted:#6f7f95;
+  --navy:#0f2740;
+  --navy-2:#163553;
+  --primary:#1f77ff;
+  --primary-2:#39a7ff;
+  --teal:#12b8b0;
+  --teal-2:#0e8f88;
+  --orange:#f4a62a;
+  --amber:#ffbf3c;
+  --graybar:#93a7c0;
+  --purple:#7a55f8;
+  --pink:#f05283;
+  --pink-2:#ff6c96;
+  --success:#1f9f73;
+  --shadow:0 12px 32px rgba(16,24,40,.08);
+  --radius:22px;
 }
 *{box-sizing:border-box}
-body{margin:0;font-family:Tahoma,"Segoe UI",Arial,sans-serif;background:linear-gradient(180deg,#f6f8fc 0%,#eff4fb 100%);color:var(--text)}
-.container{max-width:1360px;margin:0 auto;padding:24px}
-.header{
-  background:linear-gradient(135deg,#0f2740 0%,#173a5c 60%,#204c77 100%);
-  color:#fff;border-radius:24px;padding:24px 26px;box-shadow:var(--shadow);margin-bottom:18px
+body{
+  margin:0;
+  font-family:Tahoma,"Segoe UI",Arial,sans-serif;
+  background:
+    radial-gradient(circle at 0% 100%, rgba(31,119,255,.08), transparent 25%),
+    radial-gradient(circle at 100% 0%, rgba(57,167,255,.08), transparent 25%),
+    linear-gradient(180deg,#f7f9fd 0%, #eef4fb 100%);
+  color:var(--text);
 }
-.header-top{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;flex-wrap:wrap}
-.title{font-size:30px;font-weight:800;margin:0 0 8px}
-.subtitle{font-size:14px;line-height:1.8;color:#d9e5f3;max-width:760px}
-.header-actions{display:flex;gap:10px;flex-wrap:wrap}
-.control, button, .upload-label{
-  border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.11);backdrop-filter:blur(8px);
-  color:#fff;border-radius:12px;padding:10px 12px;font:inherit;font-size:13px;outline:none
+.layout{
+  min-height:100vh;
+  display:grid;
+  grid-template-columns:170px 1fr;
 }
-.control::placeholder{color:#dce7f4}
-button,.upload-label{cursor:pointer;font-weight:700}
-button:hover,.upload-label:hover{background:rgba(255,255,255,.18)}
-.control option{color:#111}
-.status-bar{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,.13)}
-.status-chip{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.11);padding:8px 12px;border-radius:999px;color:#e9f2fb;font-size:12px}
-.dot{width:8px;height:8px;border-radius:999px;background:#70e0a1}
-.summary-grid{display:grid;grid-template-columns:repeat(6,minmax(120px,1fr));gap:12px;margin:18px 0 8px}
-.summary-card{
-  background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px 14px;box-shadow:var(--shadow);
-  position:relative;overflow:hidden
+.sidebar{
+  background:linear-gradient(180deg,#0e2742 0%, #0d2240 65%, #0b1d36 100%);
+  color:#fff;
+  padding:26px 16px;
+  box-shadow:4px 0 20px rgba(7,19,34,.15);
+  position:sticky;
+  top:0;
+  height:100vh;
 }
-.summary-card:before{content:"";position:absolute;right:0;top:0;width:5px;height:100%;background:var(--accent)}
-.summary-label{font-size:12px;color:var(--muted);margin-bottom:10px}
-.summary-value{font-size:30px;font-weight:800;color:var(--navy)}
-.summary-note{font-size:11px;color:#98a2b3;margin-top:4px}
-.section-grid{display:grid;gap:18px;margin-top:18px}
-.metric-row{
-  display:grid;grid-template-columns:280px 1fr;gap:16px;align-items:stretch
+.brand{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin-bottom:26px;
+}
+.brand-icon{
+  width:58px;height:58px;border-radius:18px;
+  background:linear-gradient(145deg,#2d8cff,#8ad2ff);
+  box-shadow:0 10px 25px rgba(45,140,255,.35), inset 0 1px 0 rgba(255,255,255,.35);
+  position:relative;
+}
+.brand-icon:before,.brand-icon:after{
+  content:"";
+  position:absolute;left:12px;right:12px;height:10px;border-radius:8px;
+  background:rgba(255,255,255,.9);
+  box-shadow:0 0 0 1px rgba(255,255,255,.15);
+}
+.brand-icon:before{top:14px;transform:skewY(-18deg)}
+.brand-icon:after{top:29px;transform:skewY(-18deg)}
+.nav{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  margin-top:18px;
+}
+.nav-item{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  color:#d7e5f5;
+  text-decoration:none;
+  padding:14px 14px;
+  border-radius:16px;
+  font-size:14px;
+  font-weight:700;
+  border:1px solid rgba(255,255,255,.05);
+}
+.nav-item.active{
+  background:linear-gradient(90deg, rgba(40,137,255,.95), rgba(67,167,255,.65));
+  color:#fff;
+  box-shadow:0 10px 20px rgba(31,119,255,.25);
+}
+.nav-item .ico{
+  width:22px;height:22px;border-radius:6px;position:relative;flex:0 0 auto;
+}
+.ico.home:before,.ico.list:before,.ico.chart:before,.ico.setting:before{
+  content:"";
+  position:absolute;inset:3px;border:2px solid currentColor;border-radius:3px;opacity:.95;
+}
+.ico.home:after{
+  content:"";position:absolute;left:3px;right:3px;top:-2px;height:12px;background:currentColor;
+  clip-path:polygon(50% 0,100% 55%,100% 75%,0 75%,0 55%);
+}
+.ico.list:after{
+  content:"";position:absolute;left:6px;right:6px;top:7px;height:2px;background:currentColor;
+  box-shadow:0 5px 0 currentColor,0 10px 0 currentColor;
+}
+.ico.chart:after{
+  content:"";position:absolute;bottom:3px;left:4px;width:3px;height:8px;background:currentColor;
+  box-shadow:6px -5px 0 currentColor,12px -1px 0 currentColor;
+}
+.ico.setting:after{
+  content:"⚙";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:18px
+}
+.sidebar-foot{
+  position:absolute;bottom:18px;right:16px;left:16px;color:#8ea9c6;font-size:11px;line-height:1.8;text-align:center;
+}
+.main{padding:26px 24px 32px}
+.hero{
+  display:flex;align-items:flex-start;justify-content:space-between;gap:18px;flex-wrap:wrap;
+  margin-bottom:18px;
+}
+.hero-right{
+  display:flex;align-items:flex-start;gap:14px;flex:1;
+}
+.hero-mark{
+  width:56px;height:56px;border-radius:18px;
+  background:linear-gradient(145deg,#1f77ff,#95d4ff);
+  box-shadow:0 10px 22px rgba(31,119,255,.22);
+  position:relative;flex:0 0 auto;
+}
+.hero-mark:before,.hero-mark:after{
+  content:"";position:absolute;left:11px;right:11px;height:10px;border-radius:8px;background:#fff;
+  transform:skewY(-18deg)
+}
+.hero-mark:before{top:14px;box-shadow:0 14px 0 #fff}
+.hero-mark:after{display:none}
+.hero-title{font-size:32px;font-weight:800;color:#0f2a4d;margin:0 0 6px}
+.hero-sub{font-size:14px;color:var(--muted);margin:0;line-height:1.8}
+.toolbar{
+  background:linear-gradient(180deg,#ffffff 0%, #f6faff 100%);
+  border:1px solid var(--line);
+  border-radius:22px;
+  box-shadow:var(--shadow);
+  padding:14px;
+  display:grid;
+  grid-template-columns:160px repeat(3, 1fr) 160px;
+  gap:12px;
+  align-items:center;
+  margin-bottom:18px;
+}
+.control, .tool-btn, .upload-btn{
+  width:100%;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:13px 14px;
+  font:inherit;
+  color:#183150;
+  font-size:13px;
+  outline:none;
+}
+.tool-btn,.upload-btn{
+  cursor:pointer;
+  font-weight:800;
+}
+.tool-btn.primary{
+  background:linear-gradient(180deg,#2284ff,#1a6de3);
+  color:#fff;
+  border-color:#227bf0;
+  box-shadow:0 10px 20px rgba(31,119,255,.22);
+}
+.upload-btn{
+  background:linear-gradient(180deg,#f9fbff,#eef6ff);
+}
+.toolbar select,.toolbar input{appearance:none}
+.status-strip{
+  display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;
+  margin-bottom:18px;
+}
+.status-badge{
+  display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:999px;
+  background:#fff;border:1px solid var(--line);box-shadow:var(--shadow);font-size:12px;color:#39506c;
+}
+.status-dot{width:9px;height:9px;border-radius:50%;background:#20b57a}
+.dashboard-grid{
+  display:grid;
+  grid-template-columns:2.1fr 1fr 1fr;
+  gap:16px;
+  align-items:stretch;
 }
 .card{
-  background:var(--card);border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow);
+  background:linear-gradient(180deg,#fff 0%, #fbfdff 100%);
+  border:1px solid var(--line);
+  border-radius:24px;
+  box-shadow:var(--shadow);
+  overflow:hidden;
 }
-.card-inner{padding:18px}
-.metric-header{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
-.metric-title{font-size:17px;font-weight:800;color:var(--navy)}
-.metric-sub{font-size:12px;color:var(--muted)}
-.left-stat{display:flex;flex-direction:column;justify-content:space-between;min-height:320px}
-.left-footer{display:flex;justify-content:space-between;gap:8px;align-items:end;margin-top:12px}
-.legend-mini{font-size:11px;color:var(--muted)}
-.legend-mini b{display:block;font-size:12px;color:#415063;margin-bottom:4px}
-.query-link{font-size:12px;color:#4f6ad7;text-decoration:none}
-.query-link:hover{text-decoration:underline}
-.donut-wrap{display:flex;align-items:center;justify-content:center;flex:1;min-height:210px}
-.donut{
-  width:170px;height:170px;border-radius:50%;position:relative;display:flex;align-items:center;justify-content:center;
-  background:conic-gradient(var(--color) 0deg 360deg);
+.card.pad{padding:18px 18px 16px}
+.card-head{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px;
 }
-.donut:after{content:"";position:absolute;inset:24px;border-radius:50%;background:#fff;box-shadow:inset 0 0 0 1px #edf1f7}
-.donut-content{position:relative;z-index:2;text-align:center}
-.donut-value{font-size:42px;font-weight:800;color:var(--navy);line-height:1}
-.donut-label{font-size:12px;color:var(--muted);margin-top:6px}
-.chart-card{display:flex;flex-direction:column}
-.chart-area{padding:12px 16px 18px;min-height:320px;display:flex;flex-direction:column}
-.chart-bars{
-  flex:1;display:flex;align-items:flex-end;justify-content:space-around;gap:14px;
-  border-right:1px solid #edf1f7;border-bottom:1px solid #edf1f7;padding:8px 8px 0;margin-top:8px;min-height:225px
+.card-title{
+  font-size:17px;font-weight:800;color:#102a4b;
 }
-.vbar{flex:1;min-width:64px;max-width:120px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:8px}
-.vbar-value{font-size:12px;font-weight:700;color:#495669}
+.card-sub{font-size:12px;color:var(--muted)}
+.card-icon{
+  width:42px;height:42px;border-radius:14px;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(180deg,#f6faff,#ecf3ff);color:#1f77ff;font-weight:900;font-size:20px;border:1px solid #dde8f7;
+}
+.chart-shell{
+  min-height:400px;display:flex;flex-direction:column;
+}
+.chart-axis-label{font-size:12px;color:#68809e;margin-bottom:6px}
+.chart-area{
+  position:relative;
+  flex:1;
+  min-height:300px;
+  border-right:2px solid #d9e5f3;
+  border-bottom:2px solid #d9e5f3;
+  margin:10px 16px 8px 10px;
+  padding:0 12px 0 10px;
+  display:flex;align-items:flex-end;justify-content:space-around;gap:14px;
+  background:
+    linear-gradient(to top, transparent 24%, rgba(76,118,176,.12) 24%, rgba(76,118,176,.12) 25%, transparent 25%, transparent 49%, rgba(76,118,176,.12) 49%, rgba(76,118,176,.12) 50%, transparent 50%, transparent 74%, rgba(76,118,176,.12) 74%, rgba(76,118,176,.12) 75%, transparent 75%);
+}
+.y-scale{
+  display:flex;justify-content:space-between;color:#7387a0;font-size:12px;padding:0 2px;margin-right:10px
+}
+.vbar{
+  flex:1;min-width:70px;max-width:118px;
+  display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:10px;
+}
+.vbar-value{font-size:12px;font-weight:800;color:#1d3354}
 .vbar-col{
-  width:54px;max-width:100%;border-radius:12px 12px 4px 4px;position:relative;
-  background:linear-gradient(180deg,var(--bar) 0%, color-mix(in srgb, var(--bar) 80%, black) 100%);
-  min-height:4px;box-shadow:inset 0 1px 0 rgba(255,255,255,.2)
+  width:100%;
+  max-width:92px;
+  min-height:6px;
+  border-radius:12px 12px 3px 3px;
+  position:relative;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.35), 0 10px 18px rgba(30,60,114,.08);
 }
-.donut-subnote{font-size:11px;color:var(--muted);margin-top:4px;line-height:1.5}
-
-.vbar-label{font-size:12px;color:#556274;text-align:center;line-height:1.45;word-break:break-word}
-.vbar tiny{font-size:10px}
-.y-axis{
-  display:flex;justify-content:space-between;color:#9aa6b2;font-size:11px;margin-bottom:6px
+.vbar-label{
+  font-size:12px;text-align:center;line-height:1.5;color:#203654;word-break:break-word
 }
-.chart-empty{flex:1;display:flex;align-items:center;justify-content:center;color:#98a2b3;font-size:14px}
-.bottom-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:18px}
-.list-card .list{display:flex;flex-direction:column;gap:12px}
-.list-row{display:grid;grid-template-columns:160px 1fr 48px;gap:10px;align-items:center}
-.list-name{font-size:13px;color:#455468;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.track{height:10px;background:#edf2f7;border-radius:999px;overflow:hidden}
-.fill{height:100%;border-radius:999px;background:linear-gradient(90deg,#4f7cff,#25b0ff)}
-.num{font-size:12px;font-weight:800;color:#364152;text-align:left}
-.table-card{margin-top:18px}
-.table-tools{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
+.donut-panel{
+  display:flex;flex-direction:column;height:100%;
+}
+.donut-wrap{
+  display:flex;justify-content:center;align-items:center;min-height:246px;
+}
+.donut{
+  width:216px;height:216px;border-radius:50%;
+  position:relative;
+  background:conic-gradient(var(--c1) 0deg 115deg, var(--c2) 115deg 225deg, var(--c3) 225deg 300deg, #d7e1ec 300deg 360deg);
+  box-shadow:inset 0 4px 12px rgba(255,255,255,.42), 0 16px 28px rgba(16,24,40,.08);
+}
+.donut::after{
+  content:"";position:absolute;inset:30px;border-radius:50%;
+  background:linear-gradient(180deg,#ffffff,#f7fbff);
+  box-shadow:inset 0 0 0 1px #edf2f7;
+}
+.donut-content{
+  position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  z-index:2;text-align:center;
+}
+.donut-number{font-size:62px;font-weight:900;color:#112b4d;line-height:1}
+.donut-text{font-size:13px;color:#5d7390;margin-top:4px}
+.legend-list{display:flex;flex-direction:column;gap:10px;margin-top:4px}
+.legend-row{
+  display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:center;
+  font-size:12px;color:#223958
+}
+.legend-swatch{width:12px;height:12px;border-radius:50%;display:inline-block;margin-left:8px}
+.legend-name{display:flex;align-items:center}
+.legend-pill{
+  min-width:44px;text-align:center;padding:5px 10px;border-radius:999px;background:#f3f7fb;border:1px solid #e5edf5;font-weight:800;color:#203654
+}
+.progress-shell{
+  display:flex;flex-direction:column;height:100%;
+}
+.progress-wrap{
+  display:flex;justify-content:center;align-items:center;min-height:246px;
+}
+.progress-donut{
+  width:216px;height:216px;border-radius:50%;
+  position:relative;
+  background:conic-gradient(var(--pink) 0deg 130deg, #dde4ed 130deg 360deg);
+  box-shadow:inset 0 4px 12px rgba(255,255,255,.45), 0 16px 28px rgba(16,24,40,.08);
+}
+.progress-donut::after{
+  content:"";position:absolute;inset:30px;border-radius:50%;
+  background:linear-gradient(180deg,#ffffff,#fcfdff);
+  box-shadow:inset 0 0 0 1px #edf2f7;
+}
+.progress-content{
+  position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;z-index:2
+}
+.progress-number{font-size:60px;font-weight:900;color:#112b4d;line-height:1}
+.progress-text{font-size:13px;color:#5d7390;margin-top:5px}
+.progress-bar{
+  height:18px;border-radius:999px;background:#e7edf5;overflow:hidden;border:1px solid #dde5ef;margin:8px 12px 12px
+}
+.progress-fill{
+  height:100%;border-radius:999px;background:linear-gradient(90deg,#ea4e80,#ff6997);width:36%;
+}
+.progress-stats{
+  display:flex;justify-content:space-between;align-items:flex-end;gap:14px;padding:0 12px 8px
+}
+.progress-stat b{display:block;font-size:18px;color:#102a4b}
+.progress-stat span{font-size:12px;color:#637a95}
+.kpi-row{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:14px;
+  margin-top:16px;
+}
+.kpi-tile{
+  background:linear-gradient(180deg,#ffffff 0%, #fbfdff 100%);
+  border:1px solid var(--line);
+  border-radius:20px;
+  box-shadow:var(--shadow);
+  padding:18px;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+}
+.kpi-tile .meta{
+  display:flex;flex-direction:column;gap:8px;
+}
+.kpi-tile .num{font-size:24px;font-weight:900;color:#102a4b}
+.kpi-tile .label{font-size:12px;color:#26405f;font-weight:700}
+.kpi-tile .iconbox{
+  width:88px;height:88px;border-radius:18px;display:flex;align-items:center;justify-content:center;
+  font-size:34px;font-weight:900;color:#fff;
+}
+.i-blue{background:linear-gradient(145deg,#e4f1ff,#c9e3ff);color:#2a81ff}
+.i-teal{background:linear-gradient(145deg,#e8fbfa,#d0f6f3);color:#10a79f}
+.i-gray{background:linear-gradient(145deg,#f1f4f8,#e3e9f0);color:#70839c}
+.i-gold{background:linear-gradient(145deg,#fff6df,#ffefc6);color:#f0a619}
+.i-purple{background:linear-gradient(145deg,#f0ebff,#e2d8ff);color:#7a55f8}
+.kpi-icon{
+  width:34px;height:34px;border-radius:12px;background:currentColor;opacity:.18;position:relative;
+}
+.kpi-icon:before{
+  content:"";position:absolute;inset:8px;border-radius:8px;background:currentColor;opacity:.75
+}
+.extras{
+  display:grid;grid-template-columns:1.2fr .8fr;gap:16px;margin-top:16px
+}
+.list-card .rows{display:flex;flex-direction:column;gap:12px}
+.list-row{display:grid;grid-template-columns:170px 1fr 52px;gap:10px;align-items:center}
+.list-name{font-size:13px;color:#203654;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.track{height:11px;background:#ebf0f6;border-radius:999px;overflow:hidden}
+.fill{height:100%;border-radius:999px;background:linear-gradient(90deg,#287bff,#49b0ff)}
+.list-num{font-size:12px;font-weight:800;color:#223958;text-align:left}
+.table-card{margin-top:16px}
+.table-tools{
+  display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:12px
+}
 .search{
-  width:280px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 12px;font:inherit
+  width:320px;max-width:100%;
+  border:1px solid var(--line);border-radius:14px;padding:12px 14px;background:#fff;font:inherit;outline:none
 }
 .table-wrap{overflow:auto;border:1px solid var(--line);border-radius:18px;background:#fff}
 table{width:100%;border-collapse:collapse;font-size:13px}
-thead th{position:sticky;top:0;background:#f8fafc;color:#435166;text-align:right;padding:12px 14px;border-bottom:1px solid var(--line)}
-tbody td{padding:12px 14px;border-bottom:1px solid #eff3f7;vertical-align:top}
+thead th{
+  position:sticky;top:0;background:#f8fbff;color:#38506e;text-align:right;
+  padding:13px 14px;border-bottom:1px solid var(--line)
+}
+tbody td{padding:13px 14px;border-bottom:1px solid #eef2f6;vertical-align:top}
 tbody tr:hover{background:#fbfdff}
-.badge{display:inline-flex;align-items:center;gap:7px;padding:5px 10px;border-radius:999px;font-size:11px;font-weight:700}
-.badge:before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
-.muted{color:#9aa6b2}
-.footer-note{margin:22px 0 4px;text-align:center;color:#8a96a8;font-size:12px}
+.badge{
+  display:inline-flex;align-items:center;gap:7px;border-radius:999px;padding:6px 11px;
+  font-size:11px;font-weight:800
+}
+.badge:before{
+  content:"";width:8px;height:8px;border-radius:50%;background:currentColor
+}
+.muted{color:#92a1b1}
 .hidden{display:none}
-@media (max-width:1100px){
-  .summary-grid{grid-template-columns:repeat(3,minmax(120px,1fr))}
-  .metric-row{grid-template-columns:1fr}
-  .bottom-grid{grid-template-columns:1fr}
+@media (max-width:1280px){
+  .dashboard-grid{grid-template-columns:1fr 1fr}
+  .toolbar{grid-template-columns:repeat(2,1fr)}
+  .kpi-row{grid-template-columns:repeat(3,1fr)}
+}
+@media (max-width:980px){
+  .layout{grid-template-columns:1fr}
+  .sidebar{display:none}
+  .dashboard-grid{grid-template-columns:1fr}
+  .kpi-row,.extras{grid-template-columns:1fr 1fr}
 }
 @media (max-width:720px){
-  .container{padding:14px}
-  .title{font-size:24px}
-  .summary-grid{grid-template-columns:repeat(2,minmax(120px,1fr))}
-  .list-row{grid-template-columns:120px 1fr 38px}
-  .chart-bars{gap:8px}
-  .vbar{min-width:48px}
+  .main{padding:14px}
+  .hero-title{font-size:24px}
+  .kpi-row,.extras{grid-template-columns:1fr}
+  .list-row{grid-template-columns:130px 1fr 40px}
+  .toolbar{grid-template-columns:1fr}
 }
 </style>
 </head>
 <body>
-<div class="container">
-  <section class="header">
-    <div class="header-top">
-      <div>
-        <h1 class="title">لوحة متابعة الأعمال</h1>
-        <div class="subtitle">تصميم احترافي مستوحى من شكل الداشبورد المرجعي: عرض إجمالي كل نوع عمل في بطاقة مستقلة مع رسم يوضح التوزيع على الأنظمة، بالإضافة إلى رفع ملف Excel جديد وتحديث البيانات مباشرة.</div>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="brand"><div class="brand-icon"></div></div>
+    <nav class="nav">
+      <a href="#top" class="nav-item active"><span class="ico home"></span><span>لوحة المتابعة</span></a>
+      <a href="#details" class="nav-item"><span class="ico list"></span><span>طلبات التغيير</span></a>
+      <a href="#extra" class="nav-item"><span class="ico chart"></span><span>التقارير</span></a>
+      <a href="#settings" class="nav-item"><span class="ico setting"></span><span>الإعدادات</span></a>
+    </nav>
+    <div class="sidebar-foot">BOG Dashboard<br>نسخة رسمية مناسبة للعروض على الجهات الرسمية</div>
+  </aside>
+
+  <main class="main" id="top">
+    <section class="hero">
+      <div class="hero-right">
+        <div class="hero-mark"></div>
+        <div>
+          <h1 class="hero-title">لوحة متابعة طلبات التغيير</h1>
+          <p class="hero-sub">نظرة شاملة على طلبات التغيير عبر الأنظمة المختلفة، مع متابعة الاستهلاك من رصيد أيام التغيير وإمكانية تحديث البيانات مباشرة من ملف Excel.</p>
+        </div>
       </div>
-      <div class="header-actions">
-        <select id="tagFilter" class="control"><option value="">كل الأنظمة</option></select>
-        <input id="fromDate" class="control" type="date" title="من تاريخ">
-        <input id="toDate" class="control" type="date" title="إلى تاريخ">
-        <button id="resetBtn" type="button">إعادة ضبط</button>
-        <button id="refreshBtn" type="button">تحديث الآن</button>
+    </section>
+
+    <section class="toolbar">
+      <button id="refreshBtn" class="tool-btn primary" type="button">تحديث</button>
+      <select id="tagFilter" class="control"><option value="">جميع الأنظمة</option></select>
+      <input id="toDate" class="control" type="date" title="إلى تاريخ">
+      <input id="fromDate" class="control" type="date" title="من تاريخ">
+      <div style="display:flex;gap:12px">
+        <button id="resetBtn" class="tool-btn" type="button">إعادة ضبط</button>
         <input id="excelFile" type="file" accept=".xlsx" class="hidden">
-        <label for="excelFile" class="upload-label" id="uploadBtn">رفع Excel جديد</label>
+        <label for="excelFile" id="uploadBtn" class="upload-btn">رفع Excel</label>
       </div>
-    </div>
-    <div class="status-bar">
-      <div class="status-chip"><span class="dot"></span><span id="dataStatus">جارٍ تحميل البيانات...</span></div>
-      <div class="status-chip"><span>آخر تحديث:</span><b id="lastUpdated">—</b></div>
-    </div>
-  </section>
+    </section>
 
-  <section class="summary-grid">
-    <div class="summary-card" style="--accent:var(--change)"><div class="summary-label">طلبات التغيير</div><div class="summary-value" id="sumChange">0</div><div class="summary-note">إجمالي السجلات</div></div>
-    <div class="summary-card" style="--accent:var(--cost)"><div class="summary-label">أيام التغيير المستنفذة</div><div class="summary-value" id="sumCost">0</div><div class="summary-note">من إجمالي 150 يوم</div></div>
-    <div class="summary-card" style="--accent:var(--issue)"><div class="summary-label">المشاكل</div><div class="summary-value" id="sumIssue">0</div><div class="summary-note">Incident</div></div>
-    <div class="summary-card" style="--accent:var(--meeting)"><div class="summary-label">الاجتماعات</div><div class="summary-value" id="sumMeeting">0</div><div class="summary-note">Meeting</div></div>
-    <div class="summary-card" style="--accent:var(--study)"><div class="summary-label">الدراسات الفنية</div><div class="summary-value" id="sumStudy">0</div><div class="summary-note">Study</div></div>
-    <div class="summary-card" style="--accent:var(--support)"><div class="summary-label">الدعم الفني</div><div class="summary-value" id="sumSupport">0</div><div class="summary-note">Support</div></div>
-  </section>
+    <section class="status-strip">
+      <div class="status-badge"><span class="status-dot"></span><span id="dataStatus">جارٍ تحميل البيانات...</span></div>
+      <div class="status-badge"><span>آخر تحديث:</span><b id="lastUpdated">—</b></div>
+    </section>
 
-  <section class="section-grid" id="metricSections"></section>
-
-  <section class="bottom-grid">
-    <div class="card list-card">
-      <div class="card-inner">
-        <div class="metric-header">
-          <div class="metric-title">أكثر الأنظمة نشاطًا</div>
-          <div class="metric-sub">جميع أنواع الأعمال</div>
+    <section class="dashboard-grid">
+      <div class="card pad">
+        <div class="card-head">
+          <div class="card-title">عدد طلبات التغيير (مقسمة بالأنظمة)</div>
+          <div class="card-icon">▮</div>
         </div>
-        <div id="activityList" class="list"></div>
-      </div>
-    </div>
-    <div class="card list-card">
-      <div class="card-inner">
-        <div class="metric-header">
-          <div class="metric-title">Mix أنواع الأعمال</div>
-          <div class="metric-sub">توزيع كامل الأعمال</div>
+        <div class="chart-shell">
+          <div class="chart-axis-label">عدد الطلبات</div>
+          <div class="y-scale" id="barScale"></div>
+          <div class="chart-area" id="barChart"></div>
         </div>
-        <div id="typeMixList" class="list"></div>
       </div>
-    </div>
-  </section>
 
-  <section class="card table-card">
-    <div class="card-inner">
+      <div class="card pad">
+        <div class="card-head">
+          <div class="card-title">عدد طلبات التغيير</div>
+          <div class="card-icon">◈</div>
+        </div>
+        <div class="donut-panel">
+          <div class="donut-wrap">
+            <div class="donut" id="changeDonut" style="--c1:#1f77ff;--c2:#39c2ff;--c3:#18bf9d">
+              <div class="donut-content">
+                <div class="donut-number" id="changeTotal">0</div>
+                <div class="donut-text">إجمالي العدد</div>
+              </div>
+            </div>
+          </div>
+          <div class="legend-list" id="changeLegend"></div>
+        </div>
+      </div>
+
+      <div class="card pad" style="background:linear-gradient(180deg,#fff 0%, #fff6f9 100%)">
+        <div class="card-head">
+          <div class="card-title">عدد أيام التغيير المستنفذة</div>
+          <div class="card-icon" style="color:#f05283">◔</div>
+        </div>
+        <div class="progress-shell">
+          <div class="progress-wrap">
+            <div class="progress-donut" id="daysDonut">
+              <div class="progress-content">
+                <div class="progress-number" id="daysUsed">0</div>
+                <div class="progress-text">من 150 يوم</div>
+              </div>
+            </div>
+          </div>
+          <div class="progress-bar"><div class="progress-fill" id="daysBar"></div></div>
+          <div class="progress-stats">
+            <div class="progress-stat"><b id="daysPct">0%</b><span>نسبة الاستخدام</span></div>
+            <div class="progress-stat" style="text-align:left"><b id="daysRemain">0</b><span>يوماً متبقية</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="kpi-row" id="systemTiles"></section>
+
+    <section class="extras" id="extra">
+      <div class="card pad list-card">
+        <div class="card-head">
+          <div class="card-title">أكثر الأنظمة نشاطًا</div>
+          <div class="card-sub">جميع أنواع الأعمال</div>
+        </div>
+        <div class="rows" id="activityRows"></div>
+      </div>
+      <div class="card pad list-card">
+        <div class="card-head">
+          <div class="card-title">توزيع أنواع الأعمال</div>
+          <div class="card-sub">جميع السجلات الحالية</div>
+        </div>
+        <div class="rows" id="typeRows"></div>
+      </div>
+    </section>
+
+    <section class="card pad table-card" id="details">
       <div class="table-tools">
         <div>
-          <div class="metric-title">تفاصيل الأعمال</div>
-          <div class="metric-sub" id="tableCount">0 سجل</div>
+          <div class="card-title">تفاصيل الأعمال</div>
+          <div class="card-sub" id="tableCount">0 سجل</div>
         </div>
-        <input id="searchBox" class="search" placeholder="بحث في العنوان أو النظام أو النوع">
+        <input id="searchBox" class="search" placeholder="بحث في العنوان أو النظام أو النوع أو الحالة">
       </div>
       <div class="table-wrap">
         <table>
@@ -212,91 +540,67 @@ tbody tr:hover{background:#fbfdff}
           <tbody id="tbody"></tbody>
         </table>
       </div>
-    </div>
-  </section>
-
-  <div class="footer-note">BOG Dashboard • Render Ready • Live Excel Upload</div>
+    </section>
+  </main>
 </div>
 
 <script>
 const $ = id => document.getElementById(id);
-const fmt = n => new Intl.NumberFormat("en-US",{maximumFractionDigits:2}).format(Number(n||0));
-const fmtDateTime = v => {
-  if(!v) return "—";
-  const d = new Date(v);
-  if(isNaN(d)) return String(v);
-  return d.toLocaleString("ar-SA",{year:"numeric",month:"2-digit",day:"2-digit"});
-};
-
-const METRICS = [
-  {key:"changes", type:"طلبات التغيير", title:"عدد طلبات التغيير", rightTitle:"عدد طلبات التغيير (مقسمة بالأنظمة)", color:"var(--change)", soft:"var(--change-soft)", mode:"count", keyCount:"sumChange"},
-  {key:"cost", type:"طلبات التغيير", title:"عدد أيام التغيير المستنفذة", rightTitle:"عدد أيام التغيير المستنفذة (مقسمة بالأنظمة)", color:"var(--cost)", soft:"var(--cost-soft)", mode:"cost", keyCount:"sumCost", totalDays:150},
-  {key:"issues", type:"مشكلة", title:"مشاكل تم حلها", rightTitle:"مشاكل تم حلها (مقسمة بالأنظمة)", color:"var(--issue)", soft:"var(--issue-soft)", mode:"count", keyCount:"sumIssue"},
-  {key:"meetings", type:"اجتماع", title:"عدد الاجتماعات", rightTitle:"أنواع الاجتماعات / التوزيع على الأنظمة", color:"var(--meeting)", soft:"var(--meeting-soft)", mode:"count", keyCount:"sumMeeting"},
-  {key:"studies", type:"دراسة فنية", title:"عدد الدراسات الفنية", rightTitle:"الدراسات الفنية (مقسمة بالأنظمة)", color:"var(--study)", soft:"var(--study-soft)", mode:"count", keyCount:"sumStudy"},
-];
-
+const TOTAL_DAYS = 150;
 const TYPE_BADGES = {
-  "طلبات التغيير": {bg:"#dff4ec", color:"#1d8c62"},
-  "مشكلة": {bg:"#fee3e3", color:"#d92d20"},
-  "اجتماع": {bg:"#dff4fb", color:"#1277a8"},
-  "دراسة فنية": {bg:"#dff0e8", color:"#4b8a70"},
-  "دعم فني": {bg:"#ebe7ff", color:"#6343ff"},
+  "طلبات التغيير": {bg:"#e5f0ff", color:"#1f77ff"},
+  "مشكلة": {bg:"#fde8ec", color:"#e24d72"},
+  "اجتماع": {bg:"#e8f8ff", color:"#1fa4cf"},
+  "دراسة فنية": {bg:"#fff4db", color:"#e49d1a"},
+  "دعم فني": {bg:"#ece8ff", color:"#7252f4"}
+};
+const SYS_STYLES = [
+  {grad:"linear-gradient(145deg,#e6f0ff,#cfe4ff)", color:"#2a81ff", label:"خدمات التكامل"},
+  {grad:"linear-gradient(145deg,#e8fbfa,#d0f5f3)", color:"#10a59d", label:"بوابة خدماتي"},
+  {grad:"linear-gradient(145deg,#f1f4f8,#e2e9f0)", color:"#6d819b", label:"اتصالات إدارية"},
+  {grad:"linear-gradient(145deg,#fff5df,#ffecc5)", color:"#eba11a", label:"الموارد البشرية"},
+  {grad:"linear-gradient(145deg,#f0ebff,#e2d8ff)", color:"#7a55f8", label:"ERP"},
+];
+const BAR_COLORS = {
+  "خدمات التكامل":"linear-gradient(180deg,#2f8cff,#1569db)",
+  "بوابة خدماتي":"linear-gradient(180deg,#21c1c6,#12979a)",
+  "اتصالات إدارية":"linear-gradient(180deg,#9db4cc,#6f88a3)",
+  "الموارد البشرية":"linear-gradient(180deg,#ffc640,#efa31c)",
+  "ERP":"linear-gradient(180deg,#8d67ff,#6b47ea)"
 };
 
 let ALL_ROWS = [];
 let CURRENT_ROWS = [];
 
-function buildMetricSections(){
-  const host = $("metricSections");
-  host.innerHTML = "";
-  METRICS.forEach(m => {
-    const section = document.createElement("div");
-    section.className = "metric-row";
-    section.innerHTML = `
-      <div class="card">
-        <div class="card-inner left-stat" style="background:linear-gradient(180deg,#fff 0%, ${m.soft} 120%)">
-          <div class="metric-header">
-            <div class="metric-title">${m.title}</div>
-            <div class="metric-sub">${m.type}</div>
-          </div>
-          <div class="donut-wrap">
-            <div class="donut" id="donut-${m.key}" style="--color:${m.color}">
-              <div class="donut-content">
-                <div class="donut-value" id="value-${m.key}">0</div>
-                <div class="donut-label" id="label-${m.key}">${m.mode === "cost" ? "يوم مستنفذ" : "إجمالي العدد"}</div>
-                <div class="donut-subnote" id="subnote-${m.key}">${m.mode === "cost" ? "0% من 150 يوم" : ""}</div>
-              </div>
-            </div>
-          </div>
-          <div class="left-footer">
-            <div class="legend-mini"><b>${m.mode === "cost" ? "Consumed Change Days" : "Service Request"}</b>${m.mode === "cost" ? "إجمالي الأيام المستنفذة من رصيد التغيير" : "القيمة محدثة حسب الفلاتر"}</div>
-            <a class="query-link" href="#details">View details</a>
-          </div>
-        </div>
-      </div>
-      <div class="card chart-card">
-        <div class="card-inner">
-          <div class="metric-header">
-            <div class="metric-title">${m.rightTitle}</div>
-            <div class="metric-sub">حسب الحقول الموجودة في Tags</div>
-          </div>
-          <div class="chart-area">
-            <div class="y-axis" id="axis-${m.key}"></div>
-            <div class="chart-bars" id="bars-${m.key}"></div>
-          </div>
-        </div>
-      </div>
-    `;
-    host.appendChild(section);
+const fmt = n => new Intl.NumberFormat("en-US", {maximumFractionDigits:2}).format(Number(n||0));
+const fmtDate = v => {
+  if(!v) return "—";
+  const d = new Date(v);
+  if(isNaN(d)) return String(v);
+  return d.toLocaleDateString("ar-SA",{year:"numeric",month:"2-digit",day:"2-digit"});
+};
+
+function grouped(rows, mode="count"){
+  const obj = {};
+  rows.forEach(r => {
+    const key = r.tag || "غير محدد";
+    const add = mode === "cost" ? Number(r.cost || 0) : 1;
+    obj[key] = (obj[key] || 0) + add;
   });
+  return Object.entries(obj).sort((a,b)=>b[1]-a[1]);
+}
+
+function fillFilters(rows){
+  const selected = $("tagFilter").value;
+  const tags = [...new Set(rows.map(r => r.tag).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"ar"));
+  $("tagFilter").innerHTML = '<option value="">جميع الأنظمة</option>' + tags.map(t => `<option value="${t}">${t}</option>`).join("");
+  if(tags.includes(selected)) $("tagFilter").value = selected;
 }
 
 function currentRows(){
   const tag = $("tagFilter").value;
   const fromDate = $("fromDate").value;
   const toDate = $("toDate").value;
-
   return ALL_ROWS.filter(r => {
     if(tag && r.tag !== tag) return false;
     if(fromDate && (!r.doneDate || String(r.doneDate).slice(0,10) < fromDate)) return false;
@@ -305,107 +609,124 @@ function currentRows(){
   });
 }
 
-function grouped(rows, valueMode="count"){
-  const map = {};
-  rows.forEach(r => {
-    const key = r.tag || "غير محدد";
-    const add = valueMode === "cost" ? Number(r.cost || 0) : 1;
-    map[key] = (map[key] || 0) + add;
-  });
-  return Object.entries(map).sort((a,b)=>b[1]-a[1]);
-}
-
-function renderAxis(el, maxVal){
-  const items = 5;
-  const values = [];
-  for(let i=items;i>=0;i--){
-    values.push(fmt((maxVal/items)*i));
+function renderScale(maxVal){
+  const host = $("barScale");
+  const points = 4;
+  const vals = [];
+  for(let i=0;i<=points;i++){
+    vals.push(fmt((maxVal/points)*i));
   }
-  el.innerHTML = values.map(v=>`<span>${v}</span>`).join("");
+  host.innerHTML = vals.reverse().map(v => `<span>${v}</span>`).join("");
 }
 
-function renderVerticalBars(metric, rows){
-  const host = $("bars-"+metric.key);
-  const axis = $("axis-"+metric.key);
-  const list = grouped(rows, metric.mode === "cost" ? "cost" : "count");
+function renderBarChart(rows){
+  const data = grouped(rows).slice(0,8);
+  const host = $("barChart");
   host.innerHTML = "";
-
-  if(!list.length){
-    axis.innerHTML = "";
-    host.innerHTML = `<div class="chart-empty">لا توجد بيانات ضمن الفلاتر الحالية</div>`;
+  if(!data.length){
+    host.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;color:#8fa0b2">لا توجد بيانات</div>';
+    $("barScale").innerHTML = "";
     return;
   }
+  const maxVal = Math.max(...data.map(x => Number(x[1]||0)), 1);
+  renderScale(maxVal);
+  const maxPx = 230;
 
-  const top = list.slice(0, 8);
-  const maxVal = Math.max(...top.map(x => Number(x[1] || 0)), 1);
-  renderAxis(axis, maxVal);
-
-  const palette = ["#1b9ac6","#f5921f","#c6c6c8","#f0b93a","#1982d1","#5a9b8a","#ef476f","#7b61ff"];
-  const maxBarPx = 190;   // fixed drawing height for correct visual scaling
-  top.forEach(([name,val], idx) => {
-    const numericVal = Number(val || 0);
-    const barHeight = Math.max((numericVal / maxVal) * maxBarPx, 6);
-    const label = name.length > 16 ? name.slice(0,16) + "…" : name;
-    const col = document.createElement("div");
-    col.className = "vbar";
-    col.innerHTML = `
-      <div class="vbar-value">${fmt(numericVal)}</div>
-      <div class="vbar-col" style="height:${barHeight}px; --bar:${palette[idx % palette.length]}"></div>
-      <div class="vbar-label" title="${name}">${label}</div>
+  data.forEach(([name,val]) => {
+    const h = Math.max((Number(val)/maxVal) * maxPx, 8);
+    const bar = document.createElement("div");
+    bar.className = "vbar";
+    bar.innerHTML = `
+      <div class="vbar-value">${fmt(val)}</div>
+      <div class="vbar-col" style="height:${h}px;background:${BAR_COLORS[name] || 'linear-gradient(180deg,#5f9cff,#3b7fe8)'}"></div>
+      <div class="vbar-label">${name}</div>
     `;
-    host.appendChild(col);
+    host.appendChild(bar);
   });
 }
 
-function renderMetricCard(metric, rows){
-  const val = metric.mode === "cost"
-    ? rows.reduce((a,b)=>a + Number(b.cost || 0), 0)
-    : rows.length;
+function renderChangeDonut(rows){
+  const changes = rows.filter(r => r.type === "طلبات التغيير");
+  const total = changes.length;
+  $("changeTotal").textContent = fmt(total);
+  const dist = grouped(changes);
+  const palette = {
+    "خدمات التكامل":"#1f77ff",
+    "بوابة خدماتي":"#15b6b0",
+    "اتصالات إدارية":"#9eb4cc",
+    "الموارد البشرية":"#f2b534",
+    "ERP":"#7a55f8"
+  };
+  let start = 0;
+  const parts = [];
+  dist.forEach(([name,val]) => {
+    const deg = total ? (val/total)*360 : 0;
+    parts.push(`${palette[name] || "#79a6ff"} ${start}deg ${start+deg}deg`);
+    start += deg;
+  });
+  if(start < 360) parts.push(`#d7e1ec ${start}deg 360deg`);
+  $("changeDonut").style.background = `conic-gradient(${parts.join(",")})`;
 
-  $("value-"+metric.key).textContent = fmt(val);
-  if(metric.keyCount) $(metric.keyCount).textContent = fmt(val);
-
-  const labelEl = $("label-"+metric.key);
-  const subnoteEl = $("subnote-"+metric.key);
-  const donutEl = $("donut-"+metric.key);
-
-  if(metric.mode === "cost"){
-    const totalDays = Number(metric.totalDays || 150);
-    const pct = totalDays > 0 ? Math.min((val / totalDays) * 100, 100) : 0;
-    if(labelEl) labelEl.textContent = "يوم مستنفذ";
-    if(subnoteEl) subnoteEl.textContent = `${fmt(pct)}% من ${fmt(totalDays)} يوم`;
-    if(donutEl){
-      const deg = (pct / 100) * 360;
-      donutEl.style.background = `conic-gradient(${metric.color} 0deg ${deg}deg, #e9edf5 ${deg}deg 360deg)`;
-    }
-  }else{
-    if(labelEl) labelEl.textContent = "إجمالي العدد";
-    if(subnoteEl) subnoteEl.textContent = "";
-    if(donutEl){
-      donutEl.style.background = `conic-gradient(${metric.color} 0deg 360deg)`;
-    }
-  }
-
-  renderVerticalBars(metric, rows);
+  const legend = $("changeLegend");
+  legend.innerHTML = dist.map(([name,val]) => `
+    <div class="legend-row">
+      <div class="legend-name"><span class="legend-swatch" style="background:${palette[name] || '#79a6ff'}"></span>${name}</div>
+      <div class="legend-pill">${fmt(val)}</div>
+    </div>
+  `).join("");
 }
 
-function renderList(targetId, entries, colors){
+function renderDays(rows){
+  const used = rows.filter(r => r.type === "طلبات التغيير").reduce((a,b)=>a + Number(b.cost || 0), 0);
+  const pct = Math.min((used / TOTAL_DAYS) * 100, 100);
+  const deg = (pct / 100) * 360;
+  const remain = Math.max(TOTAL_DAYS - used, 0);
+
+  $("daysUsed").textContent = fmt(used);
+  $("daysPct").textContent = `${fmt(pct)}%`;
+  $("daysRemain").textContent = fmt(remain);
+  $("daysBar").style.width = `${pct}%`;
+  $("daysDonut").style.background = `conic-gradient(var(--pink) 0deg ${deg}deg, #dde4ed ${deg}deg 360deg)`;
+}
+
+function renderSystemTiles(rows){
+  const changes = rows.filter(r => r.type === "طلبات التغيير");
+  const dist = grouped(changes);
+  const host = $("systemTiles");
+  host.innerHTML = "";
+
+  dist.forEach(([name,val], idx) => {
+    const style = SYS_STYLES.find(s => s.label === name) || SYS_STYLES[idx % SYS_STYLES.length];
+    const tile = document.createElement("div");
+    tile.className = "kpi-tile";
+    tile.innerHTML = `
+      <div class="meta">
+        <div class="num">${fmt(val)}</div>
+        <div class="label">${name}</div>
+      </div>
+      <div class="iconbox" style="background:${style.grad}; color:${style.color}">
+        <div class="kpi-icon"></div>
+      </div>
+    `;
+    host.appendChild(tile);
+  });
+}
+
+function renderRowsList(targetId, entries, colorA, colorB){
   const host = $(targetId);
   host.innerHTML = "";
   if(!entries.length){
-    host.innerHTML = `<div class="muted">لا توجد بيانات</div>`;
+    host.innerHTML = '<div class="muted">لا توجد بيانات</div>';
     return;
   }
-  const maxVal = Math.max(...entries.map(e=>Number(e[1]||0)), 1);
-  entries.forEach(([name,val], idx) => {
+  const max = Math.max(...entries.map(x=>Number(x[1]||0)), 1);
+  entries.forEach(([name,val]) => {
     const row = document.createElement("div");
     row.className = "list-row";
-    const colorA = colors?.[0] || "#4f7cff";
-    const colorB = colors?.[1] || "#25b0ff";
     row.innerHTML = `
-      <div class="list-name" title="${name}">${name}</div>
-      <div class="track"><div class="fill" style="width:${(Number(val)/maxVal)*100}%;background:linear-gradient(90deg,${colorA},${colorB})"></div></div>
-      <div class="num">${fmt(val)}</div>
+      <div class="list-name">${name}</div>
+      <div class="track"><div class="fill" style="width:${(Number(val)/max)*100}%; background:linear-gradient(90deg,${colorA},${colorB})"></div></div>
+      <div class="list-num">${fmt(val)}</div>
     `;
     host.appendChild(row);
   });
@@ -419,18 +740,32 @@ function renderTable(rows){
   });
   $("tableCount").textContent = `${fmt(filtered.length)} سجل`;
   $("tbody").innerHTML = filtered.map(r => {
-    const style = TYPE_BADGES[r.type] || {bg:"#eef2f7", color:"#475467"};
+    const st = TYPE_BADGES[r.type] || {bg:"#eef2f7", color:"#475467"};
     return `
       <tr>
         <td>${r.id ?? "—"}</td>
-        <td><span class="badge" style="background:${style.bg}; color:${style.color}">${r.type || "—"}</span></td>
+        <td><span class="badge" style="background:${st.bg}; color:${st.color}">${r.type || "—"}</span></td>
         <td>${r.title || "—"}</td>
         <td>${r.state || "—"}</td>
         <td>${r.tag || "—"}</td>
-        <td>${fmtDateTime(r.doneDate)}</td>
+        <td>${fmtDate(r.doneDate)}</td>
         <td>${r.cost ? fmt(r.cost) : '<span class="muted">—</span>'}</td>
       </tr>`;
   }).join("");
+}
+
+function update(){
+  CURRENT_ROWS = currentRows();
+  renderBarChart(CURRENT_ROWS.filter(r => r.type === "طلبات التغيير"));
+  renderChangeDonut(CURRENT_ROWS);
+  renderDays(CURRENT_ROWS);
+  renderSystemTiles(CURRENT_ROWS);
+
+  renderRowsList("activityRows", grouped(CURRENT_ROWS).slice(0,8), "#1f77ff", "#48b0ff");
+  const types = {};
+  CURRENT_ROWS.forEach(r => types[r.type] = (types[r.type] || 0) + 1);
+  renderRowsList("typeRows", Object.entries(types).sort((a,b)=>b[1]-a[1]), "#f05283", "#ffa0bd");
+  renderTable(CURRENT_ROWS);
 }
 
 async function loadData(showStatus=true){
@@ -440,42 +775,17 @@ async function loadData(showStatus=true){
     const payload = await res.json();
     if(!res.ok) throw new Error(payload.details || payload.error || "خطأ غير معروف");
     ALL_ROWS = payload.data || [];
-    $("lastUpdated").textContent = fmtDateTime(payload.updatedAt);
     fillFilters(ALL_ROWS);
+    $("lastUpdated").textContent = fmtDate(payload.updatedAt);
     update();
     $("dataStatus").textContent = `تم تحميل ${fmt(ALL_ROWS.length)} سجل بنجاح`;
   }catch(err){
     console.error(err);
-    $("dataStatus").textContent = "تعذر قراءة بيانات Excel من الخادم.";
+    $("dataStatus").textContent = "تعذر قراءة البيانات من الخادم";
   }
 }
 
-function fillFilters(rows){
-  const current = $("tagFilter").value;
-  const tags = [...new Set(rows.map(r => r.tag).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"ar"));
-  $("tagFilter").innerHTML = '<option value="">كل الأنظمة</option>' + tags.map(t => `<option value="${t}">${t}</option>`).join("");
-  if(tags.includes(current)) $("tagFilter").value = current;
-}
-
-function update(){
-  CURRENT_ROWS = currentRows();
-  METRICS.forEach(metric => {
-    const rows = metric.mode === "cost"
-      ? CURRENT_ROWS.filter(r => r.type === metric.type)
-      : CURRENT_ROWS.filter(r => r.type === metric.type);
-    renderMetricCard(metric, rows);
-  });
-
-  const supportCount = CURRENT_ROWS.filter(r => r.type === "دعم فني").length;
-  $("sumSupport").textContent = fmt(supportCount);
-
-  renderList("activityList", grouped(CURRENT_ROWS).slice(0,8), ["#203b60","#2f80ed"]);
-  const mix = {};
-  CURRENT_ROWS.forEach(r => mix[r.type] = (mix[r.type] || 0) + 1);
-  renderList("typeMixList", Object.entries(mix).sort((a,b)=>b[1]-a[1]), ["#7b61ff","#40c4ff"]);
-  renderTable(CURRENT_ROWS);
-}
-
+$("refreshBtn").addEventListener("click", ()=>loadData(true));
 $("resetBtn").addEventListener("click", ()=>{
   $("tagFilter").value = "";
   $("fromDate").value = "";
@@ -483,8 +793,6 @@ $("resetBtn").addEventListener("click", ()=>{
   $("searchBox").value = "";
   update();
 });
-
-$("refreshBtn").addEventListener("click", ()=>loadData(true));
 $("tagFilter").addEventListener("change", update);
 $("fromDate").addEventListener("change", update);
 $("toDate").addEventListener("change", update);
@@ -494,7 +802,7 @@ $("excelFile").addEventListener("change", async ()=>{
   const file = $("excelFile").files[0];
   if(!file) return;
   $("dataStatus").textContent = `جارٍ رفع ${file.name}...`;
-  const oldText = $("uploadBtn").textContent;
+  const old = $("uploadBtn").textContent;
   $("uploadBtn").textContent = "جارٍ الرفع...";
   $("uploadBtn").style.pointerEvents = "none";
   try{
@@ -511,7 +819,7 @@ $("excelFile").addEventListener("change", async ()=>{
     alert("تعذر تحديث البيانات:\n" + err.message);
   }finally{
     $("excelFile").value = "";
-    $("uploadBtn").textContent = oldText;
+    $("uploadBtn").textContent = old;
     $("uploadBtn").style.pointerEvents = "auto";
   }
 });
@@ -525,7 +833,6 @@ function connectLiveUpdates(){
   es.onerror = ()=>console.warn("Live updates reconnecting...");
 }
 
-buildMetricSections();
 loadData(true);
 connectLiveUpdates();
 setInterval(()=>loadData(false), 120000);
