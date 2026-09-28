@@ -3,518 +3,479 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>لوحة متابعة طلبات التغيير</title>
+<title>لوحة متابعة العمل التشغيلي</title>
 <style>
 :root{
   --bg:#f4f7fb;
   --surface:#ffffff;
-  --surface-soft:#f8fbff;
-  --line:#e4ebf4;
-  --text:#12233b;
-  --muted:#6f7f95;
-  --navy:#0f2740;
-  --navy-2:#163553;
-  --primary:#1f77ff;
-  --primary-2:#39a7ff;
-  --teal:#12b8b0;
-  --teal-2:#0e8f88;
-  --orange:#f4a62a;
-  --amber:#ffbf3c;
-  --graybar:#93a7c0;
-  --purple:#7a55f8;
-  --pink:#f05283;
-  --pink-2:#ff6c96;
-  --success:#1f9f73;
-  --shadow:0 12px 32px rgba(16,24,40,.08);
+  --surface-2:#f8fbff;
+  --line:#e5ebf3;
+  --text:#13233a;
+  --muted:#708197;
+  --shadow:0 10px 28px rgba(16,24,40,.08);
   --radius:22px;
+
+  --change:#159a68;
+  --change-soft:#e3f5ec;
+
+  --issue:#f04466;
+  --issue-soft:#fde7ec;
+
+  --meeting:#2489ff;
+  --meeting-soft:#e6f0ff;
+
+  --study:#7b4ef6;
+  --study-soft:#ece5ff;
+
+  --orange:#f59e0b;
+  --gray:#91a2b8;
+  --gold:#f5c044;
+  --purple:#8256ff;
+  --pink:#f05283;
+  --pink-2:#ff79a4;
+  --green:#1fa56f;
 }
 *{box-sizing:border-box}
 body{
   margin:0;
   font-family:Tahoma,"Segoe UI",Arial,sans-serif;
   background:
-    radial-gradient(circle at 0% 100%, rgba(31,119,255,.08), transparent 25%),
-    radial-gradient(circle at 100% 0%, rgba(57,167,255,.08), transparent 25%),
-    linear-gradient(180deg,#f7f9fd 0%, #eef4fb 100%);
+    radial-gradient(circle at 100% 0%, rgba(36,137,255,.08), transparent 20%),
+    radial-gradient(circle at 0% 100%, rgba(21,154,104,.08), transparent 22%),
+    linear-gradient(180deg,#f8fafd 0%, #eef4fb 100%);
   color:var(--text);
 }
 .layout{
   min-height:100vh;
-  display:grid;
-  grid-template-columns:170px 1fr;
+  display:flex;
+  flex-direction:row-reverse; /* sidebar on the right */
 }
 .sidebar{
-  background:linear-gradient(180deg,#0e2742 0%, #0d2240 65%, #0b1d36 100%);
+  width:180px;
+  background:linear-gradient(180deg,#0f2740 0%, #0d2440 100%);
   color:#fff;
-  padding:26px 16px;
-  box-shadow:4px 0 20px rgba(7,19,34,.15);
+  padding:24px 16px;
+  box-shadow:-4px 0 20px rgba(8,18,32,.12);
   position:sticky;
   top:0;
   height:100vh;
 }
-.brand{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  margin-bottom:26px;
+.side-title{
+  font-size:18px;
+  font-weight:800;
+  text-align:center;
+  margin-bottom:24px;
 }
-.brand-icon{
-  width:58px;height:58px;border-radius:18px;
-  background:linear-gradient(145deg,#2d8cff,#8ad2ff);
-  box-shadow:0 10px 25px rgba(45,140,255,.35), inset 0 1px 0 rgba(255,255,255,.35);
-  position:relative;
-}
-.brand-icon:before,.brand-icon:after{
-  content:"";
-  position:absolute;left:12px;right:12px;height:10px;border-radius:8px;
-  background:rgba(255,255,255,.9);
-  box-shadow:0 0 0 1px rgba(255,255,255,.15);
-}
-.brand-icon:before{top:14px;transform:skewY(-18deg)}
-.brand-icon:after{top:29px;transform:skewY(-18deg)}
 .nav{
   display:flex;
   flex-direction:column;
   gap:10px;
-  margin-top:18px;
 }
-.nav-item{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  color:#d7e5f5;
+.nav a{
+  color:#d6e4f6;
   text-decoration:none;
   padding:14px 14px;
   border-radius:16px;
-  font-size:14px;
+  display:flex;
+  align-items:center;
+  gap:10px;
   font-weight:700;
   border:1px solid rgba(255,255,255,.05);
 }
-.nav-item.active{
-  background:linear-gradient(90deg, rgba(40,137,255,.95), rgba(67,167,255,.65));
+.nav a.active{
+  background:linear-gradient(90deg,rgba(36,137,255,.92),rgba(95,175,255,.6));
   color:#fff;
-  box-shadow:0 10px 20px rgba(31,119,255,.25);
+  box-shadow:0 10px 20px rgba(36,137,255,.25);
 }
-.nav-item .ico{
-  width:22px;height:22px;border-radius:6px;position:relative;flex:0 0 auto;
+.dot{width:10px;height:10px;border-radius:50%;background:currentColor}
+.side-foot{
+  position:absolute;
+  bottom:18px;
+  right:16px;
+  left:16px;
+  color:#90a7c3;
+  font-size:11px;
+  text-align:center;
+  line-height:1.8;
 }
-.ico.home:before,.ico.list:before,.ico.chart:before,.ico.setting:before{
-  content:"";
-  position:absolute;inset:3px;border:2px solid currentColor;border-radius:3px;opacity:.95;
+.main{
+  flex:1;
+  padding:24px 22px 30px;
 }
-.ico.home:after{
-  content:"";position:absolute;left:3px;right:3px;top:-2px;height:12px;background:currentColor;
-  clip-path:polygon(50% 0,100% 55%,100% 75%,0 75%,0 55%);
+.header{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:16px;
+  flex-wrap:wrap;
+  margin-bottom:16px;
 }
-.ico.list:after{
-  content:"";position:absolute;left:6px;right:6px;top:7px;height:2px;background:currentColor;
-  box-shadow:0 5px 0 currentColor,0 10px 0 currentColor;
+.header h1{
+  margin:0 0 8px;
+  font-size:30px;
+  color:#102a4b;
 }
-.ico.chart:after{
-  content:"";position:absolute;bottom:3px;left:4px;width:3px;height:8px;background:currentColor;
-  box-shadow:6px -5px 0 currentColor,12px -1px 0 currentColor;
+.header p{
+  margin:0;
+  font-size:14px;
+  color:var(--muted);
+  line-height:1.8;
 }
-.ico.setting:after{
-  content:"⚙";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:18px
-}
-.sidebar-foot{
-  position:absolute;bottom:18px;right:16px;left:16px;color:#8ea9c6;font-size:11px;line-height:1.8;text-align:center;
-}
-.main{padding:26px 24px 32px}
-.hero{
-  display:flex;align-items:flex-start;justify-content:space-between;gap:18px;flex-wrap:wrap;
-  margin-bottom:18px;
-}
-.hero-right{
-  display:flex;align-items:flex-start;gap:14px;flex:1;
-}
-.hero-mark{
-  width:56px;height:56px;border-radius:18px;
-  background:linear-gradient(145deg,#1f77ff,#95d4ff);
-  box-shadow:0 10px 22px rgba(31,119,255,.22);
-  position:relative;flex:0 0 auto;
-}
-.hero-mark:before,.hero-mark:after{
-  content:"";position:absolute;left:11px;right:11px;height:10px;border-radius:8px;background:#fff;
-  transform:skewY(-18deg)
-}
-.hero-mark:before{top:14px;box-shadow:0 14px 0 #fff}
-.hero-mark:after{display:none}
-.hero-title{font-size:32px;font-weight:800;color:#0f2a4d;margin:0 0 6px}
-.hero-sub{font-size:14px;color:var(--muted);margin:0;line-height:1.8}
-.toolbar{
-  background:linear-gradient(180deg,#ffffff 0%, #f6faff 100%);
+.topbar{
+  background:linear-gradient(180deg,#fff 0%, #f8fbff 100%);
   border:1px solid var(--line);
-  border-radius:22px;
+  border-radius:20px;
   box-shadow:var(--shadow);
   padding:14px;
   display:grid;
-  grid-template-columns:160px repeat(3, 1fr) 160px;
+  grid-template-columns:220px 150px 150px 150px 1fr;
   gap:12px;
   align-items:center;
-  margin-bottom:18px;
+  margin-bottom:16px;
 }
-.control, .tool-btn, .upload-btn{
+.control, .btn{
   width:100%;
-  background:#fff;
   border:1px solid var(--line);
+  background:#fff;
   border-radius:14px;
-  padding:13px 14px;
+  padding:12px 14px;
   font:inherit;
-  color:#183150;
+  color:#173150;
   font-size:13px;
   outline:none;
 }
-.tool-btn,.upload-btn{
+.btn{
   cursor:pointer;
   font-weight:800;
 }
-.tool-btn.primary{
-  background:linear-gradient(180deg,#2284ff,#1a6de3);
+.btn.primary{
+  background:linear-gradient(180deg,#2180ff,#1a6ddf);
   color:#fff;
-  border-color:#227bf0;
-  box-shadow:0 10px 20px rgba(31,119,255,.22);
+  border-color:#1e76ec;
+  box-shadow:0 10px 18px rgba(33,128,255,.22);
 }
-.upload-btn{
-  background:linear-gradient(180deg,#f9fbff,#eef6ff);
+.btn.soft{
+  background:linear-gradient(180deg,#ffffff,#f4f9ff);
 }
-.toolbar select,.toolbar input{appearance:none}
+.actions{
+  display:flex;
+  gap:10px;
+}
 .status-strip{
-  display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;
-  margin-bottom:18px;
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  align-items:center;
+  flex-wrap:wrap;
+  margin-bottom:16px;
 }
-.status-badge{
-  display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:999px;
-  background:#fff;border:1px solid var(--line);box-shadow:var(--shadow);font-size:12px;color:#39506c;
+.status{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:10px 14px;
+  border-radius:999px;
+  background:#fff;
+  border:1px solid var(--line);
+  box-shadow:var(--shadow);
+  font-size:12px;
+  color:#40556f;
 }
-.status-dot{width:9px;height:9px;border-radius:50%;background:#20b57a}
-.dashboard-grid{
-  display:grid;
-  grid-template-columns:2.1fr 1fr 1fr;
+.status .ok{width:9px;height:9px;border-radius:50%;background:#1db67a}
+.section-list{
+  display:flex;
+  flex-direction:column;
   gap:16px;
+}
+.section{
+  display:grid;
+  grid-template-columns:360px 1fr 430px; /* RTL order -> right to left */
+  gap:14px;
   align-items:stretch;
 }
 .card{
   background:linear-gradient(180deg,#fff 0%, #fbfdff 100%);
   border:1px solid var(--line);
-  border-radius:24px;
+  border-radius:22px;
   box-shadow:var(--shadow);
   overflow:hidden;
 }
-.card.pad{padding:18px 18px 16px}
-.card-head{
-  display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px;
-}
+.pad{padding:16px}
 .card-title{
-  font-size:17px;font-weight:800;color:#102a4b;
+  font-size:15px;
+  font-weight:800;
+  color:#122c4a;
 }
-.card-sub{font-size:12px;color:var(--muted)}
-.card-icon{
-  width:42px;height:42px;border-radius:14px;display:flex;align-items:center;justify-content:center;
-  background:linear-gradient(180deg,#f6faff,#ecf3ff);color:#1f77ff;font-weight:900;font-size:20px;border:1px solid #dde8f7;
+.card-sub{
+  font-size:12px;
+  color:var(--muted);
 }
-.chart-shell{
-  min-height:400px;display:flex;flex-direction:column;
+.summary{
+  display:flex;
+  flex-direction:column;
+  height:100%;
 }
-.chart-axis-label{font-size:12px;color:#68809e;margin-bottom:6px}
-.chart-area{
-  position:relative;
-  flex:1;
-  min-height:300px;
-  border-right:2px solid #d9e5f3;
-  border-bottom:2px solid #d9e5f3;
-  margin:10px 16px 8px 10px;
-  padding:0 12px 0 10px;
-  display:flex;align-items:flex-end;justify-content:space-around;gap:14px;
-  background:
-    linear-gradient(to top, transparent 24%, rgba(76,118,176,.12) 24%, rgba(76,118,176,.12) 25%, transparent 25%, transparent 49%, rgba(76,118,176,.12) 49%, rgba(76,118,176,.12) 50%, transparent 50%, transparent 74%, rgba(76,118,176,.12) 74%, rgba(76,118,176,.12) 75%, transparent 75%);
+.summary-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:12px;
 }
-.y-scale{
-  display:flex;justify-content:space-between;color:#7387a0;font-size:12px;padding:0 2px;margin-right:10px
+.summary-title{
+  display:flex;
+  align-items:center;
+  gap:12px;
 }
-.vbar{
-  flex:1;min-width:70px;max-width:118px;
-  display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:10px;
+.summary-icon{
+  width:48px;height:48px;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;font-weight:900;
 }
-.vbar-value{font-size:12px;font-weight:800;color:#1d3354}
-.vbar-col{
-  width:100%;
-  max-width:92px;
-  min-height:6px;
-  border-radius:12px 12px 3px 3px;
-  position:relative;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.35), 0 10px 18px rgba(30,60,114,.08);
+.summary h3{
+  margin:0;
+  font-size:18px;
 }
-.vbar-label{
-  font-size:12px;text-align:center;line-height:1.5;color:#203654;word-break:break-word
+.summary small{
+  color:var(--muted);
+  font-size:12px;
 }
-.donut-panel{
-  display:flex;flex-direction:column;height:100%;
-}
-.donut-wrap{
-  display:flex;justify-content:center;align-items:center;min-height:246px;
+.summary-body{
+  display:grid;
+  grid-template-columns:150px 1fr;
+  gap:10px;
+  align-items:center;
+  margin:4px 0 10px;
 }
 .donut{
-  width:216px;height:216px;border-radius:50%;
+  width:140px;height:140px;border-radius:50%;
   position:relative;
-  background:conic-gradient(var(--c1) 0deg 115deg, var(--c2) 115deg 225deg, var(--c3) 225deg 300deg, #d7e1ec 300deg 360deg);
-  box-shadow:inset 0 4px 12px rgba(255,255,255,.42), 0 16px 28px rgba(16,24,40,.08);
+  background:conic-gradient(var(--c1) 0deg 110deg,var(--c2) 110deg 220deg,var(--c3) 220deg 290deg,var(--c4) 290deg 330deg,var(--c5) 330deg 360deg);
+  box-shadow:inset 0 4px 12px rgba(255,255,255,.38),0 12px 24px rgba(16,24,40,.08);
 }
-.donut::after{
-  content:"";position:absolute;inset:30px;border-radius:50%;
-  background:linear-gradient(180deg,#ffffff,#f7fbff);
+.donut:after{
+  content:"";
+  position:absolute;
+  inset:22px;
+  border-radius:50%;
+  background:#fff;
   box-shadow:inset 0 0 0 1px #edf2f7;
 }
 .donut-content{
   position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  z-index:2;text-align:center;
+  text-align:center;z-index:2;
 }
-.donut-number{font-size:62px;font-weight:900;color:#112b4d;line-height:1}
-.donut-text{font-size:13px;color:#5d7390;margin-top:4px}
-.legend-list{display:flex;flex-direction:column;gap:10px;margin-top:4px}
+.donut-num{font-size:24px;font-weight:900;color:#132c4d;line-height:1}
+.donut-text{font-size:12px;color:#607792;margin-top:5px}
+.legend{
+  display:flex;flex-direction:column;gap:10px;
+}
 .legend-row{
-  display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:center;
-  font-size:12px;color:#223958
+  display:grid;
+  grid-template-columns:46px 1fr auto;
+  gap:10px;
+  align-items:center;
+  font-size:12px;
 }
-.legend-swatch{width:12px;height:12px;border-radius:50%;display:inline-block;margin-left:8px}
-.legend-name{display:flex;align-items:center}
-.legend-pill{
-  min-width:44px;text-align:center;padding:5px 10px;border-radius:999px;background:#f3f7fb;border:1px solid #e5edf5;font-weight:800;color:#203654
+.legend-dot{width:10px;height:10px;border-radius:50%}
+.legend-name{display:flex;align-items:center;gap:8px;color:#243b59}
+.legend-val{font-weight:900;color:#162f50}
+.summary-footer{
+  margin-top:auto;
+  display:flex;justify-content:space-between;align-items:center;
 }
-.progress-shell{
+.link-btn{
+  display:inline-flex;align-items:center;gap:6px;
+  border:1px solid var(--line);
+  background:#f8fbff;
+  color:#2b4e75;
+  border-radius:12px;
+  padding:10px 12px;
+  font-size:12px;
+  font-weight:700;
+  text-decoration:none;
+}
+.chart-card{
   display:flex;flex-direction:column;height:100%;
 }
-.progress-wrap{
-  display:flex;justify-content:center;align-items:center;min-height:246px;
+.chart-head{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;
 }
-.progress-donut{
-  width:216px;height:216px;border-radius:50%;
-  position:relative;
-  background:conic-gradient(var(--pink) 0deg 130deg, #dde4ed 130deg 360deg);
-  box-shadow:inset 0 4px 12px rgba(255,255,255,.45), 0 16px 28px rgba(16,24,40,.08);
+.chart-area{
+  flex:1;
+  min-height:220px;
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-around;
+  gap:12px;
+  border-right:2px solid #dbe5f0;
+  border-bottom:2px solid #dbe5f0;
+  padding:0 12px 0 8px;
+  margin:12px 10px 4px 8px;
+  background:
+    linear-gradient(to top, transparent 24%, rgba(95,122,164,.10) 24%, rgba(95,122,164,.10) 25%, transparent 25%, transparent 49%, rgba(95,122,164,.10) 49%, rgba(95,122,164,.10) 50%, transparent 50%, transparent 74%, rgba(95,122,164,.10) 74%, rgba(95,122,164,.10) 75%, transparent 75%);
 }
-.progress-donut::after{
-  content:"";position:absolute;inset:30px;border-radius:50%;
-  background:linear-gradient(180deg,#ffffff,#fcfdff);
-  box-shadow:inset 0 0 0 1px #edf2f7;
+.y-scale{
+  display:flex;justify-content:space-between;color:#7a8ea7;font-size:11px;padding:0 2px
 }
-.progress-content{
-  position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;z-index:2
+.vbar{
+  flex:1;
+  max-width:96px;
+  min-width:56px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:flex-end;
+  gap:8px;
 }
-.progress-number{font-size:60px;font-weight:900;color:#112b4d;line-height:1}
-.progress-text{font-size:13px;color:#5d7390;margin-top:5px}
-.progress-bar{
-  height:18px;border-radius:999px;background:#e7edf5;overflow:hidden;border:1px solid #dde5ef;margin:8px 12px 12px
+.vbar-value{font-size:12px;font-weight:800;color:#1b3455}
+.vbar-col{
+  width:100%;
+  min-height:6px;
+  border-radius:10px 10px 3px 3px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.28),0 10px 16px rgba(30,60,114,.08);
 }
-.progress-fill{
-  height:100%;border-radius:999px;background:linear-gradient(90deg,#ea4e80,#ff6997);width:36%;
+.vbar-label{
+  font-size:12px;color:#223958;text-align:center;line-height:1.4;word-break:break-word
 }
-.progress-stats{
-  display:flex;justify-content:space-between;align-items:flex-end;gap:14px;padding:0 12px 8px
+.dist{
+  display:flex;flex-direction:column;height:100%;
 }
-.progress-stat b{display:block;font-size:18px;color:#102a4b}
-.progress-stat span{font-size:12px;color:#637a95}
-.kpi-row{
+.dist-grid{
   display:grid;
   grid-template-columns:repeat(5,1fr);
-  gap:14px;
-  margin-top:16px;
+  gap:10px;
+  margin-top:10px;
 }
-.kpi-tile{
-  background:linear-gradient(180deg,#ffffff 0%, #fbfdff 100%);
+.dist-item{
   border:1px solid var(--line);
-  border-radius:20px;
-  box-shadow:var(--shadow);
-  padding:18px;
-  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  border-radius:16px;
+  padding:10px 8px;
+  text-align:center;
+  box-shadow:0 4px 10px rgba(16,24,40,.04);
 }
-.kpi-tile .meta{
-  display:flex;flex-direction:column;gap:8px;
+.dist-item .num{
+  font-size:16px;font-weight:900;margin-bottom:4px;
 }
-.kpi-tile .num{font-size:24px;font-weight:900;color:#102a4b}
-.kpi-tile .label{font-size:12px;color:#26405f;font-weight:700}
-.kpi-tile .iconbox{
-  width:88px;height:88px;border-radius:18px;display:flex;align-items:center;justify-content:center;
-  font-size:34px;font-weight:900;color:#fff;
+.dist-item .label{
+  font-size:12px;color:#324966;line-height:1.4;
 }
-.i-blue{background:linear-gradient(145deg,#e4f1ff,#c9e3ff);color:#2a81ff}
-.i-teal{background:linear-gradient(145deg,#e8fbfa,#d0f6f3);color:#10a79f}
-.i-gray{background:linear-gradient(145deg,#f1f4f8,#e3e9f0);color:#70839c}
-.i-gold{background:linear-gradient(145deg,#fff6df,#ffefc6);color:#f0a619}
-.i-purple{background:linear-gradient(145deg,#f0ebff,#e2d8ff);color:#7a55f8}
-.kpi-icon{
-  width:34px;height:34px;border-radius:12px;background:currentColor;opacity:.18;position:relative;
+.days-card{
+  border:1px solid #dff0e8;
+  background:linear-gradient(180deg,#ffffff 0%, #f5fcf8 100%);
+  border-radius:16px;
+  padding:12px;
+  margin-bottom:10px;
 }
-.kpi-icon:before{
-  content:"";position:absolute;inset:8px;border-radius:8px;background:currentColor;opacity:.75
+.days-card .top{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
 }
-.extras{
-  display:grid;grid-template-columns:1.2fr .8fr;gap:16px;margin-top:16px
+.days-mini{
+  width:86px;height:86px;border-radius:50%;
+  position:relative;
+  background:conic-gradient(var(--change) 0deg 130deg,#dce6df 130deg 360deg);
+  flex:0 0 auto;
 }
-.list-card .rows{display:flex;flex-direction:column;gap:12px}
-.list-row{display:grid;grid-template-columns:170px 1fr 52px;gap:10px;align-items:center}
-.list-name{font-size:13px;color:#203654;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.track{height:11px;background:#ebf0f6;border-radius:999px;overflow:hidden}
-.fill{height:100%;border-radius:999px;background:linear-gradient(90deg,#287bff,#49b0ff)}
-.list-num{font-size:12px;font-weight:800;color:#223958;text-align:left}
+.days-mini:after{
+  content:"";position:absolute;inset:14px;border-radius:50%;background:#fff;box-shadow:inset 0 0 0 1px #edf2f7
+}
+.days-mini b{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:2;
+  font-size:14px;color:#12304e
+}
+.days-data{
+  flex:1;
+}
+.days-data .big{
+  font-size:24px;font-weight:900;color:#132d4e
+}
+.days-data .sub{
+  color:#627994;font-size:12px
+}
+.days-progress{
+  height:12px;border-radius:999px;background:#e6edf2;border:1px solid #dbe5ec;overflow:hidden;margin-top:10px
+}
+.days-progress .fill{height:100%;background:linear-gradient(90deg,#16a56e,#5fcca1);width:36%}
+.days-stats{display:flex;justify-content:space-between;gap:12px;margin-top:8px}
+.days-stats b{display:block;font-size:18px;color:#143051}
+.days-stats span{font-size:12px;color:#627994}
 .table-card{margin-top:16px}
 .table-tools{
   display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:12px
 }
 .search{
-  width:320px;max-width:100%;
-  border:1px solid var(--line);border-radius:14px;padding:12px 14px;background:#fff;font:inherit;outline:none
+  width:340px;max-width:100%;
+  border:1px solid var(--line);background:#fff;border-radius:14px;padding:12px 14px;font:inherit;outline:none
 }
 .table-wrap{overflow:auto;border:1px solid var(--line);border-radius:18px;background:#fff}
 table{width:100%;border-collapse:collapse;font-size:13px}
-thead th{
-  position:sticky;top:0;background:#f8fbff;color:#38506e;text-align:right;
-  padding:13px 14px;border-bottom:1px solid var(--line)
-}
-tbody td{padding:13px 14px;border-bottom:1px solid #eef2f6;vertical-align:top}
+thead th{position:sticky;top:0;background:#f8fbff;color:#425770;text-align:right;padding:12px 14px;border-bottom:1px solid var(--line)}
+tbody td{padding:12px 14px;border-bottom:1px solid #eef2f6;vertical-align:top}
 tbody tr:hover{background:#fbfdff}
 .badge{
-  display:inline-flex;align-items:center;gap:7px;border-radius:999px;padding:6px 11px;
-  font-size:11px;font-weight:800
+  display:inline-flex;align-items:center;gap:7px;border-radius:999px;padding:6px 11px;font-size:11px;font-weight:800
 }
-.badge:before{
-  content:"";width:8px;height:8px;border-radius:50%;background:currentColor
-}
-.muted{color:#92a1b1}
+.badge:before{content:"";width:8px;height:8px;border-radius:50%;background:currentColor}
+.muted{color:#97a5b4}
 .hidden{display:none}
-@media (max-width:1280px){
-  .dashboard-grid{grid-template-columns:1fr 1fr}
-  .toolbar{grid-template-columns:repeat(2,1fr)}
-  .kpi-row{grid-template-columns:repeat(3,1fr)}
+@media (max-width:1320px){
+  .section{grid-template-columns:1fr}
+  .topbar{grid-template-columns:1fr 1fr}
 }
 @media (max-width:980px){
-  .layout{grid-template-columns:1fr}
+  .layout{display:block}
   .sidebar{display:none}
-  .dashboard-grid{grid-template-columns:1fr}
-  .kpi-row,.extras{grid-template-columns:1fr 1fr}
 }
 @media (max-width:720px){
   .main{padding:14px}
-  .hero-title{font-size:24px}
-  .kpi-row,.extras{grid-template-columns:1fr}
-  .list-row{grid-template-columns:130px 1fr 40px}
-  .toolbar{grid-template-columns:1fr}
+  .topbar{grid-template-columns:1fr}
+  .dist-grid{grid-template-columns:repeat(2,1fr)}
+  .summary-body{grid-template-columns:1fr}
 }
 </style>
 </head>
 <body>
 <div class="layout">
   <aside class="sidebar">
-    <div class="brand"><div class="brand-icon"></div></div>
+    <div class="side-title">Dashboard</div>
     <nav class="nav">
-      <a href="#top" class="nav-item active"><span class="ico home"></span><span>لوحة المتابعة</span></a>
-      <a href="#details" class="nav-item"><span class="ico list"></span><span>طلبات التغيير</span></a>
-      <a href="#extra" class="nav-item"><span class="ico chart"></span><span>التقارير</span></a>
-      <a href="#settings" class="nav-item"><span class="ico setting"></span><span>الإعدادات</span></a>
+      <a href="#top" class="active"><span class="dot"></span><span>نظرة عامة</span></a>
+      <a href="#sec-changes"><span class="dot"></span><span>طلبات التغيير</span></a>
+      <a href="#sec-issues"><span class="dot"></span><span>المشاكل</span></a>
+      <a href="#sec-meetings"><span class="dot"></span><span>الاجتماعات</span></a>
+      <a href="#sec-studies"><span class="dot"></span><span>الدراسات الفنية</span></a>
+      <a href="#details"><span class="dot"></span><span>التفاصيل</span></a>
     </nav>
-    <div class="sidebar-foot">BOG Dashboard<br>نسخة رسمية مناسبة للعروض على الجهات الرسمية</div>
+    <div class="side-foot">نسخة RTL كاملة<br>مع تصدير HTML ورفع Excel</div>
   </aside>
 
   <main class="main" id="top">
-    <section class="hero">
-      <div class="hero-right">
-        <div class="hero-mark"></div>
-        <div>
-          <h1 class="hero-title">لوحة متابعة طلبات التغيير</h1>
-          <p class="hero-sub">نظرة شاملة على طلبات التغيير عبر الأنظمة المختلفة، مع متابعة الاستهلاك من رصيد أيام التغيير وإمكانية تحديث البيانات مباشرة من ملف Excel.</p>
-        </div>
+    <section class="header">
+      <div>
+        <h1>لوحة متابعة العمل التشغيلي</h1>
+        <p>عرض تشغيلي لطلبات التغيير، المشاكل، الاجتماعات، والدراسات الفنية مع إمكانية تحديث البيانات مباشرة من ملف Excel وتصدير نسخة HTML من لوحة المتابعة.</p>
       </div>
     </section>
 
-    <section class="toolbar">
-      <button id="refreshBtn" class="tool-btn primary" type="button">تحديث</button>
-      <select id="tagFilter" class="control"><option value="">جميع الأنظمة</option></select>
-      <input id="toDate" class="control" type="date" title="إلى تاريخ">
-      <input id="fromDate" class="control" type="date" title="من تاريخ">
-      <div style="display:flex;gap:12px">
-        <button id="resetBtn" class="tool-btn" type="button">إعادة ضبط</button>
+    <section class="topbar">
+      <select id="tagFilter" class="control">
+        <option value="">جميع الأنظمة</option>
+      </select>
+      <button id="resetBtn" class="btn soft" type="button">إعادة ضبط</button>
+      <button id="refreshBtn" class="btn primary" type="button">تحديث</button>
+      <button id="exportBtn" class="btn soft" type="button">تصدير HTML</button>
+      <div class="actions">
         <input id="excelFile" type="file" accept=".xlsx" class="hidden">
-        <label for="excelFile" id="uploadBtn" class="upload-btn">رفع Excel</label>
+        <label for="excelFile" id="uploadBtn" class="btn soft" style="display:flex;align-items:center;justify-content:center">رفع Excel</label>
       </div>
     </section>
 
     <section class="status-strip">
-      <div class="status-badge"><span class="status-dot"></span><span id="dataStatus">جارٍ تحميل البيانات...</span></div>
-      <div class="status-badge"><span>آخر تحديث:</span><b id="lastUpdated">—</b></div>
+      <div class="status"><span class="ok"></span><span id="dataStatus">جارٍ تحميل البيانات...</span></div>
+      <div class="status"><span>آخر تحديث:</span><b id="lastUpdated">—</b></div>
     </section>
 
-    <section class="dashboard-grid">
-      <div class="card pad">
-        <div class="card-head">
-          <div class="card-title">عدد طلبات التغيير (مقسمة بالأنظمة)</div>
-          <div class="card-icon">▮</div>
-        </div>
-        <div class="chart-shell">
-          <div class="chart-axis-label">عدد الطلبات</div>
-          <div class="y-scale" id="barScale"></div>
-          <div class="chart-area" id="barChart"></div>
-        </div>
-      </div>
-
-      <div class="card pad">
-        <div class="card-head">
-          <div class="card-title">عدد طلبات التغيير</div>
-          <div class="card-icon">◈</div>
-        </div>
-        <div class="donut-panel">
-          <div class="donut-wrap">
-            <div class="donut" id="changeDonut" style="--c1:#1f77ff;--c2:#39c2ff;--c3:#18bf9d">
-              <div class="donut-content">
-                <div class="donut-number" id="changeTotal">0</div>
-                <div class="donut-text">إجمالي العدد</div>
-              </div>
-            </div>
-          </div>
-          <div class="legend-list" id="changeLegend"></div>
-        </div>
-      </div>
-
-      <div class="card pad" style="background:linear-gradient(180deg,#fff 0%, #fff6f9 100%)">
-        <div class="card-head">
-          <div class="card-title">عدد أيام التغيير المستنفذة</div>
-          <div class="card-icon" style="color:#f05283">◔</div>
-        </div>
-        <div class="progress-shell">
-          <div class="progress-wrap">
-            <div class="progress-donut" id="daysDonut">
-              <div class="progress-content">
-                <div class="progress-number" id="daysUsed">0</div>
-                <div class="progress-text">من 150 يوم</div>
-              </div>
-            </div>
-          </div>
-          <div class="progress-bar"><div class="progress-fill" id="daysBar"></div></div>
-          <div class="progress-stats">
-            <div class="progress-stat"><b id="daysPct">0%</b><span>نسبة الاستخدام</span></div>
-            <div class="progress-stat" style="text-align:left"><b id="daysRemain">0</b><span>يوماً متبقية</span></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="kpi-row" id="systemTiles"></section>
-
-    <section class="extras" id="extra">
-      <div class="card pad list-card">
-        <div class="card-head">
-          <div class="card-title">أكثر الأنظمة نشاطًا</div>
-          <div class="card-sub">جميع أنواع الأعمال</div>
-        </div>
-        <div class="rows" id="activityRows"></div>
-      </div>
-      <div class="card pad list-card">
-        <div class="card-head">
-          <div class="card-title">توزيع أنواع الأعمال</div>
-          <div class="card-sub">جميع السجلات الحالية</div>
-        </div>
-        <div class="rows" id="typeRows"></div>
-      </div>
-    </section>
+    <section class="section-list" id="sectionsHost"></section>
 
     <section class="card pad table-card" id="details">
       <div class="table-tools">
@@ -547,26 +508,76 @@ tbody tr:hover{background:#fbfdff}
 <script>
 const $ = id => document.getElementById(id);
 const TOTAL_DAYS = 150;
-const TYPE_BADGES = {
-  "طلبات التغيير": {bg:"#e5f0ff", color:"#1f77ff"},
-  "مشكلة": {bg:"#fde8ec", color:"#e24d72"},
-  "اجتماع": {bg:"#e8f8ff", color:"#1fa4cf"},
-  "دراسة فنية": {bg:"#fff4db", color:"#e49d1a"},
-  "دعم فني": {bg:"#ece8ff", color:"#7252f4"}
-};
-const SYS_STYLES = [
-  {grad:"linear-gradient(145deg,#e6f0ff,#cfe4ff)", color:"#2a81ff", label:"خدمات التكامل"},
-  {grad:"linear-gradient(145deg,#e8fbfa,#d0f5f3)", color:"#10a59d", label:"بوابة خدماتي"},
-  {grad:"linear-gradient(145deg,#f1f4f8,#e2e9f0)", color:"#6d819b", label:"اتصالات إدارية"},
-  {grad:"linear-gradient(145deg,#fff5df,#ffecc5)", color:"#eba11a", label:"الموارد البشرية"},
-  {grad:"linear-gradient(145deg,#f0ebff,#e2d8ff)", color:"#7a55f8", label:"ERP"},
+
+const SECTION_CONFIG = [
+  {
+    key:"changes",
+    anchor:"sec-changes",
+    title:"طلبات التغيير",
+    en:"Change Requests",
+    type:"طلبات التغيير",
+    color:"#159a68",
+    icon:"✎",
+    distTitle:"التوزيع حسب الأنظمة",
+    showDays:true
+  },
+  {
+    key:"issues",
+    anchor:"sec-issues",
+    title:"المشاكل",
+    en:"Incidents",
+    type:"مشكلة",
+    color:"#f04466",
+    icon:"⚠",
+    distTitle:"التوزيع حسب الأنظمة",
+    showDays:false
+  },
+  {
+    key:"meetings",
+    anchor:"sec-meetings",
+    title:"الاجتماعات",
+    en:"Meetings",
+    type:"اجتماع",
+    color:"#2489ff",
+    icon:"👥",
+    distTitle:"التوزيع حسب الأنظمة",
+    showDays:false
+  },
+  {
+    key:"studies",
+    anchor:"sec-studies",
+    title:"الدراسات الفنية",
+    en:"Technical Studies",
+    type:"دراسة فنية",
+    color:"#7b4ef6",
+    icon:"💡",
+    distTitle:"التوزيع حسب الأنظمة",
+    showDays:false
+  }
 ];
-const BAR_COLORS = {
-  "خدمات التكامل":"linear-gradient(180deg,#2f8cff,#1569db)",
-  "بوابة خدماتي":"linear-gradient(180deg,#21c1c6,#12979a)",
-  "اتصالات إدارية":"linear-gradient(180deg,#9db4cc,#6f88a3)",
-  "الموارد البشرية":"linear-gradient(180deg,#ffc640,#efa31c)",
-  "ERP":"linear-gradient(180deg,#8d67ff,#6b47ea)"
+
+const SYSTEM_COLORS = {
+  "خدمات التكامل":"#2489ff",
+  "بوابة خدماتي":"#ff981f",
+  "اتصالات إدارية":"#a0acbd",
+  "الموارد البشرية":"#f5c044",
+  "ERP":"#8256ff"
+};
+
+const TILE_BACKGROUNDS = {
+  "خدمات التكامل":"#e8f1ff",
+  "بوابة خدماتي":"#fff0e2",
+  "اتصالات إدارية":"#edf2f7",
+  "الموارد البشرية":"#fff6df",
+  "ERP":"#f1ebff"
+};
+
+const TYPE_BADGES = {
+  "طلبات التغيير": {bg:"#e3f5ec", color:"#159a68"},
+  "مشكلة": {bg:"#fde7ec", color:"#f04466"},
+  "اجتماع": {bg:"#e6f0ff", color:"#2489ff"},
+  "دراسة فنية": {bg:"#ece5ff", color:"#7b4ef6"},
+  "دعم فني": {bg:"#eef2f7", color:"#5a6b80"}
 };
 
 let ALL_ROWS = [];
@@ -580,6 +591,81 @@ const fmtDate = v => {
   return d.toLocaleDateString("ar-SA",{year:"numeric",month:"2-digit",day:"2-digit"});
 };
 
+function buildSections(){
+  const host = $("sectionsHost");
+  host.innerHTML = "";
+  SECTION_CONFIG.forEach(sec => {
+    const section = document.createElement("section");
+    section.className = "section";
+    section.id = sec.anchor;
+    section.innerHTML = `
+      <div class="card pad summary">
+        <div class="summary-head">
+          <div class="summary-title">
+            <div class="summary-icon" style="background:${hexToRgba(sec.color,.12)}; color:${sec.color}">${sec.icon}</div>
+            <div>
+              <h3>${sec.title}</h3>
+              <small>${sec.en}</small>
+            </div>
+          </div>
+        </div>
+        <div class="summary-body">
+          <div class="donut" id="donut-${sec.key}" style="--c1:${sec.color};--c2:${hexToRgba(sec.color,.85)};--c3:${hexToRgba(sec.color,.7)};--c4:${hexToRgba(sec.color,.55)};--c5:${hexToRgba(sec.color,.35)}">
+            <div class="donut-content">
+              <div class="donut-num" id="total-${sec.key}">0</div>
+              <div class="donut-text">إجمالي العدد</div>
+            </div>
+          </div>
+          <div class="legend" id="legend-${sec.key}"></div>
+        </div>
+        <div class="summary-footer">
+          <a class="link-btn" href="#details">عرض التفاصيل</a>
+        </div>
+      </div>
+
+      <div class="card pad chart-card">
+        <div class="chart-head">
+          <div class="card-title">عدد ${sec.title} (مقسمة بالأنظمة)</div>
+          <div class="card-sub">حسب الحقول الموجودة في Tags</div>
+        </div>
+        <div class="y-scale" id="scale-${sec.key}"></div>
+        <div class="chart-area" id="bars-${sec.key}"></div>
+      </div>
+
+      <div class="card pad dist">
+        <div class="card-title">${sec.distTitle}</div>
+        ${sec.showDays ? `
+          <div class="days-card">
+            <div class="top">
+              <div class="days-mini" id="daysDonut"><b id="daysPct">0%</b></div>
+              <div class="days-data">
+                <div class="big"><span id="daysUsed">0</span> من 150 يوم</div>
+                <div class="sub"><span id="daysRemain">0</span> يوم متبقي</div>
+              </div>
+            </div>
+            <div class="days-progress"><div class="fill" id="daysFill"></div></div>
+            <div class="days-stats">
+              <div><b id="daysUsed2">0</b><span>يوم مستنفذ</span></div>
+              <div style="text-align:left"><b>150</b><span>إجمالي الأيام</span></div>
+            </div>
+          </div>
+        ` : ``}
+        <div class="dist-grid" id="dist-${sec.key}"></div>
+      </div>
+    `;
+    host.appendChild(section);
+  });
+}
+
+function hexToRgba(hex, alpha){
+  const clean = hex.replace("#","");
+  const bigint = parseInt(clean,16);
+  const r = (bigint >> 16) & 255;
+  const g = (bigint >> 8) & 255;
+  const b = bigint & 255;
+  return `rgba(${r},${g},${b},${alpha})`;
+}
+
 function grouped(rows, mode="count"){
   const obj = {};
   rows.forEach(r => {
@@ -590,146 +676,133 @@ function grouped(rows, mode="count"){
   return Object.entries(obj).sort((a,b)=>b[1]-a[1]);
 }
 
-function fillFilters(rows){
-  const selected = $("tagFilter").value;
+function fillSystemFilter(rows){
+  const current = $("tagFilter").value;
   const tags = [...new Set(rows.map(r => r.tag).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"ar"));
   $("tagFilter").innerHTML = '<option value="">جميع الأنظمة</option>' + tags.map(t => `<option value="${t}">${t}</option>`).join("");
-  if(tags.includes(selected)) $("tagFilter").value = selected;
+  if(tags.includes(current)) $("tagFilter").value = current;
 }
 
 function currentRows(){
   const tag = $("tagFilter").value;
-  const fromDate = $("fromDate").value;
-  const toDate = $("toDate").value;
   return ALL_ROWS.filter(r => {
     if(tag && r.tag !== tag) return false;
-    if(fromDate && (!r.doneDate || String(r.doneDate).slice(0,10) < fromDate)) return false;
-    if(toDate && (!r.doneDate || String(r.doneDate).slice(0,10) > toDate)) return false;
     return true;
   });
 }
 
-function renderScale(maxVal){
-  const host = $("barScale");
+function renderScale(key, maxVal){
+  const host = $("scale-"+key);
   const points = 4;
-  const vals = [];
+  const values = [];
   for(let i=0;i<=points;i++){
-    vals.push(fmt((maxVal/points)*i));
+    values.push(fmt((maxVal/points)*i));
   }
-  host.innerHTML = vals.reverse().map(v => `<span>${v}</span>`).join("");
+  host.innerHTML = values.reverse().map(v => `<span>${v}</span>`).join("");
 }
 
-function renderBarChart(rows){
-  const data = grouped(rows).slice(0,8);
-  const host = $("barChart");
+function renderBars(key, rows){
+  const host = $("bars-"+key);
   host.innerHTML = "";
-  if(!data.length){
-    host.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;color:#8fa0b2">لا توجد بيانات</div>';
-    $("barScale").innerHTML = "";
+  if(!rows.length){
+    $("scale-"+key).innerHTML = "";
+    host.innerHTML = `<div class="muted" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%">لا توجد بيانات</div>`;
     return;
   }
-  const maxVal = Math.max(...data.map(x => Number(x[1]||0)), 1);
-  renderScale(maxVal);
-  const maxPx = 230;
-
-  data.forEach(([name,val]) => {
-    const h = Math.max((Number(val)/maxVal) * maxPx, 8);
+  const maxVal = Math.max(...rows.map(x => Number(x[1]||0)), 1);
+  renderScale(key, maxVal);
+  const maxPx = 150;
+  rows.forEach(([name,val]) => {
+    const h = Math.max((Number(val) / maxVal) * maxPx, 6);
     const bar = document.createElement("div");
     bar.className = "vbar";
     bar.innerHTML = `
       <div class="vbar-value">${fmt(val)}</div>
-      <div class="vbar-col" style="height:${h}px;background:${BAR_COLORS[name] || 'linear-gradient(180deg,#5f9cff,#3b7fe8)'}"></div>
+      <div class="vbar-col" style="height:${h}px;background:linear-gradient(180deg,${SYSTEM_COLORS[name] || '#2489ff'},${shadeColor(SYSTEM_COLORS[name] || '#2489ff', -12)})"></div>
       <div class="vbar-label">${name}</div>
     `;
     host.appendChild(bar);
   });
 }
 
-function renderChangeDonut(rows){
-  const changes = rows.filter(r => r.type === "طلبات التغيير");
-  const total = changes.length;
-  $("changeTotal").textContent = fmt(total);
-  const dist = grouped(changes);
-  const palette = {
-    "خدمات التكامل":"#1f77ff",
-    "بوابة خدماتي":"#15b6b0",
-    "اتصالات إدارية":"#9eb4cc",
-    "الموارد البشرية":"#f2b534",
-    "ERP":"#7a55f8"
-  };
-  let start = 0;
-  const parts = [];
-  dist.forEach(([name,val]) => {
-    const deg = total ? (val/total)*360 : 0;
-    parts.push(`${palette[name] || "#79a6ff"} ${start}deg ${start+deg}deg`);
-    start += deg;
-  });
-  if(start < 360) parts.push(`#d7e1ec ${start}deg 360deg`);
-  $("changeDonut").style.background = `conic-gradient(${parts.join(",")})`;
+function shadeColor(color, percent){
+  const num = parseInt(color.slice(1),16),
+        amt = Math.round(2.55 * percent),
+        R = (num >> 16) + amt,
+        G = (num >> 8 & 0x00FF) + amt,
+        B = (num & 0x0000FF) + amt;
+  return "#" + (
+    0x1000000 +
+    (R<255?(R<1?0:R):255)*0x10000 +
+    (G<255?(G<1?0:G):255)*0x100 +
+    (B<255?(B<1?0:B):255)
+  ).toString(16).slice(1);
+}
 
-  const legend = $("changeLegend");
-  legend.innerHTML = dist.map(([name,val]) => `
+function renderLegend(key, rows, colorFallback){
+  const total = rows.reduce((a,b)=>a + Number(b[1] || 0), 0);
+  const host = $("legend-"+key);
+  host.innerHTML = rows.map(([name,val]) => `
     <div class="legend-row">
-      <div class="legend-name"><span class="legend-swatch" style="background:${palette[name] || '#79a6ff'}"></span>${name}</div>
-      <div class="legend-pill">${fmt(val)}</div>
+      <div class="legend-name"><span class="legend-dot" style="background:${SYSTEM_COLORS[name] || colorFallback}"></span>${name}</div>
+      <div class="legend-val">${fmt(val)}</div>
     </div>
   `).join("");
+
+  let start = 0;
+  const parts = rows.map(([name,val]) => {
+    const deg = total ? (val / total) * 360 : 0;
+    const s = `${SYSTEM_COLORS[name] || colorFallback} ${start}deg ${start + deg}deg`;
+    start += deg;
+    return s;
+  });
+  if(start < 360) parts.push(`#dbe5ef ${start}deg 360deg`);
+  $("donut-"+key).style.background = `conic-gradient(${parts.join(",")})`;
+}
+
+function renderDistTiles(key, rows){
+  const host = $("dist-"+key);
+  host.innerHTML = "";
+  rows.forEach(([name,val]) => {
+    const item = document.createElement("div");
+    item.className = "dist-item";
+    item.style.background = TILE_BACKGROUNDS[name] || "#f5f8fc";
+    item.innerHTML = `
+      <div class="num" style="color:${SYSTEM_COLORS[name] || '#2489ff'}">${fmt(val)}</div>
+      <div class="label">${name}</div>
+    `;
+    host.appendChild(item);
+  });
 }
 
 function renderDays(rows){
-  const used = rows.filter(r => r.type === "طلبات التغيير").reduce((a,b)=>a + Number(b.cost || 0), 0);
+  const used = rows.reduce((a,b)=>a + Number(b.cost || 0), 0);
   const pct = Math.min((used / TOTAL_DAYS) * 100, 100);
   const deg = (pct / 100) * 360;
   const remain = Math.max(TOTAL_DAYS - used, 0);
-
-  $("daysUsed").textContent = fmt(used);
-  $("daysPct").textContent = `${fmt(pct)}%`;
-  $("daysRemain").textContent = fmt(remain);
-  $("daysBar").style.width = `${pct}%`;
-  $("daysDonut").style.background = `conic-gradient(var(--pink) 0deg ${deg}deg, #dde4ed ${deg}deg 360deg)`;
-}
-
-function renderSystemTiles(rows){
-  const changes = rows.filter(r => r.type === "طلبات التغيير");
-  const dist = grouped(changes);
-  const host = $("systemTiles");
-  host.innerHTML = "";
-
-  dist.forEach(([name,val], idx) => {
-    const style = SYS_STYLES.find(s => s.label === name) || SYS_STYLES[idx % SYS_STYLES.length];
-    const tile = document.createElement("div");
-    tile.className = "kpi-tile";
-    tile.innerHTML = `
-      <div class="meta">
-        <div class="num">${fmt(val)}</div>
-        <div class="label">${name}</div>
-      </div>
-      <div class="iconbox" style="background:${style.grad}; color:${style.color}">
-        <div class="kpi-icon"></div>
-      </div>
-    `;
-    host.appendChild(tile);
-  });
-}
-
-function renderRowsList(targetId, entries, colorA, colorB){
-  const host = $(targetId);
-  host.innerHTML = "";
-  if(!entries.length){
-    host.innerHTML = '<div class="muted">لا توجد بيانات</div>';
-    return;
+  if($("daysDonut")){
+    $("daysDonut").style.background = `conic-gradient(var(--change) 0deg ${deg}deg, #dce6df ${deg}deg 360deg)`;
+    $("daysPct").textContent = `${fmt(pct)}%`;
+    $("daysUsed").textContent = fmt(used);
+    $("daysUsed2").textContent = fmt(used);
+    $("daysRemain").textContent = fmt(remain);
+    $("daysFill").style.width = `${pct}%`;
   }
-  const max = Math.max(...entries.map(x=>Number(x[1]||0)), 1);
-  entries.forEach(([name,val]) => {
-    const row = document.createElement("div");
-    row.className = "list-row";
-    row.innerHTML = `
-      <div class="list-name">${name}</div>
-      <div class="track"><div class="fill" style="width:${(Number(val)/max)*100}%; background:linear-gradient(90deg,${colorA},${colorB})"></div></div>
-      <div class="list-num">${fmt(val)}</div>
-    `;
-    host.appendChild(row);
-  });
+}
+
+function renderSection(sec){
+  const data = CURRENT_ROWS.filter(r => r.type === sec.type);
+  const total = data.length;
+  $("total-"+sec.key).textContent = fmt(total);
+
+  const dist = grouped(data);
+  renderLegend(sec.key, dist, sec.color);
+  renderBars(sec.key, dist);
+  renderDistTiles(sec.key, dist);
+
+  if(sec.showDays){
+    renderDays(data);
+  }
 }
 
 function renderTable(rows){
@@ -740,7 +813,7 @@ function renderTable(rows){
   });
   $("tableCount").textContent = `${fmt(filtered.length)} سجل`;
   $("tbody").innerHTML = filtered.map(r => {
-    const st = TYPE_BADGES[r.type] || {bg:"#eef2f7", color:"#475467"};
+    const st = TYPE_BADGES[r.type] || {bg:"#eef2f7", color:"#5d6f83"};
     return `
       <tr>
         <td>${r.id ?? "—"}</td>
@@ -756,15 +829,7 @@ function renderTable(rows){
 
 function update(){
   CURRENT_ROWS = currentRows();
-  renderBarChart(CURRENT_ROWS.filter(r => r.type === "طلبات التغيير"));
-  renderChangeDonut(CURRENT_ROWS);
-  renderDays(CURRENT_ROWS);
-  renderSystemTiles(CURRENT_ROWS);
-
-  renderRowsList("activityRows", grouped(CURRENT_ROWS).slice(0,8), "#1f77ff", "#48b0ff");
-  const types = {};
-  CURRENT_ROWS.forEach(r => types[r.type] = (types[r.type] || 0) + 1);
-  renderRowsList("typeRows", Object.entries(types).sort((a,b)=>b[1]-a[1]), "#f05283", "#ffa0bd");
+  SECTION_CONFIG.forEach(renderSection);
   renderTable(CURRENT_ROWS);
 }
 
@@ -775,9 +840,9 @@ async function loadData(showStatus=true){
     const payload = await res.json();
     if(!res.ok) throw new Error(payload.details || payload.error || "خطأ غير معروف");
     ALL_ROWS = payload.data || [];
-    fillFilters(ALL_ROWS);
-    $("lastUpdated").textContent = fmtDate(payload.updatedAt);
+    fillSystemFilter(ALL_ROWS);
     update();
+    $("lastUpdated").textContent = fmtDate(payload.updatedAt);
     $("dataStatus").textContent = `تم تحميل ${fmt(ALL_ROWS.length)} سجل بنجاح`;
   }catch(err){
     console.error(err);
@@ -785,18 +850,37 @@ async function loadData(showStatus=true){
   }
 }
 
+function exportHtmlSnapshot(){
+  const clone = document.documentElement.cloneNode(true);
+  clone.querySelectorAll("script").forEach(s => s.remove());
+  clone.querySelectorAll("input[type='file']").forEach(el => el.remove());
+  const note = document.createElement("div");
+  note.style.cssText = "padding:12px 16px;margin:16px;border:1px solid #e5ebf3;border-radius:12px;background:#fffbe8;color:#6b5c1d;font-family:Tahoma,'Segoe UI',Arial,sans-serif";
+  note.textContent = "هذه نسخة HTML ثابتة من لوحة المتابعة تم تصديرها من النظام.";
+  const main = clone.querySelector(".main");
+  if(main) main.insertBefore(note, main.firstChild);
+
+  const html = "<!doctype html>\n" + clone.outerHTML;
+  const blob = new Blob([html], {type:"text/html;charset=utf-8"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "dashboard_export.html";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}
+
+$("tagFilter").addEventListener("change", update);
 $("refreshBtn").addEventListener("click", ()=>loadData(true));
 $("resetBtn").addEventListener("click", ()=>{
   $("tagFilter").value = "";
-  $("fromDate").value = "";
-  $("toDate").value = "";
   $("searchBox").value = "";
   update();
 });
-$("tagFilter").addEventListener("change", update);
-$("fromDate").addEventListener("change", update);
-$("toDate").addEventListener("change", update);
 $("searchBox").addEventListener("input", ()=>renderTable(CURRENT_ROWS));
+$("exportBtn").addEventListener("click", exportHtmlSnapshot);
 
 $("excelFile").addEventListener("change", async ()=>{
   const file = $("excelFile").files[0];
@@ -833,6 +917,7 @@ function connectLiveUpdates(){
   es.onerror = ()=>console.warn("Live updates reconnecting...");
 }
 
+buildSections();
 loadData(true);
 connectLiveUpdates();
 setInterval(()=>loadData(false), 120000);
