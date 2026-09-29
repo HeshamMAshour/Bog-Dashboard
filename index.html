@@ -20,7 +20,7 @@ body{
     radial-gradient(circle at 0% 100%,rgba(21,154,104,.06),transparent 24%),
     linear-gradient(180deg,#f8fafd,#eef4fb);
 }
-.layout{min-height:100vh;display:flex;flex-direction:row-reverse}
+.layout{min-height:100vh;display:block}
 .sidebar{
   width:230px;background:linear-gradient(180deg,#102944,#0d223b);color:#fff;padding:20px 14px;
   position:sticky;top:0;height:100vh;box-shadow:-4px 0 22px rgba(8,18,32,.14);
@@ -46,7 +46,7 @@ body{
 .side-foot{position:absolute;bottom:18px;right:14px;left:14px;color:#90a7c3;font-size:11px;text-align:center;line-height:1.8}
 .layout.collapsed .label,.layout.collapsed .brand-text,.layout.collapsed .side-foot{display:none}
 .layout.collapsed .sidebar-top{justify-content:center}.layout.collapsed .nav a{justify-content:center;padding-right:0;padding-left:0}
-.main{flex:1;padding:20px 20px 30px}
+.main{max-width:1500px;margin:0 auto;padding:20px 20px 30px}
 .header{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:14px}
 .header h1{margin:0;font-size:30px;color:#102a4b}
 .toolbar{
@@ -77,6 +77,10 @@ body{
   background:linear-gradient(180deg,#fff,#fbfdff);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);
   display:grid;grid-template-columns:280px 1fr 250px;gap:0;overflow:hidden;min-height:220px
 }
+.section-row.section-changes{background:linear-gradient(135deg,#eef6ff 0%,#ffffff 72%)}
+.section-row.section-issues{background:linear-gradient(135deg,#eefaf5 0%,#ffffff 72%)}
+.section-row.section-meetings{background:linear-gradient(135deg,#fff6ed 0%,#ffffff 72%)}
+.section-row.section-studies{background:linear-gradient(135deg,#f7f1ff 0%,#ffffff 72%)}
 .section-summary{padding:16px;border-left:1px solid var(--line);display:flex;flex-direction:column;justify-content:center;position:relative}
 .section-summary:before{content:"";position:absolute;right:0;top:0;bottom:0;width:4px;background:var(--accent)}
 .section-icon{width:50px;height:50px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:14px}
@@ -103,25 +107,6 @@ body{
 </head>
 <body>
 <div class="layout" id="layout">
-  <aside class="sidebar">
-    <div class="sidebar-top">
-      <div class="brand">
-        <div class="brand-mark"></div>
-        <div class="brand-text"><div class="brand-title">لوحة المتابعة</div><div class="brand-sub">Executive Dashboard</div></div>
-      </div>
-      <button class="collapse-btn" id="sidebarToggle" title="طي / توسيع">☰</button>
-    </div>
-    <nav class="nav">
-      <a href="#top" class="active"><span class="ico"></span><span class="label">الرئيسية</span></a>
-      <a href="#sec-changes"><span class="ico"></span><span class="label">طلبات التغيير</span></a>
-      <a href="#sec-issues"><span class="ico"></span><span class="label">مشاكل تم حلها</span></a>
-      <a href="#sec-meetings"><span class="ico"></span><span class="label">الاجتماعات</span></a>
-      <a href="#sec-studies"><span class="ico"></span><span class="label">الدراسات الفنية</span></a>
-      <a href="#details"><span class="ico"></span><span class="label">التفاصيل</span></a>
-    </nav>
-    <div class="side-foot">نسخة رسمية RTL<br>جاهزة للعرض والتصدير</div>
-  </aside>
-
   <main class="main" id="top">
     <section class="header"><h1 id="pageTitle">لوحة متابعة العمل التشغيلي</h1></section>
 
@@ -195,7 +180,7 @@ function currentRows(){const tag=$("tagFilter").value;return ALL_ROWS.filter(r=>
 function buildSections(){
  const host=$("sectionsHost");host.innerHTML="";
  SECTION_CONFIG.forEach(sec=>{
-   const s=document.createElement("section");s.className="section-row";s.id=sec.anchor;s.style.setProperty("--accent",sec.color);
+   const s=document.createElement("section");s.className="section-row section-"+sec.key;s.id=sec.anchor;s.style.setProperty("--accent",sec.color);
    s.innerHTML=`
     <div class="section-summary">
       <div class="section-icon" style="background:${sec.color}18;color:${sec.color}">${sec.icon}</div>
@@ -271,7 +256,7 @@ function grouped(rows,mode="count"){const obj={};rows.forEach(r=>{const k=r.tag|
 function shadeColor(color,percent){const num=parseInt(color.slice(1),16),amt=Math.round(2.55*percent),R=(num>>16)+amt,G=(num>>8&255)+amt,B=(num&255)+amt;return"#"+(0x1000000+(R<255?(R<1?0:R):255)*0x10000+(G<255?(G<1?0:G):255)*0x100+(B<255?(B<1?0:B):255)).toString(16).slice(1)}
 function fillFilter(rows){const tags=[...new Set(rows.map(r=>r.tag).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"ar"));$("tagFilter").innerHTML='<option value="">جميع الأنظمة</option>'+tags.map(t=>'<option value="'+t+'">'+t+'</option>').join("");$("tagFilter").value=INITIAL_TAG||""}
 function currentRows(){const tag=$("tagFilter").value;return ALL_ROWS.filter(r=>!tag||r.tag===tag)}
-function buildSections(){const host=$("sectionsHost");host.innerHTML="";SECTION_CONFIG.forEach(sec=>{const s=document.createElement("section");s.className="section-row";s.id=sec.anchor;s.style.setProperty("--accent",sec.color);s.innerHTML='<div class="section-summary"><div class="section-icon" style="background:'+sec.color+'18;color:'+sec.color+'">'+sec.icon+'</div><div class="section-title">'+sec.title+'</div><div class="section-count" id="total-'+sec.key+'">0</div></div><div class="section-chart"><div class="chart-head"><div class="chart-title">عدد '+sec.title+' حسب الأنظمة</div><div class="chart-sub">حسب Tags</div></div><div class="y-scale" id="scale-'+sec.key+'"></div><div class="chart-area" id="bars-'+sec.key+'"></div></div><div class="section-dist"><div class="dist-title">التوزيع حسب الأنظمة</div><div class="dist-list" id="dist-'+sec.key+'"></div></div>';host.appendChild(s)})}
+function buildSections(){const host=$("sectionsHost");host.innerHTML="";SECTION_CONFIG.forEach(sec=>{const s=document.createElement("section");s.className="section-row section-"+sec.key;s.id=sec.anchor;s.style.setProperty("--accent",sec.color);s.innerHTML='<div class="section-summary"><div class="section-icon" style="background:'+sec.color+'18;color:'+sec.color+'">'+sec.icon+'</div><div class="section-title">'+sec.title+'</div><div class="section-count" id="total-'+sec.key+'">0</div></div><div class="section-chart"><div class="chart-head"><div class="chart-title">عدد '+sec.title+' حسب الأنظمة</div><div class="chart-sub">حسب Tags</div></div><div class="y-scale" id="scale-'+sec.key+'"></div><div class="chart-area" id="bars-'+sec.key+'"></div></div><div class="section-dist"><div class="dist-title">التوزيع حسب الأنظمة</div><div class="dist-list" id="dist-'+sec.key+'"></div></div>';host.appendChild(s)})}
 function renderScale(key,maxVal){const vals=[];for(let i=0;i<=4;i++)vals.push(fmt((maxVal/4)*i));$("scale-"+key).innerHTML=vals.reverse().map(v=>'<span>'+v+'</span>').join("")}
 function renderBars(key,rows){const host=$("bars-"+key);host.innerHTML="";if(!rows.length){$("scale-"+key).innerHTML="";host.innerHTML='<div class="muted" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%">لا توجد بيانات</div>';return}const max=Math.max(...rows.map(x=>Number(x[1]||0)),1);renderScale(key,max);const maxPx=130;rows.forEach(([name,val])=>{const h=Math.max((Number(val)/max)*maxPx,6);const b=document.createElement("div");b.className="vbar";b.innerHTML='<div class="vbar-value">'+fmt(val)+'</div><div class="vbar-col" style="height:'+h+'px;background:linear-gradient(180deg,'+(SYSTEM_COLORS[name]||"#2489ff")+','+shadeColor(SYSTEM_COLORS[name]||"#2489ff",-12)+')"></div><div class="vbar-label">'+name+'</div>';host.appendChild(b)})}
 function renderDist(key,rows){const host=$("dist-"+key);host.innerHTML="";rows.forEach(([name,val])=>{const d=document.createElement("div");d.className="dist-item";d.innerHTML='<div class="logo" style="background:'+(SYSTEM_BG[name]||"#f4f7fb")+';color:'+(SYSTEM_COLORS[name]||"#2489ff")+'">'+(SYSTEM_LOGO[name]||"•")+'</div><div class="dist-name">'+name+'</div><div class="dist-val">'+fmt(val)+'</div>';host.appendChild(d)});if(!rows.length)host.innerHTML='<div class="muted">لا توجد بيانات</div>'}
@@ -280,13 +265,13 @@ function renderKpis(){const changes=CURRENT_ROWS.filter(r=>r.type==="طلبات 
 function renderTable(rows){const q=$("searchBox").value.trim().toLowerCase();const filtered=rows.filter(r=>{const hay=(String(r.title||"")+" "+String(r.tag||"")+" "+String(r.type||"")+" "+String(r.state||"")).toLowerCase();return!q||hay.includes(q)});$("tableCount").textContent=fmt(filtered.length)+" سجل";$("tbody").innerHTML=filtered.map(r=>{const st=TYPE_BADGES[r.type]||{bg:"#eef2f7",color:"#5d6f83"};return'<tr><td>'+(r.id??"—")+'</td><td><span class="badge" style="background:'+st.bg+';color:'+st.color+'">'+(r.type||"—")+'</span></td><td>'+(r.title||"—")+'</td><td>'+(r.state||"—")+'</td><td>'+(r.tag||"—")+'</td><td>'+fmtDate(r.doneDate)+'</td><td>'+(r.cost?fmt(r.cost):'<span class="muted">—</span>')+'</td></tr>'}).join("")}
 function update(){CURRENT_ROWS=currentRows();renderKpis();SECTION_CONFIG.forEach(renderSection);renderTable(CURRENT_ROWS)}
 function setupSidebar(){const key="export_sidebar";if(localStorage.getItem(key)==="1")$("layout").classList.add("collapsed");$("sidebarToggle").addEventListener("click",()=>{$("layout").classList.toggle("collapsed");localStorage.setItem(key,$("layout").classList.contains("collapsed")?"1":"0")})}
-document.title=${json.dumps(safe, ensure_ascii=False)};
-$("pageTitle").textContent=${json.dumps(safe, ensure_ascii=False)};
+document.title=${JSON.stringify(safe)};
+$("pageTitle").textContent=${JSON.stringify(safe)};
 if($("exportBtn"))$("exportBtn").remove();
 if($("uploadBtn"))$("uploadBtn").remove();
 if($("excelFile"))$("excelFile").remove();
 if($("refreshBtn"))$("refreshBtn").style.display="none";
-buildSections();fillFilter(ALL_ROWS);$("searchBox").value=INITIAL_SEARCH;$("tagFilter").addEventListener("change",update);$("resetBtn").addEventListener("click",()=>{$("tagFilter").value="";$("searchBox").value="";update()});$("searchBox").addEventListener("input",()=>renderTable(CURRENT_ROWS));setupSidebar();update();`;
+buildSections();fillFilter(ALL_ROWS);$("searchBox").value=INITIAL_SEARCH;$("tagFilter").addEventListener("change",update);$("resetBtn").addEventListener("click",()=>{$("tagFilter").value="";$("searchBox").value="";update()});$("searchBox").addEventListener("input",()=>renderTable(CURRENT_ROWS));update();`;
  return '<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+safe+'</title>'+style+'</head><body>'+body+'<script>'+script.replace(/<\/script>/g,'<\\/script>')+'<\/script></body></html>'
 }
 function exportHtml(){const t=prompt("اكتب عنوان لوحة المتابعة المصدّرة:",$("pageTitle").textContent)||$("pageTitle").textContent;const html=standaloneHtml(t.trim()||$("pageTitle").textContent);const blob=new Blob([html],{type:"text/html;charset=utf-8"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="dashboard_export.html";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1200)}
@@ -304,7 +289,7 @@ $("excelFile").addEventListener("change",async()=>{
  finally{$("excelFile").value="";$("uploadBtn").textContent=old;$("uploadBtn").style.pointerEvents="auto"}
 });
 function live(){const es=new EventSource("/events");es.addEventListener("excel-changed",async()=>{$("dataStatus").textContent="تم اكتشاف تحديث للبيانات - جارٍ إعادة التحميل...";await loadData(false)});es.onerror=()=>console.warn("reconnecting...")}
-buildSections();setupSidebar();loadData(true);live();setInterval(()=>loadData(false),120000);
+buildSections();loadData(true);live();setInterval(()=>loadData(false),120000);
 </script>
 </body>
 </html>
