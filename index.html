@@ -6,460 +6,99 @@
 <title>لوحة متابعة العمل التشغيلي</title>
 <style>
 :root{
-  --bg:#f4f7fb;
-  --surface:#ffffff;
-  --surface-2:#f8fbff;
-  --line:#e5ebf3;
-  --text:#13233a;
-  --muted:#708197;
+  --bg:#f4f7fb;--surface:#fff;--line:#e5ebf3;--text:#12233b;--muted:#708197;
   --shadow:0 10px 28px rgba(16,24,40,.08);
-  --radius:22px;
-
-  --change:#159a68;
-  --issue:#f04466;
-  --meeting:#2489ff;
-  --study:#7b4ef6;
+  --blue:#2489ff;--orange:#ff981f;--gray:#9aa8ba;--yellow:#f5c044;--purple:#8256ff;
+  --green:#159a68;--red:#f04466;--meeting:#2489ff;--study:#7b4ef6;--pink:#f05283;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{
-  margin:0;
-  font-family:Tahoma,"Segoe UI",Arial,sans-serif;
+  margin:0;font-family:Tahoma,"Segoe UI",Arial,sans-serif;color:var(--text);
   background:
-    radial-gradient(circle at 100% 0%, rgba(36,137,255,.08), transparent 20%),
-    radial-gradient(circle at 0% 100%, rgba(21,154,104,.08), transparent 22%),
-    linear-gradient(180deg,#f8fafd 0%, #eef4fb 100%);
-  color:var(--text);
+    radial-gradient(circle at 100% 0%,rgba(36,137,255,.07),transparent 22%),
+    radial-gradient(circle at 0% 100%,rgba(21,154,104,.06),transparent 24%),
+    linear-gradient(180deg,#f8fafd,#eef4fb);
 }
-.layout{
-  min-height:100vh;
-  display:flex;
-  flex-direction:row-reverse;
-  transition:all .25s ease;
-}
+.layout{min-height:100vh;display:flex;flex-direction:row-reverse}
 .sidebar{
-  width:250px;
-  background:linear-gradient(180deg,#102842 0%, #0e233c 100%);
-  color:#fff;
-  padding:20px 16px;
-  box-shadow:-4px 0 22px rgba(8,18,32,.12);
-  position:sticky;
-  top:0;
-  height:100vh;
-  transition:width .25s ease, padding .25s ease;
-  overflow:hidden;
+  width:230px;background:linear-gradient(180deg,#102944,#0d223b);color:#fff;padding:20px 14px;
+  position:sticky;top:0;height:100vh;box-shadow:-4px 0 22px rgba(8,18,32,.14);
+  transition:.25s;overflow:hidden
 }
-.layout.collapsed .sidebar{
-  width:84px;
-  padding-right:10px;
-  padding-left:10px;
-}
-.sidebar-top{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-  margin-bottom:22px;
-}
-.brand{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  min-width:0;
-}
+.layout.collapsed .sidebar{width:82px;padding-right:10px;padding-left:10px}
+.sidebar-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:22px}
+.brand{display:flex;align-items:center;gap:10px;min-width:0}
 .brand-mark{
-  width:44px;height:44px;border-radius:14px;
-  background:linear-gradient(145deg,#2b84ff,#88c9ff);
-  box-shadow:0 10px 18px rgba(43,132,255,.28);
-  position:relative;flex:0 0 auto;
+  width:44px;height:44px;border-radius:13px;background:linear-gradient(145deg,#2b84ff,#8dccff);
+  box-shadow:0 10px 18px rgba(43,132,255,.28);position:relative;flex:0 0 auto
 }
-.brand-mark:before,.brand-mark:after{
-  content:"";position:absolute;left:10px;right:10px;height:8px;border-radius:8px;background:#fff;transform:skewY(-18deg)
-}
-.brand-mark:before{top:11px;box-shadow:0 12px 0 #fff}
-.brand-title{
-  font-size:15px;
-  font-weight:800;
-  white-space:nowrap;
-}
-.brand-sub{
-  font-size:11px;color:#a9bfd9;margin-top:4px;white-space:nowrap;
-}
-.collapse-btn{
-  width:36px;height:36px;border-radius:12px;border:1px solid rgba(255,255,255,.08);
-  background:rgba(255,255,255,.06);color:#fff;cursor:pointer;font-size:18px;flex:0 0 auto
-}
-.nav{
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-}
-.nav a{
-  color:#d6e4f6;
-  text-decoration:none;
-  padding:14px 14px;
-  border-radius:16px;
-  display:flex;
-  align-items:center;
-  gap:12px;
-  font-weight:700;
-  border:1px solid rgba(255,255,255,.05);
-  transition:all .2s ease;
-}
+.brand-mark:before,.brand-mark:after{content:"";position:absolute;left:10px;right:10px;height:7px;border-radius:8px;background:#fff;transform:skewY(-18deg)}
+.brand-mark:before{top:11px;box-shadow:0 12px 0 #fff}.brand-mark:after{display:none}
+.brand-title{font-size:15px;font-weight:800;white-space:nowrap}
+.brand-sub{font-size:10px;color:#a9bfd9;margin-top:3px;white-space:nowrap}
+.collapse-btn{width:36px;height:36px;border-radius:11px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.06);color:#fff;cursor:pointer;font-size:18px;flex:0 0 auto}
+.nav{display:flex;flex-direction:column;gap:9px}
+.nav a{color:#d7e5f5;text-decoration:none;padding:13px 13px;border-radius:14px;display:flex;align-items:center;gap:11px;font-size:13px;font-weight:700;border:1px solid rgba(255,255,255,.04)}
 .nav a:hover{background:rgba(255,255,255,.05)}
-.nav a.active{
-  background:linear-gradient(90deg,rgba(36,137,255,.92),rgba(95,175,255,.6));
-  color:#fff;
-  box-shadow:0 10px 20px rgba(36,137,255,.25);
+.nav a.active{background:linear-gradient(90deg,rgba(36,137,255,.95),rgba(67,163,255,.58));box-shadow:0 10px 18px rgba(36,137,255,.22);color:#fff}
+.nav .ico{width:18px;height:18px;border-radius:5px;border:2px solid currentColor;flex:0 0 auto}
+.side-foot{position:absolute;bottom:18px;right:14px;left:14px;color:#90a7c3;font-size:11px;text-align:center;line-height:1.8}
+.layout.collapsed .label,.layout.collapsed .brand-text,.layout.collapsed .side-foot{display:none}
+.layout.collapsed .sidebar-top{justify-content:center}.layout.collapsed .nav a{justify-content:center;padding-right:0;padding-left:0}
+.main{flex:1;padding:20px 20px 30px}
+.header{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:14px}
+.header h1{margin:0;font-size:30px;color:#102a4b}
+.toolbar{
+  background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);
+  display:grid;grid-template-columns:260px 120px 120px 120px 1fr;gap:10px;align-items:center;padding:12px;margin-bottom:14px
 }
-.nav .icon{
-  width:18px;height:18px;border-radius:50%;background:currentColor;opacity:.95;flex:0 0 auto
-}
-.side-foot{
-  position:absolute;
-  bottom:18px;
-  right:16px;
-  left:16px;
-  color:#90a7c3;
-  font-size:11px;
-  text-align:center;
-  line-height:1.8;
-}
-.layout.collapsed .label, .layout.collapsed .brand-text, .layout.collapsed .side-foot{
-  display:none;
-}
-.layout.collapsed .sidebar-top{justify-content:center}
-.layout.collapsed .nav a{justify-content:center;padding-right:0;padding-left:0}
-.main{
-  flex:1;
-  padding:24px 22px 30px;
-}
-.header{
-  display:flex;
-  align-items:flex-start;
-  justify-content:space-between;
-  gap:16px;
-  flex-wrap:wrap;
-  margin-bottom:16px;
-}
-.header h1{
-  margin:0 0 8px;
-  font-size:30px;
-  color:#102a4b;
-}
-.header p{
-  margin:0;
-  font-size:14px;
-  color:var(--muted);
-  line-height:1.8;
-}
-.topbar{
-  background:linear-gradient(180deg,#fff 0%, #f8fbff 100%);
-  border:1px solid var(--line);
-  border-radius:20px;
-  box-shadow:var(--shadow);
-  padding:14px;
-  display:grid;
-  grid-template-columns:240px 130px 130px 130px 1fr;
-  gap:12px;
-  align-items:center;
-  margin-bottom:16px;
-}
-.control, .btn{
-  width:100%;
-  border:1px solid var(--line);
-  background:#fff;
-  border-radius:14px;
-  padding:12px 14px;
-  font:inherit;
-  color:#173150;
-  font-size:13px;
-  outline:none;
-}
-.btn{
-  cursor:pointer;
-  font-weight:800;
-}
-.btn.primary{
-  background:linear-gradient(180deg,#2180ff,#1a6ddf);
-  color:#fff;
-  border-color:#1e76ec;
-  box-shadow:0 10px 18px rgba(33,128,255,.22);
-}
-.btn.soft{
-  background:linear-gradient(180deg,#ffffff,#f4f9ff);
-}
-.actions{
-  display:flex;
-  gap:10px;
-}
-.status-strip{
-  display:flex;
-  justify-content:space-between;
-  gap:12px;
-  align-items:center;
-  flex-wrap:wrap;
-  margin-bottom:16px;
-}
-.status{
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  padding:10px 14px;
-  border-radius:999px;
-  background:#fff;
-  border:1px solid var(--line);
-  box-shadow:var(--shadow);
-  font-size:12px;
-  color:#40556f;
-}
+.control,.btn{width:100%;border:1px solid var(--line);background:#fff;border-radius:13px;padding:11px 13px;font:inherit;color:#173150;font-size:13px;outline:none}
+.btn{cursor:pointer;font-weight:800}.btn.primary{background:linear-gradient(180deg,#2180ff,#1a6ddf);color:#fff;border-color:#1e76ec;box-shadow:0 8px 16px rgba(33,128,255,.18)}
+.btn.soft{background:linear-gradient(180deg,#fff,#f4f9ff)}
+.actions{display:flex;gap:8px}
+.status-row{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+.status{display:inline-flex;align-items:center;gap:8px;padding:9px 13px;border-radius:999px;background:#fff;border:1px solid var(--line);box-shadow:var(--shadow);font-size:12px;color:#40556f}
 .status .ok{width:9px;height:9px;border-radius:50%;background:#1db67a}
-.section-list{
-  display:flex;
-  flex-direction:column;
-  gap:18px;
+.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:14px}
+.kpi{
+  background:linear-gradient(180deg,#fff,#fbfdff);border:1px solid var(--line);border-radius:18px;
+  box-shadow:var(--shadow);padding:16px;display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:106px
 }
-.section{
-  display:flex;
-  flex-direction:column;
-  gap:12px;
+.kpi .meta{display:flex;flex-direction:column;gap:8px}.kpi .title{font-size:13px;font-weight:800;color:#203754}.kpi .value{font-size:32px;font-weight:900;color:#102a4b}
+.kpi .icon{width:54px;height:54px;border-radius:15px;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:900}
+.kpi.days{display:grid;grid-template-columns:82px 1fr;gap:12px}
+.day-ring{width:78px;height:78px;border-radius:50%;position:relative;background:conic-gradient(var(--pink) 0deg 130deg,#f5dfe7 130deg 360deg)}
+.day-ring:after{content:"";position:absolute;inset:12px;background:#fff;border-radius:50%;box-shadow:inset 0 0 0 1px #f2e7eb}
+.day-ring b{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:2;color:#e94273;font-size:18px}
+.day-info .big{font-size:23px;font-weight:900;color:#102a4b}.day-info .sub{font-size:11px;color:#6e7f94;margin-top:4px}.day-progress{height:9px;border-radius:999px;background:#e9edf4;overflow:hidden;margin-top:8px}.day-progress span{display:block;height:100%;background:linear-gradient(90deg,#f05283,#ff7aa3)}
+.section-list{display:flex;flex-direction:column;gap:14px}
+.section-row{
+  background:linear-gradient(180deg,#fff,#fbfdff);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);
+  display:grid;grid-template-columns:280px 1fr 250px;gap:0;overflow:hidden;min-height:220px
 }
-.section-top{
-  display:grid;
-  grid-template-columns:340px 1fr;
-  gap:14px;
-}
-.card{
-  background:linear-gradient(180deg,#fff 0%, #fbfdff 100%);
-  border:1px solid var(--line);
-  border-radius:22px;
-  box-shadow:var(--shadow);
-  overflow:hidden;
-}
-.pad{padding:16px}
-.card-title{
-  font-size:15px;
-  font-weight:800;
-  color:#122c4a;
-}
-.card-sub{
-  font-size:12px;
-  color:var(--muted);
-}
-.summary{
-  display:flex;
-  flex-direction:column;
-  height:100%;
-}
-.summary-head{
-  display:flex;
-  align-items:flex-start;
-  justify-content:space-between;
-  gap:12px;
-  margin-bottom:12px;
-}
-.summary-title{
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
-.summary-icon{
-  width:48px;height:48px;border-radius:14px;
-  display:flex;align-items:center;justify-content:center;
-  font-size:22px;font-weight:900;
-}
-.summary h3{
-  margin:0;
-  font-size:18px;
-}
-.summary small{
-  color:var(--muted);
-  font-size:12px;
-}
-.summary-body{
-  display:grid;
-  grid-template-columns:140px 1fr;
-  gap:10px;
-  align-items:center;
-  margin:4px 0 10px;
-}
-.donut{
-  width:132px;height:132px;border-radius:50%;
-  position:relative;
-  background:conic-gradient(var(--c1) 0deg 110deg,var(--c2) 110deg 220deg,var(--c3) 220deg 290deg,var(--c4) 290deg 330deg,var(--c5) 330deg 360deg);
-  box-shadow:inset 0 4px 12px rgba(255,255,255,.38),0 12px 24px rgba(16,24,40,.08);
-}
-.donut:after{
-  content:"";
-  position:absolute;
-  inset:20px;
-  border-radius:50%;
-  background:#fff;
-  box-shadow:inset 0 0 0 1px #edf2f7;
-}
-.donut-content{
-  position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  text-align:center;z-index:2;
-}
-.donut-num{font-size:24px;font-weight:900;color:#132c4d;line-height:1}
-.donut-text{font-size:12px;color:#607792;margin-top:5px}
-.legend{
-  display:flex;flex-direction:column;gap:8px;
-}
-.legend-row{
-  display:grid;
-  grid-template-columns:1fr auto;
-  gap:10px;
-  align-items:center;
-  font-size:12px;
-}
-.legend-name{display:flex;align-items:center;gap:8px;color:#243b59}
-.legend-dot{width:10px;height:10px;border-radius:50%}
-.legend-val{font-weight:900;color:#162f50}
-.summary-footer{
-  margin-top:auto;
-  display:flex;justify-content:flex-start;align-items:center;
-}
-.link-btn{
-  display:inline-flex;align-items:center;gap:6px;
-  border:1px solid var(--line);
-  background:#f8fbff;
-  color:#2b4e75;
-  border-radius:12px;
-  padding:10px 12px;
-  font-size:12px;
-  font-weight:700;
-  text-decoration:none;
-}
-.chart-card{
-  display:flex;flex-direction:column;height:100%;
-}
-.chart-head{
-  display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;
-}
+.section-summary{padding:16px;border-left:1px solid var(--line);display:flex;flex-direction:column;justify-content:center;position:relative}
+.section-summary:before{content:"";position:absolute;right:0;top:0;bottom:0;width:4px;background:var(--accent)}
+.section-icon{width:50px;height:50px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:14px}
+.section-title{font-size:23px;font-weight:900;color:#102a4b}.section-count{font-size:44px;font-weight:900;color:#102a4b;line-height:1;margin-top:8px}
+.section-chart{padding:14px 16px;border-left:1px solid var(--line)}
+.chart-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}.chart-title{font-size:14px;font-weight:800;color:#1c3556}.chart-sub{font-size:11px;color:#71849d}
+.y-scale{display:flex;justify-content:space-between;color:#7b8fa7;font-size:10px;padding:0 2px}
 .chart-area{
-  flex:1;
-  min-height:220px;
-  display:flex;
-  align-items:flex-end;
-  justify-content:space-around;
-  gap:12px;
-  border-right:2px solid #dbe5f0;
-  border-bottom:2px solid #dbe5f0;
-  padding:0 12px 0 8px;
-  margin:12px 10px 4px 8px;
-  background:
-    linear-gradient(to top, transparent 24%, rgba(95,122,164,.10) 24%, rgba(95,122,164,.10) 25%, transparent 25%, transparent 49%, rgba(95,122,164,.10) 49%, rgba(95,122,164,.10) 50%, transparent 50%, transparent 74%, rgba(95,122,164,.10) 74%, rgba(95,122,164,.10) 75%, transparent 75%);
+  min-height:160px;display:flex;align-items:flex-end;justify-content:space-around;gap:12px;
+  border-right:2px solid #dbe5f0;border-bottom:2px solid #dbe5f0;padding:0 10px 0 6px;margin-top:8px;
+  background:linear-gradient(to top,transparent 24%,rgba(95,122,164,.10) 24%,rgba(95,122,164,.10) 25%,transparent 25%,transparent 49%,rgba(95,122,164,.10) 49%,rgba(95,122,164,.10) 50%,transparent 50%,transparent 74%,rgba(95,122,164,.10) 74%,rgba(95,122,164,.10) 75%,transparent 75%)
 }
-.y-scale{
-  display:flex;justify-content:space-between;color:#7a8ea7;font-size:11px;padding:0 2px
-}
-.vbar{
-  flex:1;
-  max-width:96px;
-  min-width:56px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:flex-end;
-  gap:8px;
-}
-.vbar-value{font-size:12px;font-weight:800;color:#1b3455}
-.vbar-col{
-  width:100%;
-  min-height:6px;
-  border-radius:10px 10px 3px 3px;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.28),0 10px 16px rgba(30,60,114,.08);
-}
-.vbar-label{
-  font-size:12px;color:#223958;text-align:center;line-height:1.4;word-break:break-word
-}
-.dist-card{padding:14px 16px}
-.dist-grid{
-  display:grid;
-  grid-template-columns:repeat(5,1fr);
-  gap:10px;
-  margin-top:10px;
-}
-.dist-item{
-  border:1px solid var(--line);
-  border-radius:16px;
-  padding:12px 8px;
-  text-align:center;
-  box-shadow:0 4px 10px rgba(16,24,40,.04);
-}
-.dist-item .num{
-  font-size:16px;font-weight:900;margin-bottom:4px;
-}
-.dist-item .label{
-  font-size:12px;color:#324966;line-height:1.4;
-}
-.days-card{
-  border:1px solid #dff0e8;
-  background:linear-gradient(180deg,#ffffff 0%, #f5fcf8 100%);
-  border-radius:16px;
-  padding:12px;
-  margin-bottom:10px;
-}
-.days-card .top{
-  display:flex;align-items:center;justify-content:space-between;gap:10px;
-}
-.days-mini{
-  width:86px;height:86px;border-radius:50%;
-  position:relative;
-  background:conic-gradient(var(--change) 0deg 130deg,#dce6df 130deg 360deg);
-  flex:0 0 auto;
-}
-.days-mini:after{
-  content:"";position:absolute;inset:14px;border-radius:50%;background:#fff;box-shadow:inset 0 0 0 1px #edf2f7
-}
-.days-mini b{
-  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:2;
-  font-size:14px;color:#12304e
-}
-.days-data{flex:1}
-.days-data .big{font-size:24px;font-weight:900;color:#132d4e}
-.days-data .sub{color:#627994;font-size:12px}
-.days-progress{
-  height:12px;border-radius:999px;background:#e6edf2;border:1px solid #dbe5ec;overflow:hidden;margin-top:10px
-}
-.days-progress .fill{height:100%;background:linear-gradient(90deg,#16a56e,#5fcca1);width:36%}
-.days-stats{display:flex;justify-content:space-between;gap:12px;margin-top:8px}
-.days-stats b{display:block;font-size:18px;color:#143051}
-.days-stats span{font-size:12px;color:#627994}
-.table-card{margin-top:16px}
-.table-tools{
-  display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:12px
-}
-.search{
-  width:340px;max-width:100%;
-  border:1px solid var(--line);background:#fff;border-radius:14px;padding:12px 14px;font:inherit;outline:none
-}
-.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:18px;background:#fff}
-table{width:100%;border-collapse:collapse;font-size:13px}
-thead th{position:sticky;top:0;background:#f8fbff;color:#425770;text-align:right;padding:12px 14px;border-bottom:1px solid var(--line)}
-tbody td{padding:12px 14px;border-bottom:1px solid #eef2f6;vertical-align:top}
-tbody tr:hover{background:#fbfdff}
-.badge{
-  display:inline-flex;align-items:center;gap:7px;border-radius:999px;padding:6px 11px;font-size:11px;font-weight:800
-}
-.badge:before{content:"";width:8px;height:8px;border-radius:50%;background:currentColor}
-.muted{color:#97a5b4}
-.hidden{display:none}
-@media (max-width:1320px){
-  .section-top{grid-template-columns:1fr}
-  .topbar{grid-template-columns:1fr 1fr}
-}
-@media (max-width:980px){
-  .layout{display:block}
-  .sidebar{display:none}
-}
-@media (max-width:720px){
-  .main{padding:14px}
-  .topbar{grid-template-columns:1fr}
-  .dist-grid{grid-template-columns:repeat(2,1fr)}
-  .summary-body{grid-template-columns:1fr}
-}
+.vbar{flex:1;max-width:82px;min-width:50px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:7px}.vbar-value{font-size:11px;font-weight:900;color:#1b3455}.vbar-col{width:100%;min-height:6px;border-radius:9px 9px 3px 3px;box-shadow:inset 0 1px 0 rgba(255,255,255,.28),0 8px 14px rgba(30,60,114,.08)}.vbar-label{font-size:11px;color:#223958;text-align:center;line-height:1.35}
+.section-dist{padding:14px 14px}.dist-title{font-size:14px;font-weight:900;color:#173251;margin-bottom:10px}.dist-list{display:flex;flex-direction:column;gap:7px}
+.dist-item{display:grid;grid-template-columns:34px 1fr 32px;gap:8px;align-items:center;padding:6px 7px;border-radius:10px;border:1px solid var(--line);background:#fff}
+.logo{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900}.dist-name{font-size:11px;color:#314864}.dist-val{font-size:12px;font-weight:900;text-align:left}
+.table-card{margin-top:14px;background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);padding:14px}
+.table-tools{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:10px}.search{width:340px;max-width:100%;border:1px solid var(--line);background:#fff;border-radius:13px;padding:11px 13px;font:inherit;outline:none}
+.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:14px}table{width:100%;border-collapse:collapse;font-size:12px}thead th{position:sticky;top:0;background:#f8fbff;color:#425770;text-align:right;padding:11px 12px;border-bottom:1px solid var(--line)}tbody td{padding:11px 12px;border-bottom:1px solid #eef2f6;vertical-align:top}tbody tr:hover{background:#fbfdff}.badge{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:5px 9px;font-size:10px;font-weight:800}.badge:before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}.muted{color:#97a5b4}.hidden{display:none}
+@media(max-width:1280px){.kpis{grid-template-columns:repeat(2,1fr)}.section-row{grid-template-columns:1fr}.section-summary,.section-chart{border-left:0;border-bottom:1px solid var(--line)}.toolbar{grid-template-columns:1fr 1fr}}
+@media(max-width:980px){.layout{display:block}.sidebar{display:none}}
+@media(max-width:720px){.main{padding:12px}.kpis{grid-template-columns:1fr}.toolbar{grid-template-columns:1fr}.header h1{font-size:23px}}
 </style>
 </head>
 <body>
@@ -468,73 +107,61 @@ tbody tr:hover{background:#fbfdff}
     <div class="sidebar-top">
       <div class="brand">
         <div class="brand-mark"></div>
-        <div class="brand-text">
-          <div class="brand-title">لوحة المتابعة</div>
-          <div class="brand-sub">Executive Dashboard</div>
-        </div>
+        <div class="brand-text"><div class="brand-title">لوحة المتابعة</div><div class="brand-sub">Executive Dashboard</div></div>
       </div>
       <button class="collapse-btn" id="sidebarToggle" title="طي / توسيع">☰</button>
     </div>
     <nav class="nav">
-      <a href="#top" class="active"><span class="icon"></span><span class="label">نظرة عامة</span></a>
-      <a href="#sec-changes"><span class="icon"></span><span class="label">طلبات التغيير</span></a>
-      <a href="#sec-issues"><span class="icon"></span><span class="label">المشاكل</span></a>
-      <a href="#sec-meetings"><span class="icon"></span><span class="label">الاجتماعات</span></a>
-      <a href="#sec-studies"><span class="icon"></span><span class="label">الدراسات الفنية</span></a>
-      <a href="#details"><span class="icon"></span><span class="label">التفاصيل</span></a>
+      <a href="#top" class="active"><span class="ico"></span><span class="label">الرئيسية</span></a>
+      <a href="#sec-changes"><span class="ico"></span><span class="label">طلبات التغيير</span></a>
+      <a href="#sec-issues"><span class="ico"></span><span class="label">مشاكل تم حلها</span></a>
+      <a href="#sec-meetings"><span class="ico"></span><span class="label">الاجتماعات</span></a>
+      <a href="#sec-studies"><span class="ico"></span><span class="label">الدراسات الفنية</span></a>
+      <a href="#details"><span class="ico"></span><span class="label">التفاصيل</span></a>
     </nav>
-    <div class="side-foot">نسخة رسمية RTL<br>مع تصدير HTML ورفع Excel</div>
+    <div class="side-foot">نسخة رسمية RTL<br>جاهزة للعرض والتصدير</div>
   </aside>
 
   <main class="main" id="top">
-    <section class="header">
-      <div>
-        <h1 id="pageTitle">لوحة متابعة العمل التشغيلي</h1>
-        <p id="pageSubtitle">عرض تشغيلي لطلبات التغيير، المشاكل، الاجتماعات، والدراسات الفنية مع إمكانية تحديث البيانات مباشرة من ملف Excel وتصدير نسخة HTML من لوحة المتابعة.</p>
-      </div>
-    </section>
+    <section class="header"><h1 id="pageTitle">لوحة متابعة العمل التشغيلي</h1></section>
 
-    <section class="topbar">
-      <select id="tagFilter" class="control">
-        <option value="">جميع الأنظمة</option>
-      </select>
-      <button id="resetBtn" class="btn soft" type="button">إعادة ضبط</button>
-      <button id="refreshBtn" class="btn primary" type="button">تحديث</button>
-      <button id="exportBtn" class="btn soft" type="button">تصدير HTML</button>
+    <section class="toolbar">
+      <select id="tagFilter" class="control"><option value="">جميع الأنظمة</option></select>
+      <button id="resetBtn" class="btn soft">إعادة ضبط</button>
+      <button id="refreshBtn" class="btn primary">تحديث</button>
+      <button id="exportBtn" class="btn soft">تصدير HTML</button>
       <div class="actions">
         <input id="excelFile" type="file" accept=".xlsx" class="hidden">
         <label for="excelFile" id="uploadBtn" class="btn soft" style="display:flex;align-items:center;justify-content:center">رفع Excel</label>
       </div>
     </section>
 
-    <section class="status-strip">
+    <section class="status-row">
       <div class="status"><span class="ok"></span><span id="dataStatus">جارٍ تحميل البيانات...</span></div>
       <div class="status"><span>آخر تحديث:</span><b id="lastUpdated">—</b></div>
     </section>
 
+    <section class="kpis">
+      <div class="kpi"><div class="meta"><div class="title">عدد طلبات التغيير</div><div class="value" id="kChange">0</div></div><div class="icon" style="background:#e5f0ff;color:#2489ff">▣</div></div>
+      <div class="kpi"><div class="meta"><div class="title">عدد مشاكل تم حلها</div><div class="value" id="kIssue">0</div></div><div class="icon" style="background:#e3f5ec;color:#159a68">✓</div></div>
+      <div class="kpi"><div class="meta"><div class="title">عدد الاجتماعات</div><div class="value" id="kMeeting">0</div></div><div class="icon" style="background:#fff0e2;color:#ff7f1f">●●</div></div>
+      <div class="kpi"><div class="meta"><div class="title">عدد الدراسات الفنية</div><div class="value" id="kStudy">0</div></div><div class="icon" style="background:#f1ebff;color:#7b4ef6">◉</div></div>
+      <div class="kpi days">
+        <div class="day-ring" id="kDayRing"><b id="kDayPct">0%</b></div>
+        <div class="day-info"><div class="title">أيام التغيير المستنفذة</div><div class="big"><span id="kDays">0</span> من 150 يوم</div><div class="sub"><span id="kRemain">0</span> يوم متبقي</div><div class="day-progress"><span id="kDayBar"></span></div></div>
+      </div>
+    </section>
+
     <section class="section-list" id="sectionsHost"></section>
 
-    <section class="card pad table-card" id="details">
+    <section class="table-card" id="details">
       <div class="table-tools">
-        <div>
-          <div class="card-title">تفاصيل الأعمال</div>
-          <div class="card-sub" id="tableCount">0 سجل</div>
-        </div>
+        <div><div class="chart-title">تفاصيل الأعمال</div><div class="chart-sub" id="tableCount">0 سجل</div></div>
         <input id="searchBox" class="search" placeholder="بحث في العنوان أو النظام أو النوع أو الحالة">
       </div>
       <div class="table-wrap">
         <table>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>النوع</th>
-              <th>العنوان</th>
-              <th>الحالة</th>
-              <th>النظام</th>
-              <th>التاريخ</th>
-              <th>Cost</th>
-            </tr>
-          </thead>
+          <thead><tr><th>ID</th><th>النوع</th><th>العنوان</th><th>الحالة</th><th>النظام</th><th>التاريخ</th><th>Cost</th></tr></thead>
           <tbody id="tbody"></tbody>
         </table>
       </div>
@@ -543,482 +170,141 @@ tbody tr:hover{background:#fbfdff}
 </div>
 
 <script>
-const $ = id => document.getElementById(id);
-const TOTAL_DAYS = 150;
-
-const SECTION_CONFIG = [
-  { key:"changes", anchor:"sec-changes", title:"طلبات التغيير", en:"Change Requests", type:"طلبات التغيير", color:"#159a68", icon:"✎", showDays:true },
-  { key:"issues", anchor:"sec-issues", title:"المشاكل", en:"Incidents", type:"مشكلة", color:"#f04466", icon:"⚠", showDays:false },
-  { key:"meetings", anchor:"sec-meetings", title:"الاجتماعات", en:"Meetings", type:"اجتماع", color:"#2489ff", icon:"👥", showDays:false },
-  { key:"studies", anchor:"sec-studies", title:"الدراسات الفنية", en:"Technical Studies", type:"دراسة فنية", color:"#7b4ef6", icon:"💡", showDays:false }
+const $=id=>document.getElementById(id);
+const TOTAL_DAYS=150;
+const SECTION_CONFIG=[
+ {key:"changes",anchor:"sec-changes",title:"طلبات التغيير",type:"طلبات التغيير",color:"#2489ff",icon:"▣"},
+ {key:"issues",anchor:"sec-issues",title:"مشاكل تم حلها",type:"مشكلة",color:"#159a68",icon:"✓"},
+ {key:"meetings",anchor:"sec-meetings",title:"الاجتماعات",type:"اجتماع",color:"#ff7f1f",icon:"●"},
+ {key:"studies",anchor:"sec-studies",title:"الدراسات الفنية",type:"دراسة فنية",color:"#7b4ef6",icon:"◉"}
 ];
+const SYSTEM_COLORS={"خدمات التكامل":"#2489ff","بوابة خدماتي":"#ff981f","اتصالات إدارية":"#a0acbd","الموارد البشرية":"#f5c044","ERP":"#8256ff"};
+const SYSTEM_BG={"خدمات التكامل":"#e8f1ff","بوابة خدماتي":"#fff0e2","اتصالات إدارية":"#edf2f7","الموارد البشرية":"#fff6df","ERP":"#f1ebff"};
+const SYSTEM_LOGO={"خدمات التكامل":"≡","بوابة خدماتي":"⌂","اتصالات إدارية":"▣","الموارد البشرية":"●","ERP":"▤"};
+const TYPE_BADGES={"طلبات التغيير":{bg:"#e5f0ff",color:"#2489ff"},"مشكلة":{bg:"#e3f5ec",color:"#159a68"},"اجتماع":{bg:"#fff0e2",color:"#ff7f1f"},"دراسة فنية":{bg:"#f1ebff",color:"#7b4ef6"},"دعم فني":{bg:"#eef2f7",color:"#5d6f83"}};
+let ALL_ROWS=[],CURRENT_ROWS=[];
 
-const SYSTEM_COLORS = {
-  "خدمات التكامل":"#2489ff",
-  "بوابة خدماتي":"#ff981f",
-  "اتصالات إدارية":"#a0acbd",
-  "الموارد البشرية":"#f5c044",
-  "ERP":"#8256ff"
-};
+const fmt=n=>new Intl.NumberFormat("en-US",{maximumFractionDigits:2}).format(Number(n||0));
+const fmtDate=v=>{if(!v)return"—";const d=new Date(v);if(isNaN(d))return String(v);return d.toLocaleDateString("ar-SA",{year:"numeric",month:"2-digit",day:"2-digit"})};
 
-const TILE_BACKGROUNDS = {
-  "خدمات التكامل":"#e8f1ff",
-  "بوابة خدماتي":"#fff0e2",
-  "اتصالات إدارية":"#edf2f7",
-  "الموارد البشرية":"#fff6df",
-  "ERP":"#f1ebff"
-};
-
-const TYPE_BADGES = {
-  "طلبات التغيير": {bg:"#e3f5ec", color:"#159a68"},
-  "مشكلة": {bg:"#fde7ec", color:"#f04466"},
-  "اجتماع": {bg:"#e6f0ff", color:"#2489ff"},
-  "دراسة فنية": {bg:"#ece5ff", color:"#7b4ef6"},
-  "دعم فني": {bg:"#eef2f7", color:"#5d6f83"}
-};
-
-let ALL_ROWS = [];
-let CURRENT_ROWS = [];
-
-const fmt = n => new Intl.NumberFormat("en-US", {maximumFractionDigits:2}).format(Number(n||0));
-const fmtDate = v => {
-  if(!v) return "—";
-  const d = new Date(v);
-  if(isNaN(d)) return String(v);
-  return d.toLocaleDateString("ar-SA",{year:"numeric",month:"2-digit",day:"2-digit"});
-};
-
-function hexToRgba(hex, alpha){
-  const clean = hex.replace("#","");
-  const bigint = parseInt(clean,16);
-  const r = (bigint >> 16) & 255;
-  const g = (bigint >> 8) & 255;
-  const b = bigint & 255;
-  return `rgba(${r},${g},${b},${alpha})`;
-}
-
-function shadeColor(color, percent){
-  const num = parseInt(color.slice(1),16),
-        amt = Math.round(2.55 * percent),
-        R = (num >> 16) + amt,
-        G = (num >> 8 & 0x00FF) + amt,
-        B = (num & 0x0000FF) + amt;
-  return "#" + (
-    0x1000000 +
-    (R<255?(R<1?0:R):255)*0x10000 +
-    (G<255?(G<1?0:G):255)*0x100 +
-    (B<255?(B<1?0:B):255)
-  ).toString(16).slice(1);
-}
-
-function grouped(rows, mode="count"){
-  const obj = {};
-  rows.forEach(r => {
-    const key = r.tag || "غير محدد";
-    const add = mode === "cost" ? Number(r.cost || 0) : 1;
-    obj[key] = (obj[key] || 0) + add;
-  });
-  return Object.entries(obj).sort((a,b)=>b[1]-a[1]);
-}
+function grouped(rows,mode="count"){const obj={};rows.forEach(r=>{const k=r.tag||"غير محدد";const add=mode==="cost"?Number(r.cost||0):1;obj[k]=(obj[k]||0)+add});return Object.entries(obj).sort((a,b)=>b[1]-a[1])}
+function shadeColor(color,percent){const num=parseInt(color.slice(1),16),amt=Math.round(2.55*percent),R=(num>>16)+amt,G=(num>>8&255)+amt,B=(num&255)+amt;return"#"+(0x1000000+(R<255?(R<1?0:R):255)*0x10000+(G<255?(G<1?0:G):255)*0x100+(B<255?(B<1?0:B):255)).toString(16).slice(1)}
+function fillFilter(rows){const cur=$("tagFilter").value;const tags=[...new Set(rows.map(r=>r.tag).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"ar"));$("tagFilter").innerHTML='<option value="">جميع الأنظمة</option>'+tags.map(t=>`<option value="${t}">${t}</option>`).join("");if(tags.includes(cur))$("tagFilter").value=cur}
+function currentRows(){const tag=$("tagFilter").value;return ALL_ROWS.filter(r=>!tag||r.tag===tag)}
 
 function buildSections(){
-  const host = $("sectionsHost");
-  host.innerHTML = "";
-  SECTION_CONFIG.forEach(sec => {
-    const section = document.createElement("section");
-    section.className = "section";
-    section.id = sec.anchor;
-    section.innerHTML = `
-      <div class="section-top">
-        <div class="card pad summary">
-          <div class="summary-head">
-            <div class="summary-title">
-              <div class="summary-icon" style="background:${hexToRgba(sec.color,.12)}; color:${sec.color}">${sec.icon}</div>
-              <div>
-                <h3>${sec.title}</h3>
-                <small>${sec.en}</small>
-              </div>
-            </div>
-          </div>
-          ${sec.showDays ? `
-          <div class="days-card">
-            <div class="top">
-              <div class="days-mini" id="daysDonut"><b id="daysPct">0%</b></div>
-              <div class="days-data">
-                <div class="big"><span id="daysUsed">0</span> من 150 يوم</div>
-                <div class="sub"><span id="daysRemain">0</span> يوم متبقي</div>
-              </div>
-            </div>
-            <div class="days-progress"><div class="fill" id="daysFill"></div></div>
-            <div class="days-stats">
-              <div><b id="daysUsed2">0</b><span>يوم مستنفذ</span></div>
-              <div style="text-align:left"><b>150</b><span>إجمالي الأيام</span></div>
-            </div>
-          </div>
-          ` : ``}
-          <div class="summary-body">
-            <div class="donut" id="donut-${sec.key}" style="--c1:${sec.color};--c2:${hexToRgba(sec.color,.85)};--c3:${hexToRgba(sec.color,.7)};--c4:${hexToRgba(sec.color,.55)};--c5:${hexToRgba(sec.color,.35)}">
-              <div class="donut-content">
-                <div class="donut-num" id="total-${sec.key}">0</div>
-                <div class="donut-text">إجمالي العدد</div>
-              </div>
-            </div>
-            <div class="legend" id="legend-${sec.key}"></div>
-          </div>
-          <div class="summary-footer">
-            <a class="link-btn" href="#details">عرض التفاصيل</a>
-          </div>
-        </div>
-
-        <div class="card pad chart-card">
-          <div class="chart-head">
-            <div class="card-title">عدد ${sec.title} (مقسمة بالأنظمة)</div>
-            <div class="card-sub">حسب الحقول الموجودة في Tags</div>
-          </div>
-          <div class="y-scale" id="scale-${sec.key}"></div>
-          <div class="chart-area" id="bars-${sec.key}"></div>
-        </div>
-      </div>
-
-      <div class="card dist-card">
-        <div class="card-title">التوزيع حسب الأنظمة</div>
-        <div class="dist-grid" id="dist-${sec.key}"></div>
-      </div>
-    `;
-    host.appendChild(section);
-  });
-}
-
-function fillSystemFilter(rows){
-  const current = $("tagFilter").value;
-  const tags = [...new Set(rows.map(r => r.tag).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"ar"));
-  $("tagFilter").innerHTML = '<option value="">جميع الأنظمة</option>' + tags.map(t => `<option value="${t}">${t}</option>`).join("");
-  if(tags.includes(current)) $("tagFilter").value = current;
-}
-
-function currentRows(){
-  const tag = $("tagFilter").value;
-  return ALL_ROWS.filter(r => !tag || r.tag === tag);
-}
-
-function renderScale(key, maxVal){
-  const host = $("scale-"+key);
-  const points = 4;
-  const values = [];
-  for(let i=0;i<=points;i++) values.push(fmt((maxVal/points)*i));
-  host.innerHTML = values.reverse().map(v => `<span>${v}</span>`).join("");
-}
-
-function renderBars(key, rows){
-  const host = $("bars-"+key);
-  host.innerHTML = "";
-  if(!rows.length){
-    $("scale-"+key).innerHTML = "";
-    host.innerHTML = `<div class="muted" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%">لا توجد بيانات</div>`;
-    return;
-  }
-  const maxVal = Math.max(...rows.map(x => Number(x[1]||0)), 1);
-  renderScale(key, maxVal);
-  const maxPx = 150;
-  rows.forEach(([name,val]) => {
-    const h = Math.max((Number(val) / maxVal) * maxPx, 6);
-    const bar = document.createElement("div");
-    bar.className = "vbar";
-    bar.innerHTML = `
-      <div class="vbar-value">${fmt(val)}</div>
-      <div class="vbar-col" style="height:${h}px;background:linear-gradient(180deg,${SYSTEM_COLORS[name] || '#2489ff'},${shadeColor(SYSTEM_COLORS[name] || '#2489ff', -12)})"></div>
-      <div class="vbar-label">${name}</div>
-    `;
-    host.appendChild(bar);
-  });
-}
-
-function renderLegend(key, rows, colorFallback){
-  const total = rows.reduce((a,b)=>a + Number(b[1] || 0), 0);
-  const host = $("legend-"+key);
-  host.innerHTML = rows.map(([name,val]) => `
-    <div class="legend-row">
-      <div class="legend-name"><span class="legend-dot" style="background:${SYSTEM_COLORS[name] || colorFallback}"></span>${name}</div>
-      <div class="legend-val">${fmt(val)}</div>
+ const host=$("sectionsHost");host.innerHTML="";
+ SECTION_CONFIG.forEach(sec=>{
+   const s=document.createElement("section");s.className="section-row";s.id=sec.anchor;s.style.setProperty("--accent",sec.color);
+   s.innerHTML=`
+    <div class="section-summary">
+      <div class="section-icon" style="background:${sec.color}18;color:${sec.color}">${sec.icon}</div>
+      <div class="section-title">${sec.title}</div>
+      <div class="section-count" id="total-${sec.key}">0</div>
     </div>
-  `).join("");
-
-  let start = 0;
-  const parts = rows.map(([name,val]) => {
-    const deg = total ? (val / total) * 360 : 0;
-    const s = `${SYSTEM_COLORS[name] || colorFallback} ${start}deg ${start + deg}deg`;
-    start += deg;
-    return s;
-  });
-  if(start < 360) parts.push(`#dbe5ef ${start}deg 360deg`);
-  $("donut-"+key).style.background = `conic-gradient(${parts.join(",")})`;
+    <div class="section-chart">
+      <div class="chart-head"><div class="chart-title">عدد ${sec.title} حسب الأنظمة</div><div class="chart-sub">حسب Tags</div></div>
+      <div class="y-scale" id="scale-${sec.key}"></div>
+      <div class="chart-area" id="bars-${sec.key}"></div>
+    </div>
+    <div class="section-dist">
+      <div class="dist-title">التوزيع حسب الأنظمة</div>
+      <div class="dist-list" id="dist-${sec.key}"></div>
+    </div>`;
+   host.appendChild(s);
+ });
 }
 
-function renderDistTiles(key, rows){
-  const host = $("dist-"+key);
-  host.innerHTML = "";
-  if(!rows.length){
-    host.innerHTML = `<div class="muted">لا توجد بيانات</div>`;
-    return;
-  }
-  rows.forEach(([name,val]) => {
-    const item = document.createElement("div");
-    item.className = "dist-item";
-    item.style.background = TILE_BACKGROUNDS[name] || "#f5f8fc";
-    item.innerHTML = `
-      <div class="num" style="color:${SYSTEM_COLORS[name] || '#2489ff'}">${fmt(val)}</div>
-      <div class="label">${name}</div>
-    `;
-    host.appendChild(item);
-  });
+function renderScale(key,maxVal){const vals=[];for(let i=0;i<=4;i++)vals.push(fmt((maxVal/4)*i));$("scale-"+key).innerHTML=vals.reverse().map(v=>`<span>${v}</span>`).join("")}
+function renderBars(key,rows){
+ const host=$("bars-"+key);host.innerHTML="";
+ if(!rows.length){$("scale-"+key).innerHTML="";host.innerHTML='<div class="muted" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%">لا توجد بيانات</div>';return}
+ const max=Math.max(...rows.map(x=>Number(x[1]||0)),1);renderScale(key,max);const maxPx=130;
+ rows.forEach(([name,val])=>{const h=Math.max((Number(val)/max)*maxPx,6);const b=document.createElement("div");b.className="vbar";b.innerHTML=`<div class="vbar-value">${fmt(val)}</div><div class="vbar-col" style="height:${h}px;background:linear-gradient(180deg,${SYSTEM_COLORS[name]||"#2489ff"},${shadeColor(SYSTEM_COLORS[name]||"#2489ff",-12)})"></div><div class="vbar-label">${name}</div>`;host.appendChild(b)})
 }
-
-function renderDays(rows){
-  const used = rows.reduce((a,b)=>a + Number(b.cost || 0), 0);
-  const pct = Math.min((used / TOTAL_DAYS) * 100, 100);
-  const deg = (pct / 100) * 360;
-  const remain = Math.max(TOTAL_DAYS - used, 0);
-  if($("daysDonut")){
-    $("daysDonut").style.background = `conic-gradient(var(--change) 0deg ${deg}deg, #dce6df ${deg}deg 360deg)`;
-    $("daysPct").textContent = `${fmt(pct)}%`;
-    $("daysUsed").textContent = fmt(used);
-    $("daysUsed2").textContent = fmt(used);
-    $("daysRemain").textContent = fmt(remain);
-    $("daysFill").style.width = `${pct}%`;
-  }
+function renderDist(key,rows){
+ const host=$("dist-"+key);host.innerHTML="";
+ rows.forEach(([name,val])=>{const d=document.createElement("div");d.className="dist-item";d.innerHTML=`<div class="logo" style="background:${SYSTEM_BG[name]||"#f4f7fb"};color:${SYSTEM_COLORS[name]||"#2489ff"}">${SYSTEM_LOGO[name]||"•"}</div><div class="dist-name">${name}</div><div class="dist-val">${fmt(val)}</div>`;host.appendChild(d)});
+ if(!rows.length)host.innerHTML='<div class="muted">لا توجد بيانات</div>'
 }
-
-function renderSection(sec){
-  const data = CURRENT_ROWS.filter(r => r.type === sec.type);
-  const total = data.length;
-  $("total-"+sec.key).textContent = fmt(total);
-  const dist = grouped(data);
-  renderLegend(sec.key, dist, sec.color);
-  renderBars(sec.key, dist);
-  renderDistTiles(sec.key, dist);
-  if(sec.showDays) renderDays(data);
+function renderSection(sec){const data=CURRENT_ROWS.filter(r=>r.type===sec.type);$("total-"+sec.key).textContent=fmt(data.length);const dist=grouped(data);renderBars(sec.key,dist);renderDist(sec.key,dist)}
+function renderKpis(){
+ const changes=CURRENT_ROWS.filter(r=>r.type==="طلبات التغيير");
+ const issues=CURRENT_ROWS.filter(r=>r.type==="مشكلة");
+ const meetings=CURRENT_ROWS.filter(r=>r.type==="اجتماع");
+ const studies=CURRENT_ROWS.filter(r=>r.type==="دراسة فنية");
+ $("kChange").textContent=fmt(changes.length);$("kIssue").textContent=fmt(issues.length);$("kMeeting").textContent=fmt(meetings.length);$("kStudy").textContent=fmt(studies.length);
+ const used=changes.reduce((a,b)=>a+Number(b.cost||0),0),pct=Math.min((used/TOTAL_DAYS)*100,100),deg=(pct/100)*360,remain=Math.max(TOTAL_DAYS-used,0);
+ $("kDays").textContent=fmt(used);$("kDayPct").textContent=fmt(pct)+"%";$("kRemain").textContent=fmt(remain);$("kDayBar").style.width=pct+"%";$("kDayRing").style.background=`conic-gradient(var(--pink) 0deg ${deg}deg,#f5dfe7 ${deg}deg 360deg)`
 }
-
 function renderTable(rows){
-  const q = $("searchBox").value.trim().toLowerCase();
-  const filtered = rows.filter(r => {
-    const hay = `${r.title||""} ${r.tag||""} ${r.type||""} ${r.state||""}`.toLowerCase();
-    return !q || hay.includes(q);
-  });
-  $("tableCount").textContent = `${fmt(filtered.length)} سجل`;
-  $("tbody").innerHTML = filtered.map(r => {
-    const st = TYPE_BADGES[r.type] || {bg:"#eef2f7", color:"#5d6f83"};
-    return `
-      <tr>
-        <td>${r.id ?? "—"}</td>
-        <td><span class="badge" style="background:${st.bg}; color:${st.color}">${r.type || "—"}</span></td>
-        <td>${r.title || "—"}</td>
-        <td>${r.state || "—"}</td>
-        <td>${r.tag || "—"}</td>
-        <td>${fmtDate(r.doneDate)}</td>
-        <td>${r.cost ? fmt(r.cost) : '<span class="muted">—</span>'}</td>
-      </tr>`;
-  }).join("");
+ const q=$("searchBox").value.trim().toLowerCase();const filtered=rows.filter(r=>{const hay=`${r.title||""} ${r.tag||""} ${r.type||""} ${r.state||""}`.toLowerCase();return!q||hay.includes(q)});
+ $("tableCount").textContent=fmt(filtered.length)+" سجل";$("tbody").innerHTML=filtered.map(r=>{const st=TYPE_BADGES[r.type]||{bg:"#eef2f7",color:"#5d6f83"};return`<tr><td>${r.id??"—"}</td><td><span class="badge" style="background:${st.bg};color:${st.color}">${r.type||"—"}</span></td><td>${r.title||"—"}</td><td>${r.state||"—"}</td><td>${r.tag||"—"}</td><td>${fmtDate(r.doneDate)}</td><td>${r.cost?fmt(r.cost):'<span class="muted">—</span>'}</td></tr>`}).join("")
 }
-
-function update(){
-  CURRENT_ROWS = currentRows();
-  SECTION_CONFIG.forEach(renderSection);
-  renderTable(CURRENT_ROWS);
-}
-
+function update(){CURRENT_ROWS=currentRows();renderKpis();SECTION_CONFIG.forEach(renderSection);renderTable(CURRENT_ROWS)}
 async function loadData(showStatus=true){
-  try{
-    if(showStatus) $("dataStatus").textContent = "جارٍ تحميل البيانات...";
-    const res = await fetch("/api/data", {cache:"no-store"});
-    const payload = await res.json();
-    if(!res.ok) throw new Error(payload.details || payload.error || "خطأ غير معروف");
-    ALL_ROWS = payload.data || [];
-    fillSystemFilter(ALL_ROWS);
-    update();
-    $("lastUpdated").textContent = fmtDate(payload.updatedAt);
-    $("dataStatus").textContent = `تم تحميل ${fmt(ALL_ROWS.length)} سجل بنجاح`;
-  }catch(err){
-    console.error(err);
-    $("dataStatus").textContent = "تعذر قراءة البيانات من الخادم";
-  }
+ try{if(showStatus)$("dataStatus").textContent="جارٍ تحميل البيانات...";const res=await fetch("/api/data",{cache:"no-store"});const p=await res.json();if(!res.ok)throw new Error(p.details||p.error||"خطأ");ALL_ROWS=p.data||[];fillFilter(ALL_ROWS);update();$("lastUpdated").textContent=fmtDate(p.updatedAt);$("dataStatus").textContent=`تم تحميل ${fmt(ALL_ROWS.length)} سجل بنجاح`}
+ catch(e){console.error(e);$("dataStatus").textContent="تعذر قراءة البيانات من الخادم"}
 }
+function setupSidebar(){const key="dashboard_sidebar_collapsed_final";if(localStorage.getItem(key)==="1")$("layout").classList.add("collapsed");$("sidebarToggle").addEventListener("click",()=>{$("layout").classList.toggle("collapsed");localStorage.setItem(key,$("layout").classList.contains("collapsed")?"1":"0")})}
 
-function setupSidebarToggle(){
-  const key = "dashboard_sidebar_collapsed";
-  const saved = localStorage.getItem(key);
-  if(saved === "1") $("layout").classList.add("collapsed");
-  $("sidebarToggle").addEventListener("click", ()=>{
-    $("layout").classList.toggle("collapsed");
-    localStorage.setItem(key, $("layout").classList.contains("collapsed") ? "1" : "0");
-  });
+function standaloneHtml(title){
+ const style=document.querySelector("style").outerHTML;
+ const data=JSON.stringify(ALL_ROWS);
+ const initialTag=JSON.stringify($("tagFilter").value);
+ const initialSearch=JSON.stringify($("searchBox").value||"");
+ const safe=String(title||"لوحة المتابعة").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+ const body=document.querySelector(".layout").outerHTML;
+ const script=`
+const $=id=>document.getElementById(id);
+const TOTAL_DAYS=150;
+const SECTION_CONFIG=${JSON.stringify(SECTION_CONFIG)};
+const SYSTEM_COLORS=${JSON.stringify(SYSTEM_COLORS)};
+const SYSTEM_BG=${JSON.stringify(SYSTEM_BG)};
+const SYSTEM_LOGO=${JSON.stringify(SYSTEM_LOGO)};
+const TYPE_BADGES=${JSON.stringify(TYPE_BADGES)};
+let ALL_ROWS=${data},CURRENT_ROWS=[];
+const INITIAL_TAG=${initialTag},INITIAL_SEARCH=${initialSearch};
+const fmt=n=>new Intl.NumberFormat("en-US",{maximumFractionDigits:2}).format(Number(n||0));
+const fmtDate=v=>{if(!v)return"—";const d=new Date(v);if(isNaN(d))return String(v);return d.toLocaleDateString("ar-SA",{year:"numeric",month:"2-digit",day:"2-digit"})};
+function grouped(rows,mode="count"){const obj={};rows.forEach(r=>{const k=r.tag||"غير محدد";const add=mode==="cost"?Number(r.cost||0):1;obj[k]=(obj[k]||0)+add});return Object.entries(obj).sort((a,b)=>b[1]-a[1])}
+function shadeColor(color,percent){const num=parseInt(color.slice(1),16),amt=Math.round(2.55*percent),R=(num>>16)+amt,G=(num>>8&255)+amt,B=(num&255)+amt;return"#"+(0x1000000+(R<255?(R<1?0:R):255)*0x10000+(G<255?(G<1?0:G):255)*0x100+(B<255?(B<1?0:B):255)).toString(16).slice(1)}
+function fillFilter(rows){const tags=[...new Set(rows.map(r=>r.tag).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"ar"));$("tagFilter").innerHTML='<option value="">جميع الأنظمة</option>'+tags.map(t=>'<option value="'+t+'">'+t+'</option>').join("");$("tagFilter").value=INITIAL_TAG||""}
+function currentRows(){const tag=$("tagFilter").value;return ALL_ROWS.filter(r=>!tag||r.tag===tag)}
+function buildSections(){const host=$("sectionsHost");host.innerHTML="";SECTION_CONFIG.forEach(sec=>{const s=document.createElement("section");s.className="section-row";s.id=sec.anchor;s.style.setProperty("--accent",sec.color);s.innerHTML='<div class="section-summary"><div class="section-icon" style="background:'+sec.color+'18;color:'+sec.color+'">'+sec.icon+'</div><div class="section-title">'+sec.title+'</div><div class="section-count" id="total-'+sec.key+'">0</div></div><div class="section-chart"><div class="chart-head"><div class="chart-title">عدد '+sec.title+' حسب الأنظمة</div><div class="chart-sub">حسب Tags</div></div><div class="y-scale" id="scale-'+sec.key+'"></div><div class="chart-area" id="bars-'+sec.key+'"></div></div><div class="section-dist"><div class="dist-title">التوزيع حسب الأنظمة</div><div class="dist-list" id="dist-'+sec.key+'"></div></div>';host.appendChild(s)})}
+function renderScale(key,maxVal){const vals=[];for(let i=0;i<=4;i++)vals.push(fmt((maxVal/4)*i));$("scale-"+key).innerHTML=vals.reverse().map(v=>'<span>'+v+'</span>').join("")}
+function renderBars(key,rows){const host=$("bars-"+key);host.innerHTML="";if(!rows.length){$("scale-"+key).innerHTML="";host.innerHTML='<div class="muted" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%">لا توجد بيانات</div>';return}const max=Math.max(...rows.map(x=>Number(x[1]||0)),1);renderScale(key,max);const maxPx=130;rows.forEach(([name,val])=>{const h=Math.max((Number(val)/max)*maxPx,6);const b=document.createElement("div");b.className="vbar";b.innerHTML='<div class="vbar-value">'+fmt(val)+'</div><div class="vbar-col" style="height:'+h+'px;background:linear-gradient(180deg,'+(SYSTEM_COLORS[name]||"#2489ff")+','+shadeColor(SYSTEM_COLORS[name]||"#2489ff",-12)+')"></div><div class="vbar-label">'+name+'</div>';host.appendChild(b)})}
+function renderDist(key,rows){const host=$("dist-"+key);host.innerHTML="";rows.forEach(([name,val])=>{const d=document.createElement("div");d.className="dist-item";d.innerHTML='<div class="logo" style="background:'+(SYSTEM_BG[name]||"#f4f7fb")+';color:'+(SYSTEM_COLORS[name]||"#2489ff")+'">'+(SYSTEM_LOGO[name]||"•")+'</div><div class="dist-name">'+name+'</div><div class="dist-val">'+fmt(val)+'</div>';host.appendChild(d)});if(!rows.length)host.innerHTML='<div class="muted">لا توجد بيانات</div>'}
+function renderSection(sec){const data=CURRENT_ROWS.filter(r=>r.type===sec.type);$("total-"+sec.key).textContent=fmt(data.length);const dist=grouped(data);renderBars(sec.key,dist);renderDist(sec.key,dist)}
+function renderKpis(){const changes=CURRENT_ROWS.filter(r=>r.type==="طلبات التغيير"),issues=CURRENT_ROWS.filter(r=>r.type==="مشكلة"),meetings=CURRENT_ROWS.filter(r=>r.type==="اجتماع"),studies=CURRENT_ROWS.filter(r=>r.type==="دراسة فنية");$("kChange").textContent=fmt(changes.length);$("kIssue").textContent=fmt(issues.length);$("kMeeting").textContent=fmt(meetings.length);$("kStudy").textContent=fmt(studies.length);const used=changes.reduce((a,b)=>a+Number(b.cost||0),0),pct=Math.min((used/TOTAL_DAYS)*100,100),deg=(pct/100)*360,remain=Math.max(TOTAL_DAYS-used,0);$("kDays").textContent=fmt(used);$("kDayPct").textContent=fmt(pct)+"%";$("kRemain").textContent=fmt(remain);$("kDayBar").style.width=pct+"%";$("kDayRing").style.background='conic-gradient(var(--pink) 0deg '+deg+'deg,#f5dfe7 '+deg+'deg 360deg)'}
+function renderTable(rows){const q=$("searchBox").value.trim().toLowerCase();const filtered=rows.filter(r=>{const hay=(String(r.title||"")+" "+String(r.tag||"")+" "+String(r.type||"")+" "+String(r.state||"")).toLowerCase();return!q||hay.includes(q)});$("tableCount").textContent=fmt(filtered.length)+" سجل";$("tbody").innerHTML=filtered.map(r=>{const st=TYPE_BADGES[r.type]||{bg:"#eef2f7",color:"#5d6f83"};return'<tr><td>'+(r.id??"—")+'</td><td><span class="badge" style="background:'+st.bg+';color:'+st.color+'">'+(r.type||"—")+'</span></td><td>'+(r.title||"—")+'</td><td>'+(r.state||"—")+'</td><td>'+(r.tag||"—")+'</td><td>'+fmtDate(r.doneDate)+'</td><td>'+(r.cost?fmt(r.cost):'<span class="muted">—</span>')+'</td></tr>'}).join("")}
+function update(){CURRENT_ROWS=currentRows();renderKpis();SECTION_CONFIG.forEach(renderSection);renderTable(CURRENT_ROWS)}
+function setupSidebar(){const key="export_sidebar";if(localStorage.getItem(key)==="1")$("layout").classList.add("collapsed");$("sidebarToggle").addEventListener("click",()=>{$("layout").classList.toggle("collapsed");localStorage.setItem(key,$("layout").classList.contains("collapsed")?"1":"0")})}
+document.title=${json.dumps(safe, ensure_ascii=False)};
+$("pageTitle").textContent=${json.dumps(safe, ensure_ascii=False)};
+if($("exportBtn"))$("exportBtn").remove();
+if($("uploadBtn"))$("uploadBtn").remove();
+if($("excelFile"))$("excelFile").remove();
+if($("refreshBtn"))$("refreshBtn").style.display="none";
+buildSections();fillFilter(ALL_ROWS);$("searchBox").value=INITIAL_SEARCH;$("tagFilter").addEventListener("change",update);$("resetBtn").addEventListener("click",()=>{$("tagFilter").value="";$("searchBox").value="";update()});$("searchBox").addEventListener("input",()=>renderTable(CURRENT_ROWS));setupSidebar();update();`;
+ return '<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+safe+'</title>'+style+'</head><body>'+body+'<script>'+script.replace(/<\/script>/g,'<\\/script>')+'<\/script></body></html>'
 }
+function exportHtml(){const t=prompt("اكتب عنوان لوحة المتابعة المصدّرة:",$("pageTitle").textContent)||$("pageTitle").textContent;const html=standaloneHtml(t.trim()||$("pageTitle").textContent);const blob=new Blob([html],{type:"text/html;charset=utf-8"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="dashboard_export.html";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1200)}
 
-function buildStandaloneHtml(customTitle){
-  const styleContent = document.querySelector("style").outerHTML;
-  const escapedTitle = String(customTitle || "لوحة المتابعة").replace(/</g,"&lt;").replace(/>/g,"&gt;");
-  const data = JSON.stringify(ALL_ROWS);
-  const selectedTag = JSON.stringify($("tagFilter").value);
-  const searchValue = JSON.stringify($("searchBox").value || "");
+$("tagFilter").addEventListener("change",update);
+$("refreshBtn").addEventListener("click",()=>loadData(true));
+$("resetBtn").addEventListener("click",()=>{$("tagFilter").value="";$("searchBox").value="";update()});
+$("searchBox").addEventListener("input",()=>renderTable(CURRENT_ROWS));
+$("exportBtn").addEventListener("click",exportHtml);
 
-  const exportScript = `
-const TOTAL_DAYS = 150;
-const SECTION_CONFIG = ${JSON.stringify(SECTION_CONFIG)};
-const SYSTEM_COLORS = ${JSON.stringify(SYSTEM_COLORS)};
-const TILE_BACKGROUNDS = ${JSON.stringify(TILE_BACKGROUNDS)};
-const TYPE_BADGES = ${JSON.stringify(TYPE_BADGES)};
-let ALL_ROWS = ${data};
-let CURRENT_ROWS = [];
-const INITIAL_TAG = ${selectedTag};
-const INITIAL_SEARCH = ${searchValue};
-const $ = id => document.getElementById(id);
-const fmt = n => new Intl.NumberFormat("en-US",{maximumFractionDigits:2}).format(Number(n||0));
-const fmtDate = v => { if(!v) return "—"; const d=new Date(v); if(isNaN(d)) return String(v); return d.toLocaleDateString("ar-SA",{year:"numeric",month:"2-digit",day:"2-digit"}); };
-function hexToRgba(hex, alpha){ const clean=hex.replace("#",""); const bigint=parseInt(clean,16); const r=(bigint>>16)&255; const g=(bigint>>8)&255; const b=bigint&255; return "rgba("+r+","+g+","+b+","+alpha+")"; }
-function shadeColor(color, percent){ const num=parseInt(color.slice(1),16), amt=Math.round(2.55*percent), R=(num>>16)+amt, G=(num>>8&255)+amt, B=(num&255)+amt; return "#" + (0x1000000 + (R<255?(R<1?0:R):255)*0x10000 + (G<255?(G<1?0:G):255)*0x100 + (B<255?(B<1?0:B):255)).toString(16).slice(1); }
-function grouped(rows, mode="count"){ const obj={}; rows.forEach(r=>{ const key=r.tag||"غير محدد"; const add=mode==="cost"?Number(r.cost||0):1; obj[key]=(obj[key]||0)+add;}); return Object.entries(obj).sort((a,b)=>b[1]-a[1]); }
-function buildSections(){ const host=$("sectionsHost"); host.innerHTML=""; SECTION_CONFIG.forEach(sec=>{ const section=document.createElement("section"); section.className="section"; section.id=sec.anchor; section.innerHTML=\`
-<div class="section-top">
-  <div class="card pad summary">
-    <div class="summary-head">
-      <div class="summary-title">
-        <div class="summary-icon" style="background:\${hexToRgba(sec.color,.12)}; color:\${sec.color}">\${sec.icon}</div>
-        <div><h3>\${sec.title}</h3><small>\${sec.en}</small></div>
-      </div>
-    </div>
-    \${sec.showDays ? \`
-    <div class="days-card">
-      <div class="top">
-        <div class="days-mini" id="daysDonut"><b id="daysPct">0%</b></div>
-        <div class="days-data">
-          <div class="big"><span id="daysUsed">0</span> من 150 يوم</div>
-          <div class="sub"><span id="daysRemain">0</span> يوم متبقي</div>
-        </div>
-      </div>
-      <div class="days-progress"><div class="fill" id="daysFill"></div></div>
-      <div class="days-stats">
-        <div><b id="daysUsed2">0</b><span>يوم مستنفذ</span></div>
-        <div style="text-align:left"><b>150</b><span>إجمالي الأيام</span></div>
-      </div>
-    </div>\` : "" }
-    <div class="summary-body">
-      <div class="donut" id="donut-\${sec.key}" style="--c1:\${sec.color};--c2:\${hexToRgba(sec.color,.85)};--c3:\${hexToRgba(sec.color,.7)};--c4:\${hexToRgba(sec.color,.55)};--c5:\${hexToRgba(sec.color,.35)}">
-        <div class="donut-content"><div class="donut-num" id="total-\${sec.key}">0</div><div class="donut-text">إجمالي العدد</div></div>
-      </div>
-      <div class="legend" id="legend-\${sec.key}"></div>
-    </div>
-    <div class="summary-footer"><a class="link-btn" href="#details">عرض التفاصيل</a></div>
-  </div>
-  <div class="card pad chart-card">
-    <div class="chart-head">
-      <div class="card-title">عدد \${sec.title} (مقسمة بالأنظمة)</div>
-      <div class="card-sub">حسب الحقول الموجودة في Tags</div>
-    </div>
-    <div class="y-scale" id="scale-\${sec.key}"></div>
-    <div class="chart-area" id="bars-\${sec.key}"></div>
-  </div>
-</div>
-<div class="card dist-card">
-  <div class="card-title">التوزيع حسب الأنظمة</div>
-  <div class="dist-grid" id="dist-\${sec.key}"></div>
-</div>\`; host.appendChild(section); }); }
-function fillSystemFilter(rows){ const tags=[...new Set(rows.map(r=>r.tag).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"ar")); $("tagFilter").innerHTML='<option value="">جميع الأنظمة</option>' + tags.map(t=>'<option value="'+t+'">'+t+'</option>').join(""); $("tagFilter").value = INITIAL_TAG || ""; }
-function currentRows(){ const tag=$("tagFilter").value; return ALL_ROWS.filter(r=>!tag || r.tag===tag); }
-function renderScale(key,maxVal){ const host=$("scale-"+key); const vals=[]; for(let i=0;i<=4;i++) vals.push(fmt((maxVal/4)*i)); host.innerHTML=vals.reverse().map(v=>'<span>'+v+'</span>').join(""); }
-function renderBars(key, rows){ const host=$("bars-"+key); host.innerHTML=""; if(!rows.length){ $("scale-"+key).innerHTML=""; host.innerHTML='<div class="muted" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%">لا توجد بيانات</div>'; return; } const maxVal=Math.max(...rows.map(x=>Number(x[1]||0)),1); renderScale(key,maxVal); const maxPx=150; rows.forEach(([name,val])=>{ const h=Math.max((Number(val)/maxVal)*maxPx,6); const bar=document.createElement("div"); bar.className="vbar"; bar.innerHTML='<div class="vbar-value">'+fmt(val)+'</div><div class="vbar-col" style="height:'+h+'px;background:linear-gradient(180deg,'+(SYSTEM_COLORS[name]||"#2489ff")+','+shadeColor((SYSTEM_COLORS[name]||"#2489ff"),-12)+')"></div><div class="vbar-label">'+name+'</div>'; host.appendChild(bar); }); }
-function renderLegend(key, rows, colorFallback){ const total=rows.reduce((a,b)=>a + Number(b[1]||0),0); const host=$("legend-"+key); host.innerHTML=rows.map(([name,val])=>'<div class="legend-row"><div class="legend-name"><span class="legend-dot" style="background:'+(SYSTEM_COLORS[name]||colorFallback)+'"></span>'+name+'</div><div class="legend-val">'+fmt(val)+'</div></div>').join(""); let start=0; const parts=rows.map(([name,val])=>{ const deg=total ? (val/total)*360 : 0; const s=(SYSTEM_COLORS[name]||colorFallback)+' '+start+'deg '+(start+deg)+'deg'; start += deg; return s; }); if(start<360) parts.push('#dbe5ef '+start+'deg 360deg'); $("donut-"+key).style.background='conic-gradient('+parts.join(",")+')'; }
-function renderDistTiles(key, rows){ const host=$("dist-"+key); host.innerHTML=""; if(!rows.length){ host.innerHTML='<div class="muted">لا توجد بيانات</div>'; return; } rows.forEach(([name,val])=>{ const item=document.createElement("div"); item.className='dist-item'; item.style.background=TILE_BACKGROUNDS[name]||'#f5f8fc'; item.innerHTML='<div class="num" style="color:'+(SYSTEM_COLORS[name]||"#2489ff")+'">'+fmt(val)+'</div><div class="label">'+name+'</div>'; host.appendChild(item); }); }
-function renderDays(rows){ const used=rows.reduce((a,b)=>a+Number(b.cost||0),0); const pct=Math.min((used/TOTAL_DAYS)*100,100); const deg=(pct/100)*360; const remain=Math.max(TOTAL_DAYS-used,0); if($("daysDonut")){ $("daysDonut").style.background='conic-gradient(var(--change) 0deg '+deg+'deg, #dce6df '+deg+'deg 360deg)'; $("daysPct").textContent=fmt(pct)+'%'; $("daysUsed").textContent=fmt(used); $("daysUsed2").textContent=fmt(used); $("daysRemain").textContent=fmt(remain); $("daysFill").style.width=pct+'%'; } }
-function renderSection(sec){ const data=CURRENT_ROWS.filter(r=>r.type===sec.type); $("total-"+sec.key).textContent=fmt(data.length); const dist=grouped(data); renderLegend(sec.key, dist, sec.color); renderBars(sec.key, dist); renderDistTiles(sec.key, dist); if(sec.showDays) renderDays(data); }
-function renderTable(rows){ const q=$("searchBox").value.trim().toLowerCase(); const filtered=rows.filter(r=>{ const hay=(String(r.title||"")+" "+String(r.tag||"")+" "+String(r.type||"")+" "+String(r.state||"")).toLowerCase(); return !q || hay.includes(q);}); $("tableCount").textContent=fmt(filtered.length)+' سجل'; $("tbody").innerHTML=filtered.map(r=>{ const st=TYPE_BADGES[r.type] || {bg:"#eef2f7", color:"#5d6f83"}; return '<tr><td>'+(r.id ?? "—")+'</td><td><span class="badge" style="background:'+st.bg+'; color:'+st.color+'">'+(r.type||"—")+'</span></td><td>'+(r.title||"—")+'</td><td>'+(r.state||"—")+'</td><td>'+(r.tag||"—")+'</td><td>'+fmtDate(r.doneDate)+'</td><td>'+(r.cost ? fmt(r.cost) : '<span class="muted">—</span>')+'</td></tr>'; }).join(""); }
-function update(){ CURRENT_ROWS=currentRows(); SECTION_CONFIG.forEach(renderSection); renderTable(CURRENT_ROWS); }
-function setupSidebarToggle(){ const key="dashboard_sidebar_collapsed_export"; const saved=localStorage.getItem(key); if(saved==="1") document.getElementById("layout").classList.add("collapsed"); document.getElementById("sidebarToggle").addEventListener("click",()=>{ document.getElementById("layout").classList.toggle("collapsed"); localStorage.setItem(key, document.getElementById("layout").classList.contains("collapsed") ? "1" : "0"); }); }
-document.getElementById("pageTitle").textContent=${JSON.stringify(escapedTitle)};
-document.getElementById("pageSubtitle").remove();
-document.getElementById("exportBtn").remove();
-document.getElementById("uploadBtn").remove();
-buildSections(); fillSystemFilter(ALL_ROWS); document.getElementById("searchBox").value = INITIAL_SEARCH; document.getElementById("tagFilter").addEventListener("change", update); document.getElementById("resetBtn").addEventListener("click",()=>{ document.getElementById("tagFilter").value=""; document.getElementById("searchBox").value=""; update();}); document.getElementById("refreshBtn").style.display="none"; document.getElementById("searchBox").addEventListener("input",()=>renderTable(CURRENT_ROWS)); update(); setupSidebarToggle();
-`;
-
-  return `<!doctype html>
-<html lang="ar" dir="rtl">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>${escapedTitle}</title>
-${styleContent}
-</head>
-<body>
-${document.querySelector(".layout").outerHTML}
-<script>${exportScript.replace(/<\/script>/g,'<\\/script>')}<\/script>
-</body>
-</html>`;
-}
-
-function exportStandaloneHtml(){
-  const title = prompt("اكتب عنوان ملف الـ HTML المصدّر:", $("pageTitle").textContent) || $("pageTitle").textContent;
-  const html = buildStandaloneHtml(title.trim() || $("pageTitle").textContent);
-  const blob = new Blob([html], {type:"text/html;charset=utf-8"});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "dashboard_export.html";
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  setTimeout(()=>URL.revokeObjectURL(url), 1500);
-}
-
-$("tagFilter").addEventListener("change", update);
-$("refreshBtn").addEventListener("click", ()=>loadData(true));
-$("resetBtn").addEventListener("click", ()=>{
-  $("tagFilter").value = "";
-  $("searchBox").value = "";
-  update();
+$("excelFile").addEventListener("change",async()=>{
+ const file=$("excelFile").files[0];if(!file)return;$("dataStatus").textContent=`جارٍ رفع ${file.name}...`;const old=$("uploadBtn").textContent;$("uploadBtn").textContent="جارٍ الرفع...";$("uploadBtn").style.pointerEvents="none";
+ try{const form=new FormData();form.append("excel",file);const res=await fetch("/api/upload-excel",{method:"POST",body:form});const p=await res.json();if(!res.ok)throw new Error(p.details||p.error||"فشل رفع الملف");$("dataStatus").textContent=`تم رفع الملف بنجاح - ${fmt(p.count)} سجل`;await loadData(false)}
+ catch(e){console.error(e);$("dataStatus").textContent="فشل رفع Excel";alert("تعذر تحديث البيانات:\n"+e.message)}
+ finally{$("excelFile").value="";$("uploadBtn").textContent=old;$("uploadBtn").style.pointerEvents="auto"}
 });
-$("searchBox").addEventListener("input", ()=>renderTable(CURRENT_ROWS));
-$("exportBtn").addEventListener("click", exportStandaloneHtml);
-
-$("excelFile").addEventListener("change", async ()=>{
-  const file = $("excelFile").files[0];
-  if(!file) return;
-  $("dataStatus").textContent = `جارٍ رفع ${file.name}...`;
-  const old = $("uploadBtn").textContent;
-  $("uploadBtn").textContent = "جارٍ الرفع...";
-  $("uploadBtn").style.pointerEvents = "none";
-  try{
-    const form = new FormData();
-    form.append("excel", file);
-    const res = await fetch("/api/upload-excel", {method:"POST", body:form});
-    const payload = await res.json();
-    if(!res.ok) throw new Error(payload.details || payload.error || "فشل رفع الملف");
-    $("dataStatus").textContent = `تم رفع الملف بنجاح - ${fmt(payload.count)} سجل`;
-    await loadData(false);
-  }catch(err){
-    console.error(err);
-    $("dataStatus").textContent = "فشل رفع Excel";
-    alert("تعذر تحديث البيانات:\n" + err.message);
-  }finally{
-    $("excelFile").value = "";
-    $("uploadBtn").textContent = old;
-    $("uploadBtn").style.pointerEvents = "auto";
-  }
-});
-
-function connectLiveUpdates(){
-  const es = new EventSource("/events");
-  es.addEventListener("excel-changed", async ()=>{
-    $("dataStatus").textContent = "تم اكتشاف تحديث للبيانات - جارٍ إعادة التحميل...";
-    await loadData(false);
-  });
-  es.onerror = ()=>console.warn("Live updates reconnecting...");
-}
-
-buildSections();
-setupSidebarToggle();
-loadData(true);
-connectLiveUpdates();
-setInterval(()=>loadData(false), 120000);
+function live(){const es=new EventSource("/events");es.addEventListener("excel-changed",async()=>{$("dataStatus").textContent="تم اكتشاف تحديث للبيانات - جارٍ إعادة التحميل...";await loadData(false)});es.onerror=()=>console.warn("reconnecting...")}
+buildSections();setupSidebar();loadData(true);live();setInterval(()=>loadData(false),120000);
 </script>
 </body>
 </html>
