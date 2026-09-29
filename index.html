@@ -67,15 +67,15 @@ body{
 }
 .kpi .meta{display:flex;flex-direction:column;gap:8px}.kpi .title{font-size:13px;font-weight:800;color:#203754}.kpi .value{font-size:32px;font-weight:900;color:#102a4b}
 .kpi .icon{width:54px;height:54px;border-radius:15px;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:900}
-.kpi.days{display:grid;grid-template-columns:82px 1fr;gap:12px}
-.day-ring{width:78px;height:78px;border-radius:50%;position:relative;background:conic-gradient(var(--pink) 0deg 130deg,#f5dfe7 130deg 360deg)}
-.day-ring:after{content:"";position:absolute;inset:12px;background:#fff;border-radius:50%;box-shadow:inset 0 0 0 1px #f2e7eb}
-.day-ring b{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:2;color:#e94273;font-size:18px}
+.kpi.days{display:grid;grid-template-columns:96px 1fr;gap:14px;align-items:center}
+.day-ring{width:90px;height:90px;border-radius:50%;position:relative;background:conic-gradient(var(--pink) 0deg 130deg,#f5dfe7 130deg 360deg);flex:0 0 auto}
+.day-ring:after{content:"";position:absolute;inset:14px;background:#fff;border-radius:50%;box-shadow:inset 0 0 0 1px #f2e7eb}
+.day-ring b{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:2;color:#e94273;font-size:16px;font-weight:900;white-space:nowrap;letter-spacing:-.4px;padding:0 5px}
 .day-info .big{font-size:23px;font-weight:900;color:#102a4b}.day-info .sub{font-size:11px;color:#6e7f94;margin-top:4px}.day-progress{height:9px;border-radius:999px;background:#e9edf4;overflow:hidden;margin-top:8px}.day-progress span{display:block;height:100%;background:linear-gradient(90deg,#f05283,#ff7aa3)}
-.section-list{display:flex;flex-direction:column;gap:14px}
+.section-list{display:flex;flex-direction:column;gap:24px}
 .section-row{
   background:linear-gradient(180deg,#fff,#fbfdff);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);
-  display:grid;grid-template-columns:280px 1fr 250px;gap:0;overflow:hidden;min-height:220px
+  display:grid;grid-template-columns:280px 1fr 250px;gap:0;overflow:hidden;min-height:220px;box-shadow:0 12px 30px rgba(16,24,40,.09)
 }
 .section-row.section-changes{background:linear-gradient(135deg,#eef6ff 0%,#ffffff 72%)}
 .section-row.section-issues{background:linear-gradient(135deg,#eefaf5 0%,#ffffff 72%)}
@@ -103,6 +103,12 @@ body{
 @media(max-width:1280px){.kpis{grid-template-columns:repeat(2,1fr)}.section-row{grid-template-columns:1fr}.section-summary,.section-chart{border-left:0;border-bottom:1px solid var(--line)}.toolbar{grid-template-columns:1fr 1fr}}
 @media(max-width:980px){.layout{display:block}.sidebar{display:none}}
 @media(max-width:720px){.main{padding:12px}.kpis{grid-template-columns:1fr}.toolbar{grid-template-columns:1fr}.header h1{font-size:23px}}
+
+.kpi .icon svg{width:28px;height:28px;display:block}
+.section-icon svg{width:27px;height:27px;display:block}
+.logo svg{width:17px;height:17px;display:block}
+.kpi .icon,.section-icon,.logo{line-height:0}
+
 </style>
 </head>
 <body>
@@ -127,10 +133,10 @@ body{
     </section>
 
     <section class="kpis">
-      <div class="kpi"><div class="meta"><div class="title">عدد طلبات التغيير</div><div class="value" id="kChange">0</div></div><div class="icon" style="background:#e5f0ff;color:#2489ff">▣</div></div>
-      <div class="kpi"><div class="meta"><div class="title">عدد مشاكل تم حلها</div><div class="value" id="kIssue">0</div></div><div class="icon" style="background:#e3f5ec;color:#159a68">✓</div></div>
-      <div class="kpi"><div class="meta"><div class="title">عدد الاجتماعات</div><div class="value" id="kMeeting">0</div></div><div class="icon" style="background:#fff0e2;color:#ff7f1f">●●</div></div>
-      <div class="kpi"><div class="meta"><div class="title">عدد الدراسات الفنية</div><div class="value" id="kStudy">0</div></div><div class="icon" style="background:#f1ebff;color:#7b4ef6">◉</div></div>
+      <div class="kpi"><div class="meta"><div class="title">عدد طلبات التغيير</div><div class="value" id="kChange">0</div></div><div class="icon" style="background:#e5f0ff;color:#2489ff"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 3h8l4 4v14H7z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M15 3v5h5M10 12h6M10 16h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></div></div>
+      <div class="kpi"><div class="meta"><div class="title">عدد مشاكل تم حلها</div><div class="value" id="kIssue">0</div></div><div class="icon" style="background:#e3f5ec;color:#159a68"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="m8 12 2.5 2.5L16.5 8.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+      <div class="kpi"><div class="meta"><div class="title">عدد الاجتماعات</div><div class="value" id="kMeeting">0</div></div><div class="icon" style="background:#fff0e2;color:#ff7f1f"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="9" cy="8" r="3" stroke="currentColor" stroke-width="1.8"/><circle cx="17" cy="9" r="2.4" stroke="currentColor" stroke-width="1.8"/><path d="M3.5 19c.4-4 2.5-6 5.5-6s5.1 2 5.5 6M14.5 14c3.3-.5 5.4 1.2 6 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></div></div>
+      <div class="kpi"><div class="meta"><div class="title">عدد الدراسات الفنية</div><div class="value" id="kStudy">0</div></div><div class="icon" style="background:#f1ebff;color:#7b4ef6"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 18h6M10 21h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M8.2 14.8A6 6 0 1 1 15.8 14.8C14.8 15.5 14.2 16.2 14 17h-4c-.2-.8-.8-1.5-1.8-2.2Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></div></div>
       <div class="kpi days">
         <div class="day-ring" id="kDayRing"><b id="kDayPct">0%</b></div>
         <div class="day-info"><div class="title">أيام التغيير المستنفذة</div><div class="big"><span id="kDays">0</span> من 150 يوم</div><div class="sub"><span id="kRemain">0</span> يوم متبقي</div><div class="day-progress"><span id="kDayBar"></span></div></div>
@@ -158,14 +164,14 @@ body{
 const $=id=>document.getElementById(id);
 const TOTAL_DAYS=150;
 const SECTION_CONFIG=[
- {key:"changes",anchor:"sec-changes",title:"طلبات التغيير",type:"طلبات التغيير",color:"#2489ff",icon:"▣"},
- {key:"issues",anchor:"sec-issues",title:"مشاكل تم حلها",type:"مشكلة",color:"#159a68",icon:"✓"},
- {key:"meetings",anchor:"sec-meetings",title:"الاجتماعات",type:"اجتماع",color:"#ff7f1f",icon:"●"},
- {key:"studies",anchor:"sec-studies",title:"الدراسات الفنية",type:"دراسة فنية",color:"#7b4ef6",icon:"◉"}
+ {key:"changes",anchor:"sec-changes",title:"طلبات التغيير",type:"طلبات التغيير",color:"#2489ff",icon:"<svg viewBox=\"0 0 24 24\" fill=\"none\" aria-hidden=\"true\"><path d=\"M7 3h8l4 4v14H7z\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linejoin=\"round\"/><path d=\"M15 3v5h5M10 12h6M10 16h4\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\"/></svg>"},
+ {key:"issues",anchor:"sec-issues",title:"مشاكل تم حلها",type:"مشكلة",color:"#159a68",icon:"<svg viewBox=\"0 0 24 24\" fill=\"none\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"9\" stroke=\"currentColor\" stroke-width=\"1.8\"/><path d=\"m8 12 2.5 2.5L16.5 8.5\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>"},
+ {key:"meetings",anchor:"sec-meetings",title:"الاجتماعات",type:"اجتماع",color:"#ff7f1f",icon:"<svg viewBox=\"0 0 24 24\" fill=\"none\" aria-hidden=\"true\"><circle cx=\"9\" cy=\"8\" r=\"3\" stroke=\"currentColor\" stroke-width=\"1.8\"/><circle cx=\"17\" cy=\"9\" r=\"2.4\" stroke=\"currentColor\" stroke-width=\"1.8\"/><path d=\"M3.5 19c.4-4 2.5-6 5.5-6s5.1 2 5.5 6M14.5 14c3.3-.5 5.4 1.2 6 4.5\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\"/></svg>"},
+ {key:"studies",anchor:"sec-studies",title:"الدراسات الفنية",type:"دراسة فنية",color:"#7b4ef6",icon:"<svg viewBox=\"0 0 24 24\" fill=\"none\" aria-hidden=\"true\"><path d=\"M9 18h6M10 21h4\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\"/><path d=\"M8.2 14.8A6 6 0 1 1 15.8 14.8C14.8 15.5 14.2 16.2 14 17h-4c-.2-.8-.8-1.5-1.8-2.2Z\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linejoin=\"round\"/></svg>"}
 ];
 const SYSTEM_COLORS={"خدمات التكامل":"#2489ff","بوابة خدماتي":"#ff981f","اتصالات إدارية":"#a0acbd","الموارد البشرية":"#f5c044","ERP":"#8256ff"};
 const SYSTEM_BG={"خدمات التكامل":"#e8f1ff","بوابة خدماتي":"#fff0e2","اتصالات إدارية":"#edf2f7","الموارد البشرية":"#fff6df","ERP":"#f1ebff"};
-const SYSTEM_LOGO={"خدمات التكامل":"≡","بوابة خدماتي":"⌂","اتصالات إدارية":"▣","الموارد البشرية":"●","ERP":"▤"};
+const SYSTEM_LOGO={"خدمات التكامل": "<svg viewBox=\"0 0 24 24\" fill=\"none\" aria-hidden=\"true\"><path d=\"M8 7h8M8 17h8M7 7a2 2 0 1 0-4 0 2 2 0 0 0 4 0Zm14 10a2 2 0 1 0-4 0 2 2 0 0 0 4 0Z\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\"/><path d=\"M18 7c2 0 3 1 3 3v2M6 17c-2 0-3-1-3-3v-2\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\"/></svg>", "بوابة خدماتي": "<svg viewBox=\"0 0 24 24\" fill=\"none\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"8\" r=\"3\" stroke=\"currentColor\" stroke-width=\"1.8\"/><path d=\"M6 20c.5-4 2.5-6 6-6s5.5 2 6 6\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\"/></svg>", "اتصالات إدارية": "<svg viewBox=\"0 0 24 24\" fill=\"none\" aria-hidden=\"true\"><rect x=\"5\" y=\"3\" width=\"14\" height=\"18\" rx=\"2\" stroke=\"currentColor\" stroke-width=\"1.8\"/><path d=\"M9 8h6M9 12h6M9 16h4\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\"/></svg>", "الموارد البشرية": "<svg viewBox=\"0 0 24 24\" fill=\"none\" aria-hidden=\"true\"><circle cx=\"9\" cy=\"8\" r=\"3\" stroke=\"currentColor\" stroke-width=\"1.8\"/><path d=\"M3.5 19c.4-4 2.4-6 5.5-6s5.1 2 5.5 6M16 10h5M18.5 7.5v5\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\"/></svg>", "ERP": "<svg viewBox=\"0 0 24 24\" fill=\"none\" aria-hidden=\"true\"><ellipse cx=\"12\" cy=\"6\" rx=\"7\" ry=\"3\" stroke=\"currentColor\" stroke-width=\"1.8\"/><path d=\"M5 6v6c0 1.7 3.1 3 7 3s7-1.3 7-3V6M5 12v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6\" stroke=\"currentColor\" stroke-width=\"1.8\"/></svg>", "عام": "<svg viewBox=\"0 0 24 24\" fill=\"none\" aria-hidden=\"true\"><rect x=\"4\" y=\"4\" width=\"16\" height=\"16\" rx=\"3\" stroke=\"currentColor\" stroke-width=\"1.8\"/><path d=\"M8 9h8M8 13h8M8 17h5\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\"/></svg>", "مستودعات": "<svg viewBox=\"0 0 24 24\" fill=\"none\" aria-hidden=\"true\"><rect x=\"4\" y=\"4\" width=\"16\" height=\"16\" rx=\"3\" stroke=\"currentColor\" stroke-width=\"1.8\"/><path d=\"M8 9h8M8 13h8M8 17h5\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\"/></svg>", "المشتريات": "<svg viewBox=\"0 0 24 24\" fill=\"none\" aria-hidden=\"true\"><rect x=\"4\" y=\"4\" width=\"16\" height=\"16\" rx=\"3\" stroke=\"currentColor\" stroke-width=\"1.8\"/><path d=\"M8 9h8M8 13h8M8 17h5\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\"/></svg>", "المالية": "<svg viewBox=\"0 0 24 24\" fill=\"none\" aria-hidden=\"true\"><rect x=\"4\" y=\"4\" width=\"16\" height=\"16\" rx=\"3\" stroke=\"currentColor\" stroke-width=\"1.8\"/><path d=\"M8 9h8M8 13h8M8 17h5\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\"/></svg>", "اجتماع دوري": "<svg viewBox=\"0 0 24 24\" fill=\"none\" aria-hidden=\"true\"><circle cx=\"9\" cy=\"8\" r=\"3\" stroke=\"currentColor\" stroke-width=\"1.8\"/><circle cx=\"17\" cy=\"9\" r=\"2.4\" stroke=\"currentColor\" stroke-width=\"1.8\"/><path d=\"M3.5 19c.4-4 2.5-6 5.5-6s5.1 2 5.5 6M14.5 14c3.3-.5 5.4 1.2 6 4.5\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\"/></svg>"};
 const TYPE_BADGES={"طلبات التغيير":{bg:"#e5f0ff",color:"#2489ff"},"مشكلة":{bg:"#e3f5ec",color:"#159a68"},"اجتماع":{bg:"#fff0e2",color:"#ff7f1f"},"دراسة فنية":{bg:"#f1ebff",color:"#7b4ef6"},"دعم فني":{bg:"#eef2f7",color:"#5d6f83"}};
 let ALL_ROWS=[],CURRENT_ROWS=[];
 
