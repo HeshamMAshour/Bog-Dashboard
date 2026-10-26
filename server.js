@@ -1,6 +1,6 @@
 const express = require("express");
 const multer = require("multer");
-const XLSX = require("xlsx");
+const { parse } = require("csv-parse/sync");
 const fs = require("fs");
 const path = require("path");
 
@@ -8,12 +8,12 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const ROOT = __dirname;
 
-// If a Render Persistent Disk is used, set DATA_FILE_PATH=/var/data/data.xlsx.
-// Otherwise the bundled data.xlsx is used (uploads can reset after service restart/redeploy).
-const SEED_EXCEL = path.join(ROOT, "data.xlsx");
+// If a Render Persistent Disk is used, set DATA_FILE_PATH=/var/data/data.csv.
+// Otherwise the bundled data.csv is used (uploads can reset after service restart/redeploy).
+const SEED_CSV = path.join(ROOT, "data.csv");
 const DATA_FILE = process.env.DATA_FILE_PATH
   ? path.resolve(process.env.DATA_FILE_PATH)
-  : SEED_EXCEL;
+  : SEED_CSV;
 
 const REQUIRED_COLUMNS = [
   "ID", "Work Item Type", "Title", "State", "Tags", "Done Date", "Cost"
@@ -23,24 +23,28 @@ function ensureDataFile() {
   const dir = path.dirname(DATA_FILE);
   fs.mkdirSync(dir, { recursive: true });
   if (!fs.existsSync(DATA_FILE)) {
-    fs.copyFileSync(SEED_EXCEL, DATA_FILE);
+    fs.copyFileSync(SEED_CSV, DATA_FILE);
     console.log(`[Data] Seed file copied to ${DATA_FILE}`);
   }
 }
 ensureDataFile();
 
-function readExcelData(filePath = DATA_FILE) {
-  const wb = XLSX.readFile(filePath, { cellDates: true });
-  const sheetName = wb.SheetNames.includes("data") ? "data" : wb.SheetNames[0];
-  const ws = wb.Sheets[sheetName];
-  const rows = XLSX.utils.sheet_to_json(ws, {
-    defval: null,
-    raw: false,
-    dateNF: "yyyy-mm-dd hh:mm:ss"
+function readCsvData(filePath = DATA_FILE) {
+  const records = parse(fs.readFileSync(filePath, "utf8"), {
+    bom: true,
+    skip_empty_lines: true
   });
-
-  return rows
-    .filter(r => r.ID !== null && r.ID !== undefined && r.ID !== "")
+  const headers = (records.shift() || []).map(value => value.trim());
+  const missing = REQUIRED_COLUMNS.filter(column => !headers.includes(column));
+  if (missing.length) {
+    throw new Error(`الأعمدة التالية غير موجودة: ${missing.join(", ")}`);
+  }
+  if (new Set(headers).size !== headers.length) {
+    throw new Error("ملف CSV يحتوي على أسماء أعمدة مكررة.");
+  }
+  return records
+    .map(values => Object.fromEntries(headers.map((header, i) => [header, values[i]])))
+    .filter(r => r.ID !== null && r.ID !== undefined && r.ID.trim() !== "")
     .map(r => ({
       id: r.ID,
       type: r["Work Item Type"] || "",
@@ -52,26 +56,10 @@ function readExcelData(filePath = DATA_FILE) {
     }));
 }
 
-function validateWorkbook(filePath) {
-  const wb = XLSX.readFile(filePath, { cellDates: true });
-  const sheetName = wb.SheetNames.includes("data") ? "data" : wb.SheetNames[0];
-  if (!sheetName) throw new Error("ملف Excel لا يحتوي على أي Sheet.");
-
-  const ws = wb.Sheets[sheetName];
-  const rows = XLSX.utils.sheet_to_json(ws, { header: 1, defval: "" });
-  const headers = (rows[0] || []).map(v => String(v).trim());
-  const missing = REQUIRED_COLUMNS.filter(c => !headers.includes(c));
-
-  if (missing.length) {
-    throw new Error(`الأعمدة التالية غير موجودة: ${missing.join(", ")}`);
-  }
-  return { sheetName };
-}
-
 // Live browser connections.
 const clients = new Set();
-function broadcastExcelChanged(source = "upload") {
-  const payload = `event: excel-changed\ndata: ${JSON.stringify({
+function broadcastDataChanged(source = "upload") {
+  const payload = `event: data-changed\ndata: ${JSON.stringify({
     source,
     changedAt: new Date().toISOString()
   })}\n\n`;
@@ -82,13 +70,13 @@ function broadcastExcelChanged(source = "upload") {
   }
 }
 
-// Upload to temp file first, validate, then atomically replace active Excel.
+// Upload to a temporary file and validate before replacing the active CSV.
 const upload = multer({
   dest: path.join(ROOT, "tmp_uploads"),
   limits: { fileSize: 15 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
     const ext = path.extname(file.originalname || "").toLowerCase();
-    if (ext !== ".xlsx") return cb(new Error("يجب رفع ملف بصيغة .xlsx فقط."));
+    if (ext !== ".csv") return cb(new Error("يجب رفع ملف بصيغة .csv فقط."));
     cb(null, true);
   }
 });
@@ -107,19 +95,19 @@ app.get("/health", (req, res) => {
 app.get("/api/data", (req, res) => {
   try {
     ensureDataFile();
-    const data = readExcelData();
+    const data = readCsvData();
     const stat = fs.statSync(DATA_FILE);
 
     res.setHeader("Cache-Control", "no-store");
     res.json({
       updatedAt: new Date().toISOString(),
-      excelModifiedAt: stat.mtime.toISOString(),
+      dataModifiedAt: stat.mtime.toISOString(),
       count: data.length,
       data
     });
   } catch (e) {
     res.status(500).json({
-      error: "تعذر قراءة ملف Excel",
+      error: "تعذر قراءة ملف CSV",
       details: e.message
     });
   }
@@ -148,17 +136,15 @@ app.get("/events", (req, res) => {
   });
 });
 
-app.post("/api/upload-excel", upload.single("excel"), (req, res) => {
+app.post("/api/upload-csv", upload.single("csv"), (req, res) => {
   let tempPath = req.file?.path;
   try {
     if (!req.file) {
-      return res.status(400).json({ error: "لم يتم اختيار ملف Excel." });
+      return res.status(400).json({ error: "لم يتم اختيار ملف CSV." });
     }
 
-    validateWorkbook(tempPath);
-
     // Test parse before replacing the live data file.
-    const testData = readExcelData(tempPath);
+    const testData = readCsvData(tempPath);
 
     ensureDataFile();
     fs.mkdirSync(path.dirname(DATA_FILE), { recursive: true });
@@ -168,11 +154,11 @@ app.post("/api/upload-excel", upload.single("excel"), (req, res) => {
     fs.unlinkSync(tempPath);
     tempPath = null;
 
-    broadcastExcelChanged("upload");
+    broadcastDataChanged("upload");
 
     res.json({
       ok: true,
-      message: "تم تحديث ملف Excel بنجاح.",
+      message: "تم تحديث ملف CSV بنجاح.",
       count: testData.length,
       updatedAt: new Date().toISOString()
     });
@@ -181,15 +167,15 @@ app.post("/api/upload-excel", upload.single("excel"), (req, res) => {
       try { fs.unlinkSync(tempPath); } catch (_) {}
     }
     res.status(400).json({
-      error: "تعذر استخدام ملف Excel",
+      error: "تعذر استخدام ملف CSV",
       details: e.message
     });
   }
 });
 
-app.get("/download-excel", (req, res) => {
+app.get("/download-csv", (req, res) => {
   ensureDataFile();
-  res.download(DATA_FILE, "data.xlsx");
+  res.download(DATA_FILE, "data.csv");
 });
 
 // Multer / request error handler.
@@ -203,5 +189,5 @@ app.use((err, req, res, next) => {
 
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Dashboard running on port ${PORT}`);
-  console.log(`Excel source: ${DATA_FILE}`);
+  console.log(`CSV source: ${DATA_FILE}`);
 });

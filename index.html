@@ -144,8 +144,8 @@ body{
       <button id="refreshBtn" class="btn primary">تحديث</button>
       <button id="exportBtn" class="btn soft">تصدير HTML</button>
       <div class="actions">
-        <input id="excelFile" type="file" accept=".xlsx" class="hidden">
-        <label for="excelFile" id="uploadBtn" class="btn soft" style="display:flex;align-items:center;justify-content:center">رفع Excel</label>
+        <input id="csvFile" type="file" accept=".csv" class="hidden">
+        <label for="csvFile" id="uploadBtn" class="btn soft" style="display:flex;align-items:center;justify-content:center">رفع CSV</label>
       </div>
     </section>
 
@@ -297,7 +297,7 @@ document.title=${JSON.stringify(safe)};
 $("pageTitle").textContent=${JSON.stringify(safe)};
 if($("exportBtn"))$("exportBtn").remove();
 if($("uploadBtn"))$("uploadBtn").remove();
-if($("excelFile"))$("excelFile").remove();
+if($("csvFile"))$("csvFile").remove();
 if($("refreshBtn"))$("refreshBtn").style.display="none";
 buildSections();fillFilter(ALL_ROWS);$("searchBox").value=INITIAL_SEARCH;$("tagFilter").addEventListener("change",update);$("resetBtn").addEventListener("click",()=>{$("tagFilter").value="";$("searchBox").value="";update()});$("searchBox").addEventListener("input",()=>renderTable(CURRENT_ROWS));update();`;
  return '<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+safe+'</title>'+style+'</head><body>'+body+'<script>'+script.replace(/<\/script>/g,'<\\/script>')+'<\/script></body></html>'
@@ -310,13 +310,13 @@ $("resetBtn").addEventListener("click",()=>{$("tagFilter").value="";$("searchBox
 $("searchBox").addEventListener("input",()=>renderTable(CURRENT_ROWS));
 $("exportBtn").addEventListener("click",exportHtml);
 
-$("excelFile").addEventListener("change",async()=>{
- const file=$("excelFile").files[0];if(!file)return;$("dataStatus").textContent=`جارٍ رفع ${file.name}...`;const old=$("uploadBtn").textContent;$("uploadBtn").textContent="جارٍ الرفع...";$("uploadBtn").style.pointerEvents="none";
- try{const form=new FormData();form.append("excel",file);const res=await fetch("/api/upload-excel",{method:"POST",body:form});const p=await res.json();if(!res.ok)throw new Error(p.details||p.error||"فشل رفع الملف");$("dataStatus").textContent=`تم رفع الملف بنجاح - ${fmt(p.count)} سجل`;await loadData(false)}
- catch(e){console.error(e);$("dataStatus").textContent="فشل رفع Excel";alert("تعذر تحديث البيانات:\n"+e.message)}
- finally{$("excelFile").value="";$("uploadBtn").textContent=old;$("uploadBtn").style.pointerEvents="auto"}
+$("csvFile").addEventListener("change",async()=>{
+ const file=$("csvFile").files[0];if(!file)return;$("dataStatus").textContent=`جارٍ رفع ${file.name}...`;const old=$("uploadBtn").textContent;$("uploadBtn").textContent="جارٍ الرفع...";$("uploadBtn").style.pointerEvents="none";
+ try{const form=new FormData();form.append("csv",file);const res=await fetch("/api/upload-csv",{method:"POST",body:form});const p=await res.json();if(!res.ok)throw new Error(p.details||p.error||"فشل رفع الملف");$("dataStatus").textContent=`تم رفع الملف بنجاح - ${fmt(p.count)} سجل`;await loadData(false)}
+ catch(e){console.error(e);$("dataStatus").textContent="فشل رفع CSV";alert("تعذر تحديث البيانات:\n"+e.message)}
+ finally{$("csvFile").value="";$("uploadBtn").textContent=old;$("uploadBtn").style.pointerEvents="auto"}
 });
-function live(){const es=new EventSource("/events");es.addEventListener("excel-changed",async()=>{$("dataStatus").textContent="تم اكتشاف تحديث للبيانات - جارٍ إعادة التحميل...";await loadData(false)});es.onerror=()=>console.warn("reconnecting...")}
+function live(){const es=new EventSource("/events");es.addEventListener("data-changed",async()=>{$("dataStatus").textContent="تم اكتشاف تحديث للبيانات - جارٍ إعادة التحميل...";await loadData(false)});es.onerror=()=>console.warn("reconnecting...")}
 buildSections();loadData(true);live();setInterval(()=>loadData(false),120000);
 </script>
 </body>
