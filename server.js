@@ -19,6 +19,18 @@ const REQUIRED_COLUMNS = [
   "ID", "Work Item Type", "Title", "State", "Tags", "Done Date", "Cost"
 ];
 
+const WORK_ITEM_TYPE_MAPPING = new Map([
+  ["Service Request", "طلبات التغيير"],
+  ["Meeting", "اجتماع"],
+  ["Incident", "مشكلة"],
+  ["Study", "دراسة فنية"]
+]);
+
+function normalizeWorkItemType(value) {
+  const type = String(value || "").trim();
+  return WORK_ITEM_TYPE_MAPPING.get(type) || type;
+}
+
 function ensureDataFile() {
   const dir = path.dirname(DATA_FILE);
   fs.mkdirSync(dir, { recursive: true });
@@ -47,7 +59,7 @@ function readCsvData(filePath = DATA_FILE) {
     .filter(r => r.ID !== null && r.ID !== undefined && r.ID.trim() !== "")
     .map(r => ({
       id: r.ID,
-      type: r["Work Item Type"] || "",
+      type: normalizeWorkItemType(r["Work Item Type"]),
       title: r.Title || "",
       state: r.State || "",
       tag: r.Tags || "غير محدد",
