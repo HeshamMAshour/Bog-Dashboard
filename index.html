@@ -168,7 +168,7 @@ body{
       <div class="kpi"><div class="meta"><div class="title">عدد الدراسات الفنية</div><div class="value" id="kStudy">0</div></div><div class="icon" style="background:#f1ebff;color:#7b4ef6"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 18h6M10 21h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M8.2 14.8A6 6 0 1 1 15.8 14.8C14.8 15.5 14.2 16.2 14 17h-4c-.2-.8-.8-1.5-1.8-2.2Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></div></div>
       <div class="kpi days">
         <div class="day-ring" id="kDayRing"><b id="kDayPct">0%</b></div>
-        <div class="day-info"><div class="title">أيام التغيير المستنفذة</div><div class="big"><span id="kDays">0</span> من 150 يوم</div><div class="sub"><span id="kRemain">0</span> يوم متبقي</div><div class="day-progress"><span id="kDayBar"></span></div></div>
+        <div class="day-info"><div class="title">أيام التطوير المستنفذة</div><div class="big"><span id="kDays">0</span> من 150 يوم</div><div class="sub"><span id="kRemain">0</span> يوم متبقي</div><div class="day-progress"><span id="kDayBar"></span></div></div>
       </div>
     </section>
 
@@ -193,7 +193,7 @@ body{
 const $=id=>document.getElementById(id);
 const TOTAL_DAYS=150;
 const SECTION_CONFIG=[
- {key:"days",anchor:"sec-days",title:"أيام التغيير المستنفذة",type:"طلبات التغيير",mode:"cost",color:"#f05283",icon:'<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="3" stroke="currentColor" stroke-width="1.8"/><path d="M7 3v4m10-4v4M3 11h18m-14 5h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>'},
+ {key:"days",anchor:"sec-days",title:"أيام التطوير المستنفذة",type:"طلبات التغيير",mode:"cost",color:"#f05283",icon:'<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="3" stroke="currentColor" stroke-width="1.8"/><path d="M7 3v4m10-4v4M3 11h18m-14 5h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>'},
  {key:"changes",anchor:"sec-changes",title:"طلبات التغيير",type:"طلبات التغيير",color:"#2489ff",icon:"<svg viewBox=\"0 0 24 24\" fill=\"none\" aria-hidden=\"true\"><path d=\"M7 3h8l4 4v14H7z\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linejoin=\"round\"/><path d=\"M15 3v5h5M10 12h6M10 16h4\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\"/></svg>"},
  {key:"issues",anchor:"sec-issues",title:"مشاكل تم حلها",type:"مشكلة",color:"#159a68",icon:"<svg viewBox=\"0 0 24 24\" fill=\"none\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"9\" stroke=\"currentColor\" stroke-width=\"1.8\"/><path d=\"m8 12 2.5 2.5L16.5 8.5\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>"},
  {key:"meetings",anchor:"sec-meetings",title:"الاجتماعات",type:"اجتماع",color:"#ff7f1f",icon:"<svg viewBox=\"0 0 24 24\" fill=\"none\" aria-hidden=\"true\"><circle cx=\"9\" cy=\"8\" r=\"3\" stroke=\"currentColor\" stroke-width=\"1.8\"/><circle cx=\"17\" cy=\"9\" r=\"2.4\" stroke=\"currentColor\" stroke-width=\"1.8\"/><path d=\"M3.5 19c.4-4 2.5-6 5.5-6s5.1 2 5.5 6M14.5 14c3.3-.5 5.4 1.2 6 4.5\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\"/></svg>"},
