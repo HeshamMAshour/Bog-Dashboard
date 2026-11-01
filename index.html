@@ -103,6 +103,13 @@ body{
 .section-row.section-studies .section-summary,
 .section-row.section-studies .section-chart,
 .section-row.section-studies .section-dist{background:linear-gradient(135deg,#f7f1ff 0%,#ffffff 78%)}
+.section-row.section-days .section-summary,
+.section-row.section-days .section-chart,
+.section-row.section-days .section-dist{background:linear-gradient(135deg,#fff4f8 0%,#ffffff 78%)}
+.section-days .section-count{font-size:38px}
+.section-days .dist-item{grid-template-columns:34px 1fr 64px}
+.section-days .dist-val{white-space:nowrap}
+.section-note{font-size:12px;color:var(--muted);margin-top:12px}
 .section-summary{padding:18px;display:flex;flex-direction:column;justify-content:center;position:relative}
 .section-summary:before{content:"";position:absolute;right:0;top:0;bottom:0;width:5px;background:var(--accent)}
 .section-icon{width:50px;height:50px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:14px}
@@ -186,6 +193,7 @@ body{
 const $=id=>document.getElementById(id);
 const TOTAL_DAYS=150;
 const SECTION_CONFIG=[
+ {key:"days",anchor:"sec-days",title:"أيام التغيير المستنفذة",type:"طلبات التغيير",mode:"cost",color:"#f05283",icon:'<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="3" stroke="currentColor" stroke-width="1.8"/><path d="M7 3v4m10-4v4M3 11h18m-14 5h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>'},
  {key:"changes",anchor:"sec-changes",title:"طلبات التغيير",type:"طلبات التغيير",color:"#2489ff",icon:"<svg viewBox=\"0 0 24 24\" fill=\"none\" aria-hidden=\"true\"><path d=\"M7 3h8l4 4v14H7z\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linejoin=\"round\"/><path d=\"M15 3v5h5M10 12h6M10 16h4\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\"/></svg>"},
  {key:"issues",anchor:"sec-issues",title:"مشاكل تم حلها",type:"مشكلة",color:"#159a68",icon:"<svg viewBox=\"0 0 24 24\" fill=\"none\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"9\" stroke=\"currentColor\" stroke-width=\"1.8\"/><path d=\"m8 12 2.5 2.5L16.5 8.5\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>"},
  {key:"meetings",anchor:"sec-meetings",title:"الاجتماعات",type:"اجتماع",color:"#ff7f1f",icon:"<svg viewBox=\"0 0 24 24\" fill=\"none\" aria-hidden=\"true\"><circle cx=\"9\" cy=\"8\" r=\"3\" stroke=\"currentColor\" stroke-width=\"1.8\"/><circle cx=\"17\" cy=\"9\" r=\"2.4\" stroke=\"currentColor\" stroke-width=\"1.8\"/><path d=\"M3.5 19c.4-4 2.5-6 5.5-6s5.1 2 5.5 6M14.5 14c3.3-.5 5.4 1.2 6 4.5\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\"/></svg>"},
@@ -214,14 +222,15 @@ function buildSections(){
       <div class="section-icon" style="background:${sec.color}18;color:${sec.color}">${sec.icon}</div>
       <div class="section-title">${sec.title}</div>
       <div class="section-count" id="total-${sec.key}">0</div>
+      ${sec.mode==="cost"?'<div class="section-note">إجمالي أيام طلبات التغيير</div>':""}
     </div>
     <div class="section-chart">
-      <div class="chart-head"><div class="chart-title">عدد ${sec.title} حسب الأنظمة</div><div class="chart-sub">حسب Tags</div></div>
+      <div class="chart-head"><div class="chart-title">${sec.mode==="cost"?sec.title:"عدد "+sec.title} حسب الأنظمة</div><div class="chart-sub">${sec.mode==="cost"?"عدد الأيام":"حسب Tags"}</div></div>
       <div class="y-scale" id="scale-${sec.key}"></div>
       <div class="chart-area" id="bars-${sec.key}"></div>
     </div>
     <div class="section-dist">
-      <div class="dist-title">التوزيع حسب الأنظمة</div>
+      <div class="dist-title">${sec.mode==="cost"?"توزيع الأيام على الأنظمة":"التوزيع حسب الأنظمة"}</div>
       <div class="dist-list" id="dist-${sec.key}"></div>
     </div>`;
    host.appendChild(s);
@@ -240,7 +249,15 @@ function renderDist(key,rows){
  rows.forEach(([name,val])=>{const d=document.createElement("div");d.className="dist-item";d.innerHTML=`<div class="logo" style="background:${SYSTEM_BG[name]||"#f4f7fb"};color:${SYSTEM_COLORS[name]||"#2489ff"}">${SYSTEM_LOGO[name]||"•"}</div><div class="dist-name">${name}</div><div class="dist-val">${fmt(val)}</div>`;host.appendChild(d)});
  if(!rows.length)host.innerHTML='<div class="muted">لا توجد بيانات</div>'
 }
-function renderSection(sec){const data=CURRENT_ROWS.filter(r=>r.type===sec.type);$("total-"+sec.key).textContent=fmt(data.length);const dist=grouped(data);renderBars(sec.key,dist);renderDist(sec.key,dist)}
+function renderSection(sec){
+ const data=CURRENT_ROWS.filter(r=>r.type===sec.type);
+ const isDays=sec.mode==="cost";
+ const dist=grouped(data,sec.mode);
+ const total=isDays?dist.reduce((sum,row)=>sum+row[1],0):data.length;
+ $("total-"+sec.key).textContent=fmt(total)+(isDays?" يوم":"");
+ renderBars(sec.key,dist);renderDist(sec.key,dist);
+ if(isDays)$("dist-"+sec.key).querySelectorAll(".dist-val").forEach(el=>el.textContent+=" يوم");
+}
 function renderKpis(){
  const changes=CURRENT_ROWS.filter(r=>r.type==="طلبات التغيير");
  const issues=CURRENT_ROWS.filter(r=>r.type==="مشكلة");
@@ -284,11 +301,11 @@ function grouped(rows,mode="count"){const obj={};rows.forEach(r=>{const k=r.tag|
 function shadeColor(color,percent){const num=parseInt(color.slice(1),16),amt=Math.round(2.55*percent),R=(num>>16)+amt,G=(num>>8&255)+amt,B=(num&255)+amt;return"#"+(0x1000000+(R<255?(R<1?0:R):255)*0x10000+(G<255?(G<1?0:G):255)*0x100+(B<255?(B<1?0:B):255)).toString(16).slice(1)}
 function fillFilter(rows){const tags=[...new Set(rows.map(r=>r.tag).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"ar"));$("tagFilter").innerHTML='<option value="">جميع الأنظمة</option>'+tags.map(t=>'<option value="'+t+'">'+t+'</option>').join("");$("tagFilter").value=INITIAL_TAG||""}
 function currentRows(){const tag=$("tagFilter").value;return ALL_ROWS.filter(r=>!tag||r.tag===tag)}
-function buildSections(){const host=$("sectionsHost");host.innerHTML="";SECTION_CONFIG.forEach(sec=>{const s=document.createElement("section");s.className="section-row section-"+sec.key;s.id=sec.anchor;s.style.setProperty("--accent",sec.color);s.innerHTML='<div class="section-summary"><div class="section-icon" style="background:'+sec.color+'18;color:'+sec.color+'">'+sec.icon+'</div><div class="section-title">'+sec.title+'</div><div class="section-count" id="total-'+sec.key+'">0</div></div><div class="section-chart"><div class="chart-head"><div class="chart-title">عدد '+sec.title+' حسب الأنظمة</div><div class="chart-sub">حسب Tags</div></div><div class="y-scale" id="scale-'+sec.key+'"></div><div class="chart-area" id="bars-'+sec.key+'"></div></div><div class="section-dist"><div class="dist-title">التوزيع حسب الأنظمة</div><div class="dist-list" id="dist-'+sec.key+'"></div></div>';host.appendChild(s)})}
+${buildSections.toString()}
 function renderScale(key,maxVal){const vals=[];for(let i=0;i<=4;i++)vals.push(fmt((maxVal/4)*i));$("scale-"+key).innerHTML=vals.reverse().map(v=>'<span>'+v+'</span>').join("")}
 function renderBars(key,rows){const host=$("bars-"+key);host.innerHTML="";if(!rows.length){$("scale-"+key).innerHTML="";host.innerHTML='<div class="muted" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%">لا توجد بيانات</div>';return}const max=Math.max(...rows.map(x=>Number(x[1]||0)),1);renderScale(key,max);const maxPx=130;rows.forEach(([name,val])=>{const h=Math.max((Number(val)/max)*maxPx,6);const b=document.createElement("div");b.className="vbar";b.innerHTML='<div class="vbar-value">'+fmt(val)+'</div><div class="vbar-col" style="height:'+h+'px;background:linear-gradient(180deg,'+(SYSTEM_COLORS[name]||"#2489ff")+','+shadeColor(SYSTEM_COLORS[name]||"#2489ff",-12)+')"></div><div class="vbar-label">'+name+'</div>';host.appendChild(b)})}
 function renderDist(key,rows){const host=$("dist-"+key);host.innerHTML="";rows.forEach(([name,val])=>{const d=document.createElement("div");d.className="dist-item";d.innerHTML='<div class="logo" style="background:'+(SYSTEM_BG[name]||"#f4f7fb")+';color:'+(SYSTEM_COLORS[name]||"#2489ff")+'">'+(SYSTEM_LOGO[name]||"•")+'</div><div class="dist-name">'+name+'</div><div class="dist-val">'+fmt(val)+'</div>';host.appendChild(d)});if(!rows.length)host.innerHTML='<div class="muted">لا توجد بيانات</div>'}
-function renderSection(sec){const data=CURRENT_ROWS.filter(r=>r.type===sec.type);$("total-"+sec.key).textContent=fmt(data.length);const dist=grouped(data);renderBars(sec.key,dist);renderDist(sec.key,dist)}
+${renderSection.toString()}
 function renderKpis(){const changes=CURRENT_ROWS.filter(r=>r.type==="طلبات التغيير"),issues=CURRENT_ROWS.filter(r=>r.type==="مشكلة"),meetings=CURRENT_ROWS.filter(r=>r.type==="اجتماع"),studies=CURRENT_ROWS.filter(r=>r.type==="دراسة فنية");$("kChange").textContent=fmt(changes.length);$("kIssue").textContent=fmt(issues.length);$("kMeeting").textContent=fmt(meetings.length);$("kStudy").textContent=fmt(studies.length);const used=changes.reduce((a,b)=>a+Number(b.cost||0),0),pct=Math.min((used/TOTAL_DAYS)*100,100),deg=(pct/100)*360,remain=Math.max(TOTAL_DAYS-used,0);$("kDays").textContent=fmt(used);$("kDayPct").textContent=fmt(pct)+"%";$("kRemain").textContent=fmt(remain);$("kDayBar").style.width=pct+"%";$("kDayRing").style.background='conic-gradient(var(--pink) 0deg '+deg+'deg,#f5dfe7 '+deg+'deg 360deg)'}
 function renderTable(rows){const q=$("searchBox").value.trim().toLowerCase();const filtered=rows.filter(r=>{const hay=(String(r.title||"")+" "+String(r.tag||"")+" "+String(r.type||"")+" "+String(r.state||"")).toLowerCase();return!q||hay.includes(q)});$("tableCount").textContent=fmt(filtered.length)+" سجل";$("tbody").innerHTML=filtered.map(r=>{const st=TYPE_BADGES[r.type]||{bg:"#eef2f7",color:"#5d6f83"};return'<tr><td>'+(r.id??"—")+'</td><td><span class="badge" style="background:'+st.bg+';color:'+st.color+'">'+(r.type||"—")+'</span></td><td>'+(r.title||"—")+'</td><td>'+(r.state||"—")+'</td><td>'+(r.tag||"—")+'</td><td>'+fmtDate(r.doneDate)+'</td><td>'+(r.cost?fmt(r.cost):'<span class="muted">—</span>')+'</td></tr>'}).join("")}
 function update(){CURRENT_ROWS=currentRows();renderKpis();SECTION_CONFIG.forEach(renderSection);renderTable(CURRENT_ROWS)}
