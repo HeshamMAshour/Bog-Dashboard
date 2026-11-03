@@ -143,7 +143,7 @@ body{
 body{background:#f1f5f9;color:#18314b;font-family:"Segoe UI",Tahoma,sans-serif}
 .main{max-width:1480px;padding:28px 24px 35px}
 .header{align-items:center;background:linear-gradient(110deg,#173d5a,#102b43);color:white;border-radius:22px;padding:30px 32px;margin-bottom:20px;box-shadow:0 12px 32px #102c4312}
-.header h1{font-size:28px;color:white;letter-spacing:-.5px}.header-subtitle{font-size:13px;color:#b4cbdc;margin-top:10px}
+.header h1{font-size:28px;color:white;letter-spacing:-.5px}
 .toolbar{grid-template-columns:280px 120px 120px 150px 1fr;padding:14px 18px;border-radius:16px;box-shadow:none;margin-bottom:15px}.actions{justify-content:flex-end}.actions label{max-width:160px}.btn,.control{border-radius:10px}.btn.primary{background:#176c99;border-color:#176c99;box-shadow:none}.btn.soft{background:#f8fafc}
 .status-row{margin:0 0 20px}.status{background:transparent;border:0;box-shadow:none;padding:0 4px;font-size:12px}
 .kpis{grid-template-columns:repeat(4,minmax(0,1fr)) 1.5fr;gap:12px;margin-bottom:26px}.kpi{height:126px;min-height:126px;border-radius:16px;background:white;box-shadow:0 3px 12px #102c4304;padding:20px}.kpi.days{height:126px;min-height:126px;background:#fffbfd}.kpi .title{font-size:13px;color:#66788d}.kpi .value{font-size:34px;letter-spacing:-1px}.kpi .icon{height:44px;width:44px;border-radius:13px;flex-shrink:0}.day-info .big{font-size:22px}
@@ -161,7 +161,7 @@ body{background:#f1f5f9;color:#18314b;font-family:"Segoe UI",Tahoma,sans-serif}
 <body>
 <div class="layout" id="layout">
   <main class="main" id="top">
-    <section class="header"><div><h1 id="pageTitle">لوحة متابعة العمل التشغيلي</h1><div class="header-subtitle">نظرة شاملة على الأعمال والإنجازات وتوزيع الجهد على الأنظمة</div></div></section>
+    <section class="header"><div><h1 id="pageTitle">لوحة متابعة العمل التشغيلي</h1></div></section>
 
     <section class="toolbar">
       <select id="tagFilter" class="control"><option value="">جميع الأنظمة</option></select>
@@ -277,7 +277,7 @@ function renderDist(key,rows){
 function renderSection(sec){
  const data=CURRENT_ROWS.filter(r=>r.type===sec.type);
  const isDays=sec.mode==="cost";
- const dist=grouped(data,sec.mode);
+ const dist=grouped(data,sec.mode).filter(([,value])=>!isDays||value!==0);
  const total=isDays?dist.reduce((sum,row)=>sum+row[1],0):data.length;
  $("total-"+sec.key).textContent=fmt(total)+(isDays?" يوم":"");
  $("chart-total-"+sec.key).textContent=fmt(total)+(isDays?" يوم إجمالًا":" إجمالًا");
