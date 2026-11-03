@@ -144,7 +144,7 @@ body{background:#f1f5f9;color:#18314b;font-family:"Segoe UI",Tahoma,sans-serif}
 .main{max-width:1480px;padding:28px 24px 35px}
 .header{align-items:center;background:linear-gradient(110deg,#173d5a,#102b43);color:white;border-radius:22px;padding:30px 32px;margin-bottom:20px;box-shadow:0 12px 32px #102c4312}
 .header h1{font-size:28px;color:white;letter-spacing:-.5px}
-.toolbar{grid-template-columns:280px 120px 120px 150px 1fr;padding:14px 18px;border-radius:16px;box-shadow:none;margin-bottom:15px}.actions{justify-content:flex-end}.actions label{max-width:160px}.btn,.control{border-radius:10px}.btn.primary{background:#176c99;border-color:#176c99;box-shadow:none}.btn.soft{background:#f8fafc}
+.toolbar{grid-template-columns:minmax(180px,1fr) 110px 110px 140px 140px 150px;padding:14px 18px;border-radius:16px;box-shadow:none;margin-bottom:15px}.actions{justify-content:flex-end}.actions label{max-width:160px}.btn,.control{border-radius:10px}.btn.primary{background:#176c99;border-color:#176c99;box-shadow:none}.btn.soft{background:#f8fafc}
 .status-row{margin:0 0 20px}.status{background:transparent;border:0;box-shadow:none;padding:0 4px;font-size:12px}
 .kpis{grid-template-columns:repeat(4,minmax(0,1fr)) 1.5fr;gap:12px;margin-bottom:26px}.kpi{height:126px;min-height:126px;border-radius:16px;background:white;box-shadow:0 3px 12px #102c4304;padding:20px}.kpi.days{height:126px;min-height:126px;background:#fffbfd}.kpi .title{font-size:13px;color:#66788d}.kpi .value{font-size:34px;letter-spacing:-1px}.kpi .icon{height:44px;width:44px;border-radius:13px;flex-shrink:0}.day-info .big{font-size:22px}
 .section-list{gap:22px}.section-row{grid-template-columns:205px minmax(0,1fr) 270px;gap:0;border:1px solid #e0e7ef;border-radius:20px;background:#fff;overflow:hidden;box-shadow:0 5px 16px #132b4305}
@@ -156,6 +156,19 @@ body{background:#f1f5f9;color:#18314b;font-family:"Segoe UI",Tahoma,sans-serif}
 @media(max-width:1280px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.kpi.days{grid-column:1/-1}.toolbar{grid-template-columns:repeat(2,minmax(0,1fr))}.section-row{grid-template-columns:180px minmax(0,1fr)}.section-dist{grid-column:1/-1;border-right:0;border-top:1px solid #edf1f5;min-height:0}.dist-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:720px){.main{padding:12px}.header{padding:24px 20px}.header h1{font-size:23px}.kpis,.toolbar{grid-template-columns:1fr}.section-row{grid-template-columns:minmax(0,1fr)}.section-summary{border-left:0;border-bottom:1px solid #edf1f5;min-height:0;padding:20px}.section-dist{grid-column:auto}.section-chart{padding:20px 16px;min-height:0}.dist-list{grid-template-columns:1fr}.hrow{grid-template-columns:95px minmax(0,1fr) 53px;gap:8px}.chart-head{flex-wrap:wrap}.actions label{max-width:none}.table-card{padding:12px}}
 
+.print-context{display:none}
+@page{size:A4 landscape;margin:10mm}
+@media print{
+ *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+ body{background:#fff}.main{max-width:none;padding:0}.layout{display:block;min-height:0}
+ .toolbar,.search,.sidebar{display:none!important}.print-context{display:block;font-size:11px;color:#536b83;margin:10px 0}
+ .header{padding:16px 20px;margin-bottom:12px;box-shadow:none}.header h1{font-size:24px}.status-row{margin-bottom:12px}
+ .kpis{grid-template-columns:repeat(4,minmax(0,1fr)) 1.5fr;gap:8px;margin-bottom:15px;break-inside:avoid}
+ .kpi,.kpi.days{padding:10px;height:100px;min-height:100px;box-shadow:none}.kpi.days{grid-column:auto;grid-template-columns:64px 1fr;gap:8px}.day-ring{width:64px;height:64px}.day-ring:after{inset:10px}.day-ring b{font-size:12px}.day-info .big{font-size:17px}.kpi .value{font-size:27px}.kpi .icon{width:32px;height:32px}.kpi .title{font-size:11px}
+ .section-list{display:block}.section-row{display:grid;grid-template-columns:145px minmax(0,1fr) 200px;margin-bottom:14px;break-inside:avoid;box-shadow:none;overflow:visible}
+ .section-summary,.section-chart,.section-dist{min-height:0;padding:15px 12px}.section-dist{grid-column:auto;border-right:1px solid #edf1f5;border-top:0}.dist-list{display:flex;flex-direction:column}.section-summary{border-bottom:0;border-left:1px solid #edf1f5}.section-title{font-size:16px}.section-count,.section-days .section-count{font-size:30px}.section-icon{width:34px;height:34px}.chart-head{flex-wrap:wrap;margin-bottom:12px}.chart-title{font-size:12px}.chart-area{gap:10px}.hrow{grid-template-columns:90px minmax(0,1fr) 48px;gap:8px;min-height:24px}.hlabel,.hvalue{font-size:11px}.dist-item{padding:5px}.chart-foot{margin-top:12px;padding-top:8px}
+ .table-card{break-before:page;box-shadow:none;border:0;padding:0;margin:0}.table-wrap{overflow:visible;border:0}.table-tools{margin:0 0 12px}table{table-layout:fixed;font-size:10px}thead{display:table-header-group}thead th{position:static}th,td{overflow-wrap:anywhere}thead th,tbody td{padding:8px}tr{break-inside:avoid}th:nth-child(3){width:35%}.badge{font-size:9px}
+}
 </style>
 </head>
 <body>
@@ -168,6 +181,7 @@ body{background:#f1f5f9;color:#18314b;font-family:"Segoe UI",Tahoma,sans-serif}
       <button id="resetBtn" class="btn soft">إعادة ضبط</button>
       <button id="refreshBtn" class="btn primary">تحديث</button>
       <button id="exportBtn" class="btn soft">تصدير HTML</button>
+      <button id="pdfBtn" class="btn soft" title="افتح نافذة الطباعة واختر حفظ بصيغة PDF">تصدير PDF</button>
       <div class="actions">
         <input id="csvFile" type="file" accept=".csv" class="hidden">
         <label for="csvFile" id="uploadBtn" class="btn soft" style="display:flex;align-items:center;justify-content:center">رفع CSV</label>
@@ -179,6 +193,7 @@ body{background:#f1f5f9;color:#18314b;font-family:"Segoe UI",Tahoma,sans-serif}
       <div class="status"><span>آخر تحديث:</span><b id="lastUpdated">—</b></div>
     </section>
 
+    <div id="printContext" class="print-context"></div>
     <section class="kpis">
       <div class="kpi"><div class="meta"><div class="title">عدد طلبات التغيير</div><div class="value" id="kChange">0</div></div><div class="icon" style="background:#e5f0ff;color:#2489ff"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 3h8l4 4v14H7z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M15 3v5h5M10 12h6M10 16h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></div></div>
       <div class="kpi"><div class="meta"><div class="title">عدد مشاكل تم حلها</div><div class="value" id="kIssue">0</div></div><div class="icon" style="background:#e3f5ec;color:#159a68"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="m8 12 2.5 2.5L16.5 8.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
@@ -337,12 +352,20 @@ function update(){CURRENT_ROWS=currentRows();renderKpis();SECTION_CONFIG.forEach
 function setupSidebar(){const key="export_sidebar";if(localStorage.getItem(key)==="1")$("layout").classList.add("collapsed");$("sidebarToggle").addEventListener("click",()=>{$("layout").classList.toggle("collapsed");localStorage.setItem(key,$("layout").classList.contains("collapsed")?"1":"0")})}
 document.title=${JSON.stringify(safe)};
 $("pageTitle").textContent=${JSON.stringify(safe)};
+${exportPdf.toString()}
+$("pdfBtn").addEventListener("click",exportPdf);
 if($("exportBtn"))$("exportBtn").remove();
 if($("uploadBtn"))$("uploadBtn").remove();
 if($("csvFile"))$("csvFile").remove();
 if($("refreshBtn"))$("refreshBtn").style.display="none";
 buildSections();fillFilter(ALL_ROWS);$("searchBox").value=INITIAL_SEARCH;$("tagFilter").addEventListener("change",update);$("resetBtn").addEventListener("click",()=>{$("tagFilter").value="";$("searchBox").value="";update()});$("searchBox").addEventListener("input",()=>renderTable(CURRENT_ROWS));update();`;
  return '<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+safe+'</title>'+style+'</head><body>'+body+'<script>'+script.replace(/<\/script>/g,'<\\/script>')+'<\/script></body></html>'
+}
+function exportPdf(){
+ const tag=$("tagFilter").value||"جميع الأنظمة";
+ const search=$("searchBox").value.trim();
+ $("printContext").textContent="النظام: "+tag+(search?" • بحث تفاصيل الأعمال: "+search:"");
+ window.print();
 }
 function exportHtml(){const t=prompt("اكتب عنوان لوحة المتابعة المصدّرة:",$("pageTitle").textContent)||$("pageTitle").textContent;const html=standaloneHtml(t.trim()||$("pageTitle").textContent);const blob=new Blob([html],{type:"text/html;charset=utf-8"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="dashboard_export.html";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1200)}
 
@@ -351,6 +374,7 @@ $("refreshBtn").addEventListener("click",()=>loadData(true));
 $("resetBtn").addEventListener("click",()=>{$("tagFilter").value="";$("searchBox").value="";update()});
 $("searchBox").addEventListener("input",()=>renderTable(CURRENT_ROWS));
 $("exportBtn").addEventListener("click",exportHtml);
+$("pdfBtn").addEventListener("click",exportPdf);
 
 $("csvFile").addEventListener("change",async()=>{
  const file=$("csvFile").files[0];if(!file)return;$("dataStatus").textContent=`جارٍ رفع ${file.name}...`;const old=$("uploadBtn").textContent;$("uploadBtn").textContent="جارٍ الرفع...";$("uploadBtn").style.pointerEvents="none";
