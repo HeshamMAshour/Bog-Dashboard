@@ -138,12 +138,30 @@ body{
 .logo svg{width:17px;height:17px;display:block}
 .kpi .icon,.section-icon,.logo{line-height:0}
 
+
+/* Refined dashboard and horizontal comparisons. */
+body{background:#f1f5f9;color:#18314b;font-family:"Segoe UI",Tahoma,sans-serif}
+.main{max-width:1480px;padding:28px 24px 35px}
+.header{align-items:center;background:linear-gradient(110deg,#173d5a,#102b43);color:white;border-radius:22px;padding:30px 32px;margin-bottom:20px;box-shadow:0 12px 32px #102c4312}
+.header h1{font-size:28px;color:white;letter-spacing:-.5px}.header-subtitle{font-size:13px;color:#b4cbdc;margin-top:10px}
+.toolbar{grid-template-columns:280px 120px 120px 150px 1fr;padding:14px 18px;border-radius:16px;box-shadow:none;margin-bottom:15px}.actions{justify-content:flex-end}.actions label{max-width:160px}.btn,.control{border-radius:10px}.btn.primary{background:#176c99;border-color:#176c99;box-shadow:none}.btn.soft{background:#f8fafc}
+.status-row{margin:0 0 20px}.status{background:transparent;border:0;box-shadow:none;padding:0 4px;font-size:12px}
+.kpis{grid-template-columns:repeat(4,minmax(0,1fr)) 1.5fr;gap:12px;margin-bottom:26px}.kpi{height:126px;min-height:126px;border-radius:16px;background:white;box-shadow:0 3px 12px #102c4304;padding:20px}.kpi.days{height:126px;min-height:126px;background:#fffbfd}.kpi .title{font-size:13px;color:#66788d}.kpi .value{font-size:34px;letter-spacing:-1px}.kpi .icon{height:44px;width:44px;border-radius:13px;flex-shrink:0}.day-info .big{font-size:22px}
+.section-list{gap:22px}.section-row{grid-template-columns:205px minmax(0,1fr) 270px;gap:0;border:1px solid #e0e7ef;border-radius:20px;background:#fff;overflow:hidden;box-shadow:0 5px 16px #132b4305}
+.section-summary,.section-chart,.section-dist{box-shadow:none;border:0;border-radius:0;background:white!important;min-height:235px;min-width:0}.section-summary{padding:25px 24px;border-left:1px solid #edf1f5;background:linear-gradient(150deg,#f8fafc,#fff)!important}.section-summary:before{width:3px;top:24px;bottom:24px;border-radius:8px}.section-title{font-size:20px;line-height:1.55}.section-count,.section-days .section-count{font-size:40px;letter-spacing:-1px;margin-top:10px}.section-icon{width:43px;height:43px;border-radius:12px;margin-bottom:12px}.section-icon svg{width:24px;height:24px}.section-note{font-size:11px;line-height:1.8;color:#718298}
+.section-chart{padding:24px 26px}.chart-head{margin-bottom:20px}.chart-title{font-size:15px}.chart-sub{border:1px solid #e7edf4;background:#f8fafc;border-radius:20px;padding:5px 10px;white-space:nowrap;font-size:11px;font-weight:700;color:#61758d}
+.chart-area{display:flex;flex-direction:column;gap:15px;align-items:stretch;border:0;background:none;margin:0;padding:0;min-height:0}.hrow{display:grid;grid-template-columns:115px minmax(0,1fr) 57px;gap:15px;align-items:center;min-height:27px}.hlabel{font-size:12px;color:#4e6279;font-weight:600;overflow-wrap:anywhere}.htrack{height:15px;display:flex;justify-content:flex-start;background:#f3f6fa;border-radius:5px}.hfill{height:15px;border-radius:5px}.hvalue{text-align:left;font-size:13px;font-weight:700;font-variant-numeric:tabular-nums;color:#203e5b;white-space:nowrap}.chart-foot{border-top:1px solid #f0f3f7;margin-top:19px;padding-top:12px;font-size:11px;color:#718298}.chart-empty{padding:35px 0;text-align:center;color:#718298}
+.section-dist{border-right:1px solid #edf1f5;padding:24px 18px;background:#fbfcfe!important}.dist-title{font-size:13px;margin-bottom:12px;padding-bottom:12px;color:#536b83}.dist-list{gap:6px}.dist-item{border:1px solid #edf1f6;border-radius:9px;box-shadow:none;padding:7px;background:white}.dist-name{font-size:11px;overflow-wrap:anywhere}.dist-val{font-size:12px}.section-days .dist-item{grid-template-columns:28px 1fr 52px}.logo{width:26px;height:26px;border-radius:7px}
+.table-card{margin-top:24px;border-radius:18px;box-shadow:none;padding:20px;min-width:0}.table-tools{margin-bottom:16px}.table-wrap{border-radius:12px}thead th{background:#f5f8fb;padding:14px 12px}tbody td{padding:14px 12px}.search{border-radius:10px;background:#f9fbfd}
+@media(max-width:1280px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.kpi.days{grid-column:1/-1}.toolbar{grid-template-columns:repeat(2,minmax(0,1fr))}.section-row{grid-template-columns:180px minmax(0,1fr)}.section-dist{grid-column:1/-1;border-right:0;border-top:1px solid #edf1f5;min-height:0}.dist-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:720px){.main{padding:12px}.header{padding:24px 20px}.header h1{font-size:23px}.kpis,.toolbar{grid-template-columns:1fr}.section-row{grid-template-columns:minmax(0,1fr)}.section-summary{border-left:0;border-bottom:1px solid #edf1f5;min-height:0;padding:20px}.section-dist{grid-column:auto}.section-chart{padding:20px 16px;min-height:0}.dist-list{grid-template-columns:1fr}.hrow{grid-template-columns:95px minmax(0,1fr) 53px;gap:8px}.chart-head{flex-wrap:wrap}.actions label{max-width:none}.table-card{padding:12px}}
+
 </style>
 </head>
 <body>
 <div class="layout" id="layout">
   <main class="main" id="top">
-    <section class="header"><h1 id="pageTitle">لوحة متابعة العمل التشغيلي</h1></section>
+    <section class="header"><div><h1 id="pageTitle">لوحة متابعة العمل التشغيلي</h1><div class="header-subtitle">نظرة شاملة على الأعمال والإنجازات وتوزيع الجهد على الأنظمة</div></div></section>
 
     <section class="toolbar">
       <select id="tagFilter" class="control"><option value="">جميع الأنظمة</option></select>
@@ -193,11 +211,11 @@ body{
 const $=id=>document.getElementById(id);
 const TOTAL_DAYS=150;
 const SECTION_CONFIG=[
- {key:"days",anchor:"sec-days",title:"أيام التطوير المستنفذة",type:"طلبات التغيير",mode:"cost",color:"#f05283",icon:'<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="3" stroke="currentColor" stroke-width="1.8"/><path d="M7 3v4m10-4v4M3 11h18m-14 5h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>'},
- {key:"changes",anchor:"sec-changes",title:"طلبات التغيير",type:"طلبات التغيير",color:"#2489ff",icon:"<svg viewBox=\"0 0 24 24\" fill=\"none\" aria-hidden=\"true\"><path d=\"M7 3h8l4 4v14H7z\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linejoin=\"round\"/><path d=\"M15 3v5h5M10 12h6M10 16h4\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\"/></svg>"},
- {key:"issues",anchor:"sec-issues",title:"مشاكل تم حلها",type:"مشكلة",color:"#159a68",icon:"<svg viewBox=\"0 0 24 24\" fill=\"none\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"9\" stroke=\"currentColor\" stroke-width=\"1.8\"/><path d=\"m8 12 2.5 2.5L16.5 8.5\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>"},
- {key:"meetings",anchor:"sec-meetings",title:"الاجتماعات",type:"اجتماع",color:"#ff7f1f",icon:"<svg viewBox=\"0 0 24 24\" fill=\"none\" aria-hidden=\"true\"><circle cx=\"9\" cy=\"8\" r=\"3\" stroke=\"currentColor\" stroke-width=\"1.8\"/><circle cx=\"17\" cy=\"9\" r=\"2.4\" stroke=\"currentColor\" stroke-width=\"1.8\"/><path d=\"M3.5 19c.4-4 2.5-6 5.5-6s5.1 2 5.5 6M14.5 14c3.3-.5 5.4 1.2 6 4.5\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\"/></svg>"},
- {key:"studies",anchor:"sec-studies",title:"الدراسات الفنية",type:"دراسة فنية",color:"#7b4ef6",icon:"<svg viewBox=\"0 0 24 24\" fill=\"none\" aria-hidden=\"true\"><path d=\"M9 18h6M10 21h4\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\"/><path d=\"M8.2 14.8A6 6 0 1 1 15.8 14.8C14.8 15.5 14.2 16.2 14 17h-4c-.2-.8-.8-1.5-1.8-2.2Z\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linejoin=\"round\"/></svg>"}
+ {key:"days",anchor:"sec-days",title:"أيام التطوير المستنفذة",type:"طلبات التغيير",mode:"cost",color:"#be618a",icon:'<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="3" stroke="currentColor" stroke-width="1.8"/><path d="M7 3v4m10-4v4M3 11h18m-14 5h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>'},
+ {key:"changes",anchor:"sec-changes",title:"طلبات التغيير",type:"طلبات التغيير",color:"#287ab8",icon:"<svg viewBox=\"0 0 24 24\" fill=\"none\" aria-hidden=\"true\"><path d=\"M7 3h8l4 4v14H7z\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linejoin=\"round\"/><path d=\"M15 3v5h5M10 12h6M10 16h4\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\"/></svg>"},
+ {key:"issues",anchor:"sec-issues",title:"مشاكل تم حلها",type:"مشكلة",color:"#28967c",icon:"<svg viewBox=\"0 0 24 24\" fill=\"none\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"9\" stroke=\"currentColor\" stroke-width=\"1.8\"/><path d=\"m8 12 2.5 2.5L16.5 8.5\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>"},
+ {key:"meetings",anchor:"sec-meetings",title:"الاجتماعات",type:"اجتماع",color:"#d49a45",icon:"<svg viewBox=\"0 0 24 24\" fill=\"none\" aria-hidden=\"true\"><circle cx=\"9\" cy=\"8\" r=\"3\" stroke=\"currentColor\" stroke-width=\"1.8\"/><circle cx=\"17\" cy=\"9\" r=\"2.4\" stroke=\"currentColor\" stroke-width=\"1.8\"/><path d=\"M3.5 19c.4-4 2.5-6 5.5-6s5.1 2 5.5 6M14.5 14c3.3-.5 5.4 1.2 6 4.5\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\"/></svg>"},
+ {key:"studies",anchor:"sec-studies",title:"الدراسات الفنية",type:"دراسة فنية",color:"#8070bd",icon:"<svg viewBox=\"0 0 24 24\" fill=\"none\" aria-hidden=\"true\"><path d=\"M9 18h6M10 21h4\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\"/><path d=\"M8.2 14.8A6 6 0 1 1 15.8 14.8C14.8 15.5 14.2 16.2 14 17h-4c-.2-.8-.8-1.5-1.8-2.2Z\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linejoin=\"round\"/></svg>"}
 ];
 const SYSTEM_COLORS={"خدمات التكامل":"#2489ff","بوابة خدماتي":"#ff981f","اتصالات إدارية":"#a0acbd","الموارد البشرية":"#f5c044","ERP":"#8256ff"};
 const SYSTEM_BG={"خدمات التكامل":"#e8f1ff","بوابة خدماتي":"#fff0e2","اتصالات إدارية":"#edf2f7","الموارد البشرية":"#fff6df","ERP":"#f1ebff"};
@@ -225,9 +243,9 @@ function buildSections(){
       ${sec.mode==="cost"?'<div class="section-note">إجمالي أيام طلبات التغيير</div>':""}
     </div>
     <div class="section-chart">
-      <div class="chart-head"><div class="chart-title">${sec.mode==="cost"?sec.title:"عدد "+sec.title} حسب الأنظمة</div><div class="chart-sub">${sec.mode==="cost"?"عدد الأيام":"حسب Tags"}</div></div>
-      <div class="y-scale" id="scale-${sec.key}"></div>
-      <div class="chart-area" id="bars-${sec.key}"></div>
+      <div class="chart-head"><div class="chart-title">${sec.title} حسب الأنظمة</div><div class="chart-sub" id="chart-total-${sec.key}"></div></div>
+      <div class="chart-area" id="bars-${sec.key}" role="list" aria-label="${sec.title} حسب الأنظمة"></div>
+      <div class="chart-foot">مرتّبة تنازليًا حسب ${sec.mode==="cost"?"عدد أيام التطوير":"عدد السجلات"}</div>
     </div>
     <div class="section-dist">
       <div class="dist-title">${sec.mode==="cost"?"توزيع الأيام على الأنظمة":"التوزيع حسب الأنظمة"}</div>
@@ -237,12 +255,19 @@ function buildSections(){
  });
 }
 
-function renderScale(key,maxVal){const vals=[];for(let i=0;i<=4;i++)vals.push(fmt((maxVal/4)*i));$("scale-"+key).innerHTML=vals.reverse().map(v=>`<span>${v}</span>`).join("")}
 function renderBars(key,rows){
- const host=$("bars-"+key);host.innerHTML="";
- if(!rows.length){$("scale-"+key).innerHTML="";host.innerHTML='<div class="muted" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%">لا توجد بيانات</div>';return}
- const max=Math.max(...rows.map(x=>Number(x[1]||0)),1);renderScale(key,max);const maxPx=130;
- rows.forEach(([name,val])=>{const h=Math.max((Number(val)/max)*maxPx,6);const b=document.createElement("div");b.className="vbar";b.innerHTML=`<div class="vbar-value">${fmt(val)}</div><div class="vbar-col" style="height:${h}px;background:linear-gradient(180deg,${SYSTEM_COLORS[name]||"#2489ff"},${shadeColor(SYSTEM_COLORS[name]||"#2489ff",-12)})"></div><div class="vbar-label">${name}</div>`;host.appendChild(b)})
+ const host=$("bars-"+key);host.replaceChildren();
+ const sec=SECTION_CONFIG.find(section=>section.key===key);
+ if(!rows.length){const empty=document.createElement("div");empty.className="chart-empty";empty.textContent="لا توجد بيانات";host.appendChild(empty);return}
+ const max=Math.max(...rows.map(row=>Number(row[1])),0);
+ rows.forEach(([name,value],index)=>{
+  const row=document.createElement("div");row.className="hrow";row.setAttribute("role","listitem");
+  const label=document.createElement("div");label.className="hlabel";label.textContent=name;
+  const track=document.createElement("div");track.className="htrack";track.setAttribute("aria-hidden","true");
+  const bar=document.createElement("div");bar.className="hfill";bar.style.width=(max>0?Math.max(0,value)/max*100:0)+"%";bar.style.background=sec.color;bar.style.opacity=Math.max(.38,1-index*.12);track.appendChild(bar);
+  const number=document.createElement("div");number.className="hvalue";number.textContent=fmt(value)+(sec.mode==="cost"?" يوم":"");
+  row.append(label,track,number);host.appendChild(row);
+ });
 }
 function renderDist(key,rows){
  const host=$("dist-"+key);host.innerHTML="";
@@ -255,6 +280,7 @@ function renderSection(sec){
  const dist=grouped(data,sec.mode);
  const total=isDays?dist.reduce((sum,row)=>sum+row[1],0):data.length;
  $("total-"+sec.key).textContent=fmt(total)+(isDays?" يوم":"");
+ $("chart-total-"+sec.key).textContent=fmt(total)+(isDays?" يوم إجمالًا":" إجمالًا");
  renderBars(sec.key,dist);renderDist(sec.key,dist);
  if(isDays)$("dist-"+sec.key).querySelectorAll(".dist-val").forEach(el=>el.textContent+=" يوم");
 }
@@ -302,8 +328,7 @@ function shadeColor(color,percent){const num=parseInt(color.slice(1),16),amt=Mat
 function fillFilter(rows){const tags=[...new Set(rows.map(r=>r.tag).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"ar"));$("tagFilter").innerHTML='<option value="">جميع الأنظمة</option>'+tags.map(t=>'<option value="'+t+'">'+t+'</option>').join("");$("tagFilter").value=INITIAL_TAG||""}
 function currentRows(){const tag=$("tagFilter").value;return ALL_ROWS.filter(r=>!tag||r.tag===tag)}
 ${buildSections.toString()}
-function renderScale(key,maxVal){const vals=[];for(let i=0;i<=4;i++)vals.push(fmt((maxVal/4)*i));$("scale-"+key).innerHTML=vals.reverse().map(v=>'<span>'+v+'</span>').join("")}
-function renderBars(key,rows){const host=$("bars-"+key);host.innerHTML="";if(!rows.length){$("scale-"+key).innerHTML="";host.innerHTML='<div class="muted" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%">لا توجد بيانات</div>';return}const max=Math.max(...rows.map(x=>Number(x[1]||0)),1);renderScale(key,max);const maxPx=130;rows.forEach(([name,val])=>{const h=Math.max((Number(val)/max)*maxPx,6);const b=document.createElement("div");b.className="vbar";b.innerHTML='<div class="vbar-value">'+fmt(val)+'</div><div class="vbar-col" style="height:'+h+'px;background:linear-gradient(180deg,'+(SYSTEM_COLORS[name]||"#2489ff")+','+shadeColor(SYSTEM_COLORS[name]||"#2489ff",-12)+')"></div><div class="vbar-label">'+name+'</div>';host.appendChild(b)})}
+${renderBars.toString()}
 function renderDist(key,rows){const host=$("dist-"+key);host.innerHTML="";rows.forEach(([name,val])=>{const d=document.createElement("div");d.className="dist-item";d.innerHTML='<div class="logo" style="background:'+(SYSTEM_BG[name]||"#f4f7fb")+';color:'+(SYSTEM_COLORS[name]||"#2489ff")+'">'+(SYSTEM_LOGO[name]||"•")+'</div><div class="dist-name">'+name+'</div><div class="dist-val">'+fmt(val)+'</div>';host.appendChild(d)});if(!rows.length)host.innerHTML='<div class="muted">لا توجد بيانات</div>'}
 ${renderSection.toString()}
 function renderKpis(){const changes=CURRENT_ROWS.filter(r=>r.type==="طلبات التغيير"),issues=CURRENT_ROWS.filter(r=>r.type==="مشكلة"),meetings=CURRENT_ROWS.filter(r=>r.type==="اجتماع"),studies=CURRENT_ROWS.filter(r=>r.type==="دراسة فنية");$("kChange").textContent=fmt(changes.length);$("kIssue").textContent=fmt(issues.length);$("kMeeting").textContent=fmt(meetings.length);$("kStudy").textContent=fmt(studies.length);const used=changes.reduce((a,b)=>a+Number(b.cost||0),0),pct=Math.min((used/TOTAL_DAYS)*100,100),deg=(pct/100)*360,remain=Math.max(TOTAL_DAYS-used,0);$("kDays").textContent=fmt(used);$("kDayPct").textContent=fmt(pct)+"%";$("kRemain").textContent=fmt(remain);$("kDayBar").style.width=pct+"%";$("kDayRing").style.background='conic-gradient(var(--pink) 0deg '+deg+'deg,#f5dfe7 '+deg+'deg 360deg)'}
