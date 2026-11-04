@@ -157,7 +157,7 @@ body{background:#f1f5f9;color:#18314b;font-family:"Segoe UI",Tahoma,sans-serif}
 @media(max-width:720px){.main{padding:12px}.header{padding:24px 20px}.header h1{font-size:23px}.kpis,.toolbar{grid-template-columns:1fr}.section-row{grid-template-columns:minmax(0,1fr)}.section-summary{border-left:0;border-bottom:1px solid #edf1f5;min-height:0;padding:20px}.section-dist{grid-column:auto}.section-chart{padding:20px 16px;min-height:0}.dist-list{grid-template-columns:1fr}.hrow{grid-template-columns:95px minmax(0,1fr) 53px;gap:8px}.chart-head{flex-wrap:wrap}.actions label{max-width:none}.table-card{padding:12px}}
 
 .print-context{display:none}
-@page{size:A4 landscape;margin:15mm 15mm}
+@page{size:A4 landscape;margin:10mm}
 @media print{
  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
  body{background:#fff}.main{max-width:none;padding:0}.layout{display:block;min-height:0}
@@ -362,10 +362,24 @@ buildSections();fillFilter(ALL_ROWS);$("searchBox").value=INITIAL_SEARCH;$("tagF
  return '<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+safe+'</title>'+style+'</head><body>'+body+'<script>'+script.replace(/<\/script>/g,'<\\/script>')+'<\/script></body></html>'
 }
 function exportPdf(){
+ const heading=$("pageTitle");
+ const originalHeading=heading.textContent;
+ const title=prompt("اكتب عنوان لوحة المتابعة المصدّرة:",originalHeading);
+ if(title===null)return;
+ const originalTitle=document.title;
+ const exportTitle=title.trim()||originalHeading;
+ const restoreTitle=()=>{
+  heading.textContent=originalHeading;
+  document.title=originalTitle;
+  window.removeEventListener("afterprint",restoreTitle);
+ };
  const tag=$("tagFilter").value||"جميع الأنظمة";
  const search=$("searchBox").value.trim();
  $("printContext").textContent="النظام: "+tag+(search?" • بحث تفاصيل الأعمال: "+search:"");
- window.print();
+ heading.textContent=exportTitle;
+ document.title=exportTitle;
+ window.addEventListener("afterprint",restoreTitle,{once:true});
+ try{window.print()}catch(error){restoreTitle();throw error}
 }
 function exportHtml(){const t=prompt("اكتب عنوان لوحة المتابعة المصدّرة:",$("pageTitle").textContent)||$("pageTitle").textContent;const html=standaloneHtml(t.trim()||$("pageTitle").textContent);const blob=new Blob([html],{type:"text/html;charset=utf-8"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="dashboard_export.html";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1200)}
 
