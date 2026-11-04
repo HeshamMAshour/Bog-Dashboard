@@ -168,6 +168,8 @@ body{background:#f1f5f9;color:#18314b;font-family:"Segoe UI",Tahoma,sans-serif}
  .section-list{display:block}.section-row{display:grid;grid-template-columns:145px minmax(0,1fr) 200px;margin-bottom:14px;break-inside:avoid;box-shadow:none;overflow:visible}
  .section-summary,.section-chart,.section-dist{min-height:0;padding:15px 12px}.section-dist{grid-column:auto;border-right:1px solid #edf1f5;border-top:0}.dist-list{display:flex;flex-direction:column}.section-summary{border-bottom:0;border-left:1px solid #edf1f5}.section-title{font-size:16px}.section-count,.section-days .section-count{font-size:30px}.section-icon{width:34px;height:34px}.chart-head{flex-wrap:wrap;margin-bottom:12px}.chart-title{font-size:12px}.chart-area{gap:10px}.hrow{grid-template-columns:90px minmax(0,1fr) 48px;gap:8px;min-height:24px}.hlabel,.hvalue{font-size:11px}.dist-item{padding:5px}.chart-foot{margin-top:12px;padding-top:8px}
  .table-card{break-before:page;box-shadow:none;border:0;padding:0;margin:0}.table-wrap{overflow:visible;border:0}.table-tools{margin:0 0 12px}table{table-layout:fixed;font-size:10px}thead{display:table-header-group}thead th{position:static}th,td{overflow-wrap:anywhere}thead th,tbody td{padding:8px}tr{break-inside:avoid}th:nth-child(3){width:35%}.badge{font-size:9px}
+ .table-card .table-tools{display:block;break-after:avoid}
+}
  .section-chart .chart-head{align-items:center;gap:8px;break-after:avoid}
  .section-chart .chart-title,.table-card .table-tools .chart-title{
   font-size:17px;font-weight:900;line-height:1.6;color:#102b43;
@@ -176,9 +178,7 @@ body{background:#f1f5f9;color:#18314b;font-family:"Segoe UI",Tahoma,sans-serif}
   padding:7px 12px;break-inside:avoid;break-after:avoid;
  }
  .section-chart .chart-title{flex:1;min-width:0}
- .table-card .table-tools{display:block;break-after:avoid}
  .table-card .table-tools .chart-title{margin-bottom:8px}
-}
 </style>
 </head>
 <body>
@@ -268,7 +268,7 @@ function buildSections(){
       ${sec.mode==="cost"?'<div class="section-note">إجمالي أيام طلبات التغيير</div>':""}
     </div>
     <div class="section-chart">
-      <div class="chart-head"><div class="chart-title">${sec.title} حسب الأنظمة</div><div class="chart-sub" id="chart-total-${sec.key}"></div></div>
+      <div class="chart-head"><div class="chart-title">${sec.title} حسب الأنظمة</div></div>
       <div class="chart-area" id="bars-${sec.key}" role="list" aria-label="${sec.title} حسب الأنظمة"></div>
       ${sec.mode==="cost"?"":'<div class="chart-foot">مرتّبة تنازليًا حسب عدد السجلات</div>'}
     </div>
@@ -305,7 +305,6 @@ function renderSection(sec){
  const dist=grouped(data,sec.mode).filter(([,value])=>!isDays||value!==0);
  const total=isDays?dist.reduce((sum,row)=>sum+row[1],0):data.length;
  $("total-"+sec.key).textContent=fmt(total)+(isDays?" يوم":"");
- $("chart-total-"+sec.key).textContent=fmt(total)+(isDays?" يوم إجمالًا":" إجمالًا");
  renderBars(sec.key,dist);renderDist(sec.key,dist);
  if(isDays)$("dist-"+sec.key).querySelectorAll(".dist-val").forEach(el=>el.textContent+=" يوم");
 }
