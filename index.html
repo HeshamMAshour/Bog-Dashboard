@@ -171,14 +171,20 @@ body{background:#f1f5f9;color:#18314b;font-family:"Segoe UI",Tahoma,sans-serif}
  .table-card .table-tools{display:block;break-after:avoid}
 }
  .section-chart .chart-head{align-items:center;gap:8px;break-after:avoid}
- .section-chart .chart-title,.table-card .table-tools .chart-title{
+ .section-chart .chart-title{
   font-size:17px;font-weight:900;line-height:1.6;color:#102b43;
   background:#eef3f8;border:1px solid #d6e0eb;
   border-right:4px solid var(--accent,#176c99);border-radius:6px;
   padding:7px 12px;break-inside:avoid;break-after:avoid;
  }
  .section-chart .chart-title{flex:1;min-width:0}
- .table-card .table-tools .chart-title{margin-bottom:8px}
+
+
+.details-full-heading{margin:0;padding:16px 24px;font-size:20px;font-weight:900;line-height:1.5;color:#102b43;background:#eef3f8;border-bottom:1px solid #dce5ef;border-right:5px solid #176c99;break-after:avoid}
+.table-card{padding:0;overflow:hidden}.table-card .table-tools{padding:16px 20px 0}.table-card .table-wrap{margin:0 20px 20px}
+.section-dist .dist-title{font-size:15px;font-weight:900;line-height:1.7;color:#102b43;background:#eef3f8;border:1px solid #d6e0eb;border-right:4px solid var(--accent);border-radius:6px;padding:9px 10px;margin-bottom:15px;break-after:avoid}
+@media(max-width:720px){.details-full-heading{padding:14px 16px}.table-card .table-tools{padding:12px 12px 0}.table-card .table-wrap{margin:0 12px 12px}}
+@media print{.table-card{overflow:visible}.details-full-heading{font-size:18px;padding:10px 16px}.table-card .table-tools{padding:10px 0 0}.table-card .table-wrap{margin:0}.section-dist .dist-title{font-size:13px;padding:7px 8px}}
 </style>
 </head>
 <body>
@@ -218,8 +224,9 @@ body{background:#f1f5f9;color:#18314b;font-family:"Segoe UI",Tahoma,sans-serif}
     <section class="section-list" id="sectionsHost"></section>
 
     <section class="table-card" id="details">
+      <h2 class="details-full-heading">تفاصيل الأعمال</h2>
       <div class="table-tools">
-        <div><div class="chart-title">تفاصيل الأعمال</div><div class="chart-sub" id="tableCount">0 سجل</div></div>
+        <div class="chart-sub" id="tableCount">0 سجل</div>
         <input id="searchBox" class="search" placeholder="بحث في العنوان أو النظام أو النوع أو الحالة">
       </div>
       <div class="table-wrap">
