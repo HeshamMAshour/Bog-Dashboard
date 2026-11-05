@@ -277,7 +277,6 @@ function buildSections(){
     <div class="section-chart">
       <div class="chart-head"><div class="chart-title">${sec.title} حسب الأنظمة</div></div>
       <div class="chart-area" id="bars-${sec.key}" role="list" aria-label="${sec.title} حسب الأنظمة"></div>
-      ${sec.mode==="cost"?"":'<div class="chart-foot">مرتّبة تنازليًا حسب عدد السجلات</div>'}
     </div>
     <div class="section-dist">
       <div class="dist-title">${sec.mode==="cost"?"توزيع الأيام على الأنظمة":"التوزيع حسب الأنظمة"}</div>
